@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import AdminDashboard from './Components/AdminDashboard';
+import Farmer from './Components/Farmer';
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,10 @@ function App() {
             path="/dashboard"
             element={token ? <AdminDashboard token={token} /> : <Navigate to="/" replace />}
           />
+          <Route path="/farmer" element={<Farmer />} />
+
         </Routes>
+
       </Router>
     </QueryClientProvider>
   );

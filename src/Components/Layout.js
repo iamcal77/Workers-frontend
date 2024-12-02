@@ -4,14 +4,16 @@ import Navbar from './Navbar';
 
 function Layout({ children, onLogout }) {
   return (
-    <div className="flex">
+    <div style={{ display: 'flex' }}>
       {/* Sidebar */}
       <Sidebar />
-      
+
       {/* Main content */}
-      <div className="ml-64 p-6 w-full">
+      <div style={{ marginLeft: '160px', padding: '20px', width: '100%' }}> {/* Further reduced margin-left */}
         <Navbar onLogout={onLogout} />
-        <div className="mt-16">{children}</div> {/* Main content space */}
+
+        {/* Main content space */}
+        <div>{children}</div>
       </div>
     </div>
   );

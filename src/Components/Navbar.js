@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaBell } from 'react-icons/fa'; // Font Awesome notification icon
+import { FaBell, FaUserCircle } from 'react-icons/fa'; // Importing both icons
 
 function Navbar() {
   return (
@@ -15,12 +15,12 @@ function Navbar() {
       {/* Spacer to push search bar to center */}
       <div className="flex-1"></div>
 
-      {/* Search Bar */}
-      <div className="w-1/3">
+      {/* Search Bar - Centered */}
+      <div className="w-1/5">
         <input
           type="text"
           placeholder="Search..."
-          className="w-auto px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 text-black"
+          className="w-full px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 text-black"
         />
       </div>
 
@@ -28,11 +28,16 @@ function Navbar() {
       <div className="flex-1"></div>
 
       {/* Notification Icon */}
-      <div className="relative">
+      <div className="relative mr-4">
         <FaBell className="text-2xl cursor-pointer hover:text-yellow-300 transition" />
         <span className="absolute top-0 right-0 bg-red-600 text-xs text-white rounded-full px-1.5 py-0.5">
           3
         </span>
+      </div>
+
+      {/* Profile Icon */}
+      <div className="cursor-pointer">
+        <FaUserCircle className="text-3xl hover:text-gray-300 transition" />
       </div>
     </div>
   );

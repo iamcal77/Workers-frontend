@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login({ setToken }) {
   const [username, setUsername] = useState('');
@@ -9,36 +11,41 @@ function Login({ setToken }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!username || !password) {
+      toast.error('Please enter both username and password.');
+      return;
+    }
+  
     try {
-      // Call your login API
       const response = await axios.post('https://localhost:7050/api/auth/login', {
         username,
         password,
       });
-
-      // Get the token from the response and set it in the App state
-      const token = response.data.Token;
-
-      if (token){
-        console.log9("navigation to dashboard");
+  
+      console.log('Login API response:', response); // Log the entire response
+  
+      const token = response.data.token; // Ensure Token is correct or adjust if it's named differently
+      console.log('Login successful, received token:', token);  // Log the token
+  
+      if (token) {
         setToken(token);
-
+        localStorage.setItem('token', token);
+        toast.success('Login successful');
+        navigate('/admin');
       }
-      localStorage.setItem('token', token);
-
-      alert('Login successful');
-      
-      // Navigate to the Admin Dashboard
-      navigate('/dashboard'); // This redirects to the dashboard route after login
-    } 
-    
-    catch (error) {
-      alert('Login failed');
+    } catch (error) {
+      console.error('Login error:', error.response ? error.response.data : error.message);
+      toast.error('Login failed. Please check your credentials.');
     }
   };
+  
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
+      {/* Toast Notifications */}
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop closeButton={true} />
+
       <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Member Login
@@ -51,6 +58,7 @@ function Login({ setToken }) {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-purple-400 focus:outline-none"
+              required
             />
           </div>
           <div>
@@ -60,6 +68,7 @@ function Login({ setToken }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-purple-400 focus:outline-none"
+              required
             />
           </div>
           <button

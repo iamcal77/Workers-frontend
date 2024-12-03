@@ -6,7 +6,7 @@ function ActionBar({ onAdd, onDelete, onEdit, onLogout }) {
   return (
     <Layout onLogout={onLogout}>
       {/* ActionBar with white background and aligned to navbar */}
-      <div className="flex justify-between items-center p-4 bg-white fixed top-12 left-64 w-[calc(100%-16rem)] z-20">
+      <div className="flex justify-between items-center p-4 bg-transaparent fixed top-12 left-64 w-[calc(100%-16rem)] z-20">
         {/* Right side: Action buttons */}
         <div className="ml-auto space-x-4 flex">
           <button

@@ -33,25 +33,8 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
   };
 
   const handleAddFarmer = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    try {
-      const response = await axios.post('https://localhost:7050/api/farmers', formData);
-      
-      // Add the new farmer to the list
-      setFarmers((prevFarmers) => [...prevFarmers, response.data]); 
-      
-      // Show success notification before closing the form
-      toast.success('Farmer added successfully!'); 
-      
-      // Close the form after a short delay to ensure the toast shows first
-      setTimeout(() => {
-        setShowForm(false); // Close the form after submission
-      }, 500); // Adjust the delay (500ms) as needed
-      
-    } catch (error) {
-      console.error('Error adding farmer:', error);
-      toast.error('Error adding farmer. Please try again.'); // Show error notification
-    }
+    e.preventDefault();
+    onSubmit(formData);
   };
   
 

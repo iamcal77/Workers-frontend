@@ -53,8 +53,10 @@ function TaskDetails(onLogout) {
                  <span className="font-semibold text-gray-900">End Date:</span> {new Date(task.endDate).toLocaleDateString()}
                </p>
                <p>
-                 <span className="font-semibold text-gray-900">Is Completed:</span> {task.isCompleted}
-               </p>
+                <span className="font-semibold text-gray-900">Status:</span> 
+                {task.isCompleted ? 'Completed' : 'Pending'}
+              </p>
+
              </div>
            </div>
           )}

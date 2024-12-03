@@ -1,49 +1,34 @@
 import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
-import axios from 'axios';
-import { toast } from 'react-toastify'; // Import the toast function from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
-function TaskForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
+function TaskForm({ onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
-    taskName: '',          // Name of the task
-    description: '',       // Task description
-    startDate: '',         // Start date of the task
-    endDate: '',           // End date of the task
-    isCompleted: false,    // Task completion status
+    farmerId: '',
+    taskName: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    isCompleted: false,
   });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
-  const handleAddTask = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    try {
-      const response = await axios.post('https://localhost:7050/api/farmertasks', formData);
-      
-      // Show success notification before closing the form
-      toast.success('Task added successfully!'); 
-      
-      // Close the form after a short delay to ensure the toast shows first
-      setTimeout(() => {
-        onCancel(); // Close the form after submission
-      }, 500); // Adjust the delay (500ms) as needed
-      
-    } catch (error) {
-      console.error('Error adding task:', error);
-      toast.error('Error adding task. Please try again.'); // Show error notification
-    }
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    // Pass the form data to the parent component to add the task
+    onSubmit(formData);
   };
-  
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
-      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Task</h3> {/* Lighter heading color */}
+      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Task</h3>
       <form onSubmit={handleAddTask}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">

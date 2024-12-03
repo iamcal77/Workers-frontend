@@ -53,8 +53,10 @@ function ActivityDetails(onLogout) {
                <span className="font-semibold text-gray-900">End Date:</span> {new Date(activity.endDate).toLocaleDateString()}
                </p>
                <p>
-                 <span className="font-semibold text-gray-900">Is Completed:</span> {activity.isCompleted}
-               </p>
+                  <span className="font-semibold text-gray-900">Status:</span> 
+                  {activity.isCompleted ? 'Completed' : 'Pending'}
+                </p>
+
              </div>
              
            </div>

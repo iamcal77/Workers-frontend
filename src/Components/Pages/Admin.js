@@ -18,12 +18,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the styles for Toastify
 import ActionBar from '../ActionBar';
 import ActivityForm from '../Forms/ActivitiesForm';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = ({ onLogout }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch users on page load
   useEffect(() => {
@@ -90,7 +92,10 @@ const AdminPage = ({ onLogout }) => {
     handleUpdateRole(userId, newRole);
   };
   const toggleForm = () => {
-    setShowForm(!showForm);
+    setShowForm(prev =>!prev);
+  };
+  const handleDetailsClick = (id) => {
+    navigate(`/admin-details/${id}`);
   };
 
 
@@ -106,7 +111,6 @@ const AdminPage = ({ onLogout }) => {
         <h1 className='mt-14'>Admin Dashboard</h1>
         
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        {showForm && <ActivityForm onCancel={toggleForm} />}
 
 
         <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
@@ -122,6 +126,11 @@ const AdminPage = ({ onLogout }) => {
             showBorders={true}
             onRowRemoving={deleteUser}
             onRowUpdated={updateUserRole}
+            onRowDblClick={(e) => {
+              if (e?.data?.id) {
+                handleDetailsClick(e.data.id); // Pass the farmer's ID to the handler
+              }
+            }} 
           >
             <Paging defaultPageSize={10} />
 
@@ -137,6 +146,7 @@ const AdminPage = ({ onLogout }) => {
               allowAdding={false}
               mode="popup"
             >
+              
               <Popup title="Edit User" showTitle={true} width={700} height={525}>
                 <Form>
                   <Item dataField="role" editorType="dxSelectBox">

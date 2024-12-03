@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, replace } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
@@ -11,6 +11,10 @@ import FarmerDetails from './Components/Pages/FarmerDetails';
 import ActivityDetails from './Components/Pages/ActivityDetails';
 import TaskDetails from './Components/Pages/TaskDetails';
 import AdminPage from './Components/Pages/Admin';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import AdminDetails from './Components/Pages/AdminDetails';
+
 
 const queryClient = new QueryClient();
 
@@ -36,6 +40,10 @@ function App() {
             path="/"
             element={token ? <Navigate to="/admin" replace /> : <Login setToken={setToken} />}
           />
+          <Route path="/admin-details/:id"
+           element={token ?<Navigate to="admin" replace />:<AdminDetails setToken={setToken} />} 
+           />
+
           <Route path="/register" element={<Register />} />
           <Route
             path="/admin"
@@ -49,6 +57,8 @@ function App() {
           <Route path="/activities" element={<Activities />} />
           <Route path="/activity/:id" element={<ActivityDetails />} />
         </Routes>
+        <ToastContainer />
+
       </Router>
     </QueryClientProvider>
   );

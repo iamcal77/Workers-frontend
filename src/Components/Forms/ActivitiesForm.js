@@ -23,22 +23,8 @@ function ActivityForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) 
   };
 
   const handleActivity = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    try {
-      const response = await axios.post('https://localhost:7050/api/FarmActivities', formData);
-      
-      // Show success notification before closing the form
-      toast.success('Activity added successfully!'); 
-      
-      // Close the form after a short delay to ensure the toast shows first
-      setTimeout(() => {
-        onCancel(); // Close the form after submission
-      }, 500); // Adjust the delay (500ms) as needed
-      
-    } catch (error) {
-      console.error('Error adding activity:', error);
-      toast.error('Error adding activity. Please try again.'); // Show error notification
-    }
+    e.preventDefault();
+    onSubmit(formData);
   };
 
   return (

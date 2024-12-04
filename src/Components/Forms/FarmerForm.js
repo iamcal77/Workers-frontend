@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
-import axios from 'axios';
-import { toast } from 'react-toastify'; // Import the toast function from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
@@ -14,6 +12,7 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
     gender: '',
     farmSize: '',
     cropType: '',
+    status: '',
     livestockType: '',
     cooperativeMembership: '',
     annualIncome: '',
@@ -118,6 +117,20 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="status" className="block font-medium">Status</label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Pending</option>
+              <option value="Female">Approved</option>
             </select>
           </div>
 

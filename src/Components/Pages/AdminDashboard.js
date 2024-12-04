@@ -21,13 +21,12 @@ function AdminDashboard({ token, onLogout }) {
   const navigate = useNavigate();
   const tasksGoal = 500; // Example target for tasks
   const activitiesGoal = 100; // Example target for activities
-  const userGoal = 1000;
+  const userGoal = 1000; // Example target for total users
   const pieChartData = [
     { category: 'Admin', value: 5 },
     { category: 'User', value: 10 },
-    { category: 'Manager', value: 3 }
+    { category: 'Manager', value: 3 },
   ];
-   // Example target for total users
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -75,15 +74,17 @@ function AdminDashboard({ token, onLogout }) {
 
   return (
     <Layout onLogout={onLogout}>
-        <h1 className="text-2xl text-left mb-4 mt-11 flex items-center ">
-          <LuLayoutDashboard className="mr-2 text-green-500" />
-          Dashboard
-        </h1>      <div className="relative">
+      <h1 className="text-2xl text-left mb-6 mt-11 flex items-center">
+        <LuLayoutDashboard className="mr-2 text-green-500" />
+        Dashboard
+      </h1>
+
+      <div className="relative">
         <button
           onClick={handleAdminClick}
-          className="fixed top-4 mt-10 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 transition duration-200 flex items-center space-x-2"
+          className="fixed top-4 right-4 mt-10 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 transition duration-200 flex items-center space-x-2"
         >
-          <SlActionRedo className="text-lg text-green-500" />
+          <SlActionRedo className="text-lg text-white" />
           <span>Actions</span>
         </button>
         {isDropdownVisible && (
@@ -101,58 +102,36 @@ function AdminDashboard({ token, onLogout }) {
         )}
       </div>
 
-      {/* Dashboard Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7 ml-1">
-        <div className="bg-blue-100 p-6 rounded-lg shadow-lg flex items-center hover:pointer">
-          <FaCheckCircle className="text-3xl text-blue-600 mr-4" />
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Activities Completed</h3>
-            <p className="text-3xl font-bold text-blue-600">{activitiesCompleted}</p>
-          </div>
-        </div>
-        <div className="bg-green-100 p-6 rounded-lg shadow-lg flex items-center">
-          <FaTasks className="text-3xl text-green-600 mr-4" />
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Tasks Completed</h3>
-            <p className="text-3xl font-bold text-green-600">{tasksCompleted}</p>
-          </div>
-        </div>
-        <div className="bg-purple-100 p-6 rounded-lg shadow-lg flex items-center">
-          <FaUsers className="text-3xl text-purple-600 mr-4" />
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Total Users</h3>
-            <p className="text-3xl font-bold text-purple-600">{totalUsers}</p>
-          </div>
-        </div>
+      {/* Dashboard Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7">
+        <Card
+          icon={<FaCheckCircle className="text-3xl text-blue-600" />}
+          title="Activities Completed"
+          value={activitiesCompleted}
+          color="bg-blue-100"
+        />
+        <Card
+          icon={<FaTasks className="text-3xl text-green-600" />}
+          title="Tasks Completed"
+          value={tasksCompleted}
+          color="bg-green-100"
+        />
+        <Card
+          icon={<FaUsers className="text-3xl text-purple-600" />}
+          title="Total Users"
+          value={totalUsers}
+          color="bg-purple-100"
+        />
       </div>
 
       {/* Circular Gauges */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
-          <h3 className="text-md font-semibold text-gray-700 mb-2">Task Completion</h3>
-          <CircularGauge value={(tasksCompleted / tasksGoal) * 100} className="h-36 w-36">
-            <Scale startValue={0} endValue={100} majorTickInterval={25} />
-            <RangeContainer>
-              <Range startValue={0} endValue={(tasksCompleted / tasksGoal) * 100} color="#4caf50" />
-            </RangeContainer>
-            <ValueIndicator type="triangleMarker" color="#4caf50" />
-          </CircularGauge>
-        </div>
+        <GaugeCard title="Task Completion" value={(tasksCompleted / tasksGoal) * 100} color="#4caf50" />
+        <GaugeCard title="Activities Completion" value={(activitiesCompleted / activitiesGoal) * 100} color="#ff9800" />
 
+        {/* Pie Chart for User Roles Distribution */}
         <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
-          <h3 className="text-md font-semibold text-gray-700 mb-2">Activities Completion</h3>
-          <CircularGauge value={(activitiesCompleted / activitiesGoal) * 100} className="h-36 w-36">
-            <Scale startValue={0} endValue={100} majorTickInterval={25} />
-            <RangeContainer>
-              <Range startValue={0} endValue={(activitiesCompleted / activitiesGoal) * 100} color="#ff9800" />
-            </RangeContainer>
-            <ValueIndicator type="triangleMarker" color="#ff9800" />
-          </CircularGauge>
-        </div>
-
-        {/* Pie Chart for user roles */}
-        <div className="bg-white p-4 rounded-lg shadow-lg flex justify-center items-center">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4">User Roles Distribution</h3>
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">User Roles Distribution</h3>
           <PieChart id="pieChart" dataSource={pieChartData} width={200} height={200}>
             <Series argumentField="category" valueField="value" />
           </PieChart>
@@ -161,5 +140,29 @@ function AdminDashboard({ token, onLogout }) {
     </Layout>
   );
 }
+
+const Card = ({ icon, title, value, color }) => (
+  <div className={`${color} p-6 rounded-lg shadow-lg flex items-center`}>
+    {icon}
+    <div className="ml-4">
+      <h3 className="text-xl font-semibold text-gray-700">{title}</h3>
+      <p className="text-3xl font-bold">{value}</p>
+    </div>
+  </div>
+);
+
+const GaugeCard = ({ title, value, color }) => (
+  <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
+    <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
+    <CircularGauge value={value} className="h-36 w-36">
+      <Scale startValue={0} endValue={100} majorTickInterval={25} />
+      <RangeContainer>
+        <Range startValue={0} endValue={value} color={color} />
+      </RangeContainer>
+      <ValueIndicator type="triangleMarker" color={color} />
+    </CircularGauge>
+    <p className="text-gray-600 mt-2">{`${Math.round(value)}% Completed`}</p>
+  </div>
+);
 
 export default AdminDashboard;

@@ -11,9 +11,10 @@ import FarmerDetails from './Components/Pages/FarmerDetails';
 import ActivityDetails from './Components/Pages/ActivityDetails';
 import TaskDetails from './Components/Pages/TaskDetails';
 import AdminPage from './Components/Pages/Admin';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 import AdminDetails from './Components/Pages/AdminDetails';
+import ApprovalPage from './Components/Pages/ApprovalPage';
+import ErrorBoundary from './Components/ErrorBoundary';
+import FeedbackPage from './Components/Pages/FeedbackPage';
 
 
 const queryClient = new QueryClient();
@@ -34,15 +35,15 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+   <ErrorBoundary>
       <Router>
         <Routes>
           <Route
             path="/"
             element={token ? <Navigate to="/admin" replace /> : <Login setToken={setToken} />}
           />
-          <Route path="/admin-details/:id"
-           element={token ?<Navigate to="admin" replace />:<AdminDetails setToken={setToken} />} 
-           />
+         <Route path="/admin-details/:id" element={token ? <Navigate to="admin" replace /> : <AdminDetails setToken={setToken} />} />
+
 
           <Route path="/register" element={<Register />} />
           <Route
@@ -56,10 +57,14 @@ function App() {
           <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/activities" element={<Activities />} />
           <Route path="/activity/:id" element={<ActivityDetails />} />
+          <Route path="/approvals" element={<ApprovalPage />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
+
         </Routes>
-        <ToastContainer />
 
       </Router>
+      </ErrorBoundary>
+
     </QueryClientProvider>
   );
 }

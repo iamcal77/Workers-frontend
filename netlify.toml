@@ -2,3 +2,6 @@
   base = "/" 
   publish = "build"  
   command = "npm run build" 
+  [build.environment]
+  GENERATE_SOURCEMAP = "false"
+

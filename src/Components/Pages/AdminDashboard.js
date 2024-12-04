@@ -12,7 +12,7 @@ import { Series } from 'devextreme-react/cjs/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
 
 function AdminDashboard({ token, onLogout }) {
-  const [users, setUsers] = useState([]);
+  const [ users,setUsers] = useState([]);
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -21,12 +21,7 @@ function AdminDashboard({ token, onLogout }) {
   const navigate = useNavigate();
   const tasksGoal = 500; // Example target for tasks
   const activitiesGoal = 100; // Example target for activities
-  const userGoal = 1000; // Example target for total users
-  const pieChartData = [
-    { category: 'Admin', value: 5 },
-    { category: 'User', value: 10 },
-    { category: 'Manager', value: 3 },
-  ];
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -132,7 +127,7 @@ function AdminDashboard({ token, onLogout }) {
         {/* Pie Chart for User Roles Distribution */}
         <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">User Roles Distribution</h3>
-          <PieChart id="pieChart" dataSource={pieChartData} width={200} height={200}>
+          <PieChart id="pieChart" dataSource={users} width={200} height={200}>
             <Series argumentField="category" valueField="value" />
           </PieChart>
         </div>

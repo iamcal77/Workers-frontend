@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import DotLoader from '../Loader/Loader';
 import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';

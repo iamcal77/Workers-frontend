@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
-import axios from 'axios';
-import { toast } from 'react-toastify'; // Import the toast function from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 function ActivityForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {

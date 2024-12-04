@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -31,11 +30,6 @@ function Register() {
     }
 
     try {
-      const response = await axios.post('https://localhost:7050/api/auth/register', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
       toast.success('Registration successful');
     } catch (error) {
       console.error('Error during registration:', error.response ? error.response.data : error.message);

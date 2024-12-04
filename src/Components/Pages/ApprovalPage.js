@@ -8,10 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../Layout';
 import Sidebar from '../Sidebar';
 import { FcInspection } from 'react-icons/fc';
-import { FaCommentDots } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const ApprovalPage = ({}) => {
+const ApprovalPage = () => {
   const [farmers, setFarmers] = useState([]);
   const [selectedFarmer, setSelectedFarmer] = useState(null);
   

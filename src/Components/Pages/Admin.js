@@ -6,7 +6,6 @@ import DataGrid, {
   Paging,
   Popup,
   Form,
-  Button,
   RequiredRule,
   Label,
   Item,
@@ -17,7 +16,6 @@ import DotLoader from '../Loader/Loader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the styles for Toastify
 import ActionBar from '../ActionBar';
-import ActivityForm from '../Forms/ActivitiesForm';
 import { useNavigate } from 'react-router-dom';
 
 const AdminPage = ({ onLogout }) => {
@@ -92,7 +90,7 @@ const AdminPage = ({ onLogout }) => {
     handleUpdateRole(userId, newRole);
   };
   const toggleForm = () => {
-    setShowForm(prev =>!prev);
+    setShowForm(!showForm);
   };
   const handleDetailsClick = (id) => {
     navigate(`/admin-details/${id}`);

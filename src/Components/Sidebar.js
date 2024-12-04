@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { GiFarmer } from "react-icons/gi";
 import { FaTasks } from "react-icons/fa";
 import { FiActivity } from "react-icons/fi";
 import { TbReport } from "react-icons/tb";
-import { MdLogout } from "react-icons/md";
 
 
 function Sidebar() {
-  const [isFarmersOpen, setIsFarmersOpen] = useState(false); // Dropdown state for "Farmers"
   const location = useLocation(); // Get current location
-  const navigate = useNavigate(); // Use navigate hook for redirection
-  const [showLogoutModal, setShowLogoutModal] = useState(false); // State for controlling the logout modal
 
   // Function to check if the link is active
   const isActive = (path) => location.pathname === path ? 'bg-orange-400 text-white' : '';

@@ -62,9 +62,6 @@ function FarmerDetails(onLogout) {
                  <span className="font-semibold text-gray-900">Gender:</span> {farmer.gender}
                </p>
                <p>
-                 <span className="font-semibold text-gray-900">Status:</span> {farmer.status}
-               </p>
-               <p>
                  <span className="font-semibold text-gray-900">Cooperative Membership:</span> {farmer.cooperativeMembership}
                </p>
                <p>

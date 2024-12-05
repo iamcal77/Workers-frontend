@@ -1,10 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBell, FaUserCircle } from 'react-icons/fa'; // Importing both icons
+import { HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
 
 function Navbar() {
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // Set the date to 7 days ago
+
+  // Connect to the SignalR Notification Hub
+  useEffect(() => {
+    const connection = new HubConnectionBuilder()
+      .withUrl("https://localhost:7050/notificationHub", {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets
+      })
+      .build();
+
+    connection.start()
+      .then(() => {
+        console.log("Connected to the Notification Hub");
+      })
+      .catch((err) => {
+        console.error("Error connecting to the Notification Hub", err);
+      });
+
+    connection.on("ReceiveMessage", (message) => {
+      console.log("New notification received: ", message);
+      // Add timestamp to the notification to check its age
+      const newNotification = {
+        ...message,
+        timestamp: new Date(),
+      };
+
+      // Add the new notification, filtering out those older than a week
+      setNotifications((prevNotifications) => [
+        ...prevNotifications.filter(
+          (notif) => new Date(notif.timestamp) > oneWeekAgo
+        ),
+        newNotification,
+      ]);
+      setUnreadCount((prevCount) => prevCount + 1); // Increase unread count
+    });
+
+    return () => {
+      connection.stop();
+    };
+  }, []);
+
   const handleNotificationClick = () => {
-    alert('You have clicked the notification icon!');
+    setShowNotifications(!showNotifications);
+    setUnreadCount(0); // Reset unread count when notifications are viewed
   };
 
   const handleProfileClick = () => {
@@ -41,15 +90,34 @@ function Navbar() {
           className="text-2xl cursor-pointer hover:text-yellow-300 transition duration-300"
           onClick={handleNotificationClick}
         />
-        <span className="absolute top-0 right-0 bg-red-600 text-xs text-white rounded-full px-1.5 py-0.5">
-          3
-        </span>
+        {/* Notification Badge */}
+        {unreadCount > 0 && (
+          <span className="absolute top-0 right-0 bg-red-600 text-xs text-white rounded-full px-1.5 py-0.5">
+            {unreadCount}
+          </span>
+        )}
       </div>
 
       {/* Profile Icon */}
       <div className="cursor-pointer" onClick={handleProfileClick}>
         <FaUserCircle className="text-3xl hover:text-gray-300 transition duration-300" />
       </div>
+
+      {/* Notification Dropdown */}
+      {showNotifications && notifications.length > 0 && (
+        <div className="absolute top-14 right-0 bg-white shadow-lg rounded-lg w-64 p-4 max-h-60 overflow-y-auto">
+          <h3 className="font-semibold text-lg mb-2">Notifications</h3>
+          <ul className="space-y-2">
+            {notifications.map((notif, index) => (
+              <li key={index} className="p-2 border-b hover:bg-gray-100 cursor-pointer">
+                <div className="font-semibold text-blue-600">{notif.title}</div>
+                <p className="text-sm text-gray-800">{notif.message}</p>
+                <p className="text-xs text-gray-500">{new Date(notif.timestamp).toLocaleString()}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

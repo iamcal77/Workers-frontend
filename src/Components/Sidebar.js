@@ -5,7 +5,7 @@ import { GiFarmer } from "react-icons/gi";
 import { FaTasks } from "react-icons/fa";
 import { FiActivity } from "react-icons/fi";
 import { TbReport } from "react-icons/tb";
-
+import { MdLogout } from "react-icons/md";
 
 function Sidebar() {
   const location = useLocation(); // Get current location
@@ -13,11 +13,10 @@ function Sidebar() {
   // Function to check if the link is active
   const isActive = (path) => location.pathname === path ? 'bg-orange-400 text-white' : '';
 
-
-
   return (
-    <div className="w-41 h-full bg-gray-200 text-black p-5 fixed left-0 top-0 flex flex-col">
+    <div className="w-41 h-screen bg-gray-200 text-black p-5 fixed left-0 top-0 flex flex-col">
       <h2 className="text-2xl font-bold text-center mb-8">FarmFlow</h2>
+
       <ul className="flex-grow">
         <li className={`mb-4 flex items-center ${isActive('/dashboard')}`}>
           <Link to="/dashboard" className="hover:text-gray-400 flex items-center">
@@ -39,7 +38,7 @@ function Sidebar() {
             Tasks
           </Link>
         </li>
-        
+
         <li className={`mb-4 flex items-center ${isActive('/activities')}`}>
           <Link to="/activities" className="hover:text-gray-400 flex items-center">
             <FiActivity className="mr-2 text-red-500 text-2xl" />
@@ -55,7 +54,15 @@ function Sidebar() {
         </li>
       </ul>
 
-      {/* ToastContainer for global notifications */}
+      {/* Logout Button at the bottom */}
+      <div className="mt-auto">
+        <li className="flex items-center">
+          <Link to="/logout" className="hover:text-gray-400 flex items-center">
+            <MdLogout className="mr-2 text-red-500 text-2xl" />
+            Logout
+          </Link>
+        </li>
+      </div>
     </div>
   );
 }

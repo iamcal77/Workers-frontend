@@ -10,6 +10,7 @@ import 'devextreme/dist/css/dx.light.css';
 import { PieChart } from 'devextreme-react';
 import { Series } from 'devextreme-react/cjs/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
+import { Legend, Tooltip, TooltipBorder } from 'devextreme-react/pie-chart';
 
 function AdminDashboard({ token, onLogout }) {
   const [ users,setUsers] = useState([]);
@@ -17,10 +18,15 @@ function AdminDashboard({ token, onLogout }) {
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [rolesData, setRolesData] = useState([]);
 
   const navigate = useNavigate();
   const tasksGoal = 500; // Example target for tasks
   const activitiesGoal = 100; // Example target for activities
+
+  
+
+
 
 
   useEffect(() => {
@@ -31,8 +37,20 @@ function AdminDashboard({ token, onLogout }) {
         });
         setUsers(response.data);
         setTotalUsers(response.data.length);
+  
+        // Transform user roles into data suitable for the PieChart
+        const roleCounts = response.data.reduce((acc, user) => {
+          acc[user.role] = (acc[user.role] || 0) + 1;
+          return acc;
+        }, {});
+  
+        const chartData = Object.entries(roleCounts).map(([role, count]) => ({
+          category: role,
+          value: count,
+        }));
+        setRolesData(chartData);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching users:', error.response?.data || error.message);
       }
     };
 
@@ -127,10 +145,12 @@ function AdminDashboard({ token, onLogout }) {
         {/* Pie Chart for User Roles Distribution */}
         <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">User Roles Distribution</h3>
-          <PieChart id="pieChart" dataSource={users} width={200} height={200}>
+          <PieChart id="pieChart" dataSource={rolesData} width={300} height={300}>
             <Series argumentField="category" valueField="value" />
+            <Legend verticalAlignment="bottom" horizontalAlignment="center" />
+            <TooltipBorder enabled={true} />
           </PieChart>
-        </div>
+        </div>;
       </div>
     </Layout>
   );

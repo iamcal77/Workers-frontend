@@ -15,6 +15,8 @@ import AdminDetails from './Components/Pages/AdminDetails';
 import ApprovalPage from './Components/Pages/ApprovalPage';
 import ErrorBoundary from './Components/ErrorBoundary';
 import FeedbackPage from './Components/Pages/FeedbackPage';
+import Logout from './Components/Auth/Logout';
+import Notification from './Components/Pages/Notification';
 
 
 const queryClient = new QueryClient();
@@ -50,7 +52,8 @@ function App() {
             path="/admin"
             element={token ? <AdminPage token={token} /> : <Navigate to="/" replace />}
           />
-          <Route path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/dashboard" element={<AdminDashboard token={localStorage.getItem('token')} />} />
           <Route path="/farmer" element={<Farmer />} />
           <Route path="/farmer-details/:id" element={<FarmerDetails />} />
           <Route path="/tasks" element={<Tasks />} />
@@ -59,12 +62,13 @@ function App() {
           <Route path="/activity/:id" element={<ActivityDetails />} />
           <Route path="/approvals" element={<ApprovalPage />} />
           <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/notification" element={<Notification />} />
+
 
         </Routes>
 
       </Router>
       </ErrorBoundary>
-
     </QueryClientProvider>
   );
 }

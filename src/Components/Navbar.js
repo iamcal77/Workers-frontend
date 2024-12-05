@@ -8,11 +8,11 @@ function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // Set the date to 7 days ago
-
   // Connect to the SignalR Notification Hub
   useEffect(() => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // Set the date to 7 days ago
+
     const connection = new HubConnectionBuilder()
       .withUrl("https://localhost:7050/notificationHub", {
         skipNegotiation: true,
@@ -30,7 +30,6 @@ function Navbar() {
 
     connection.on("ReceiveMessage", (message) => {
       console.log("New notification received: ", message);
-      // Add timestamp to the notification to check its age
       const newNotification = {
         ...message,
         timestamp: new Date(),
@@ -49,7 +48,7 @@ function Navbar() {
     return () => {
       connection.stop();
     };
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
 
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);

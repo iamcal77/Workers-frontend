@@ -10,10 +10,9 @@ import 'devextreme/dist/css/dx.light.css';
 import { PieChart } from 'devextreme-react';
 import { Series } from 'devextreme-react/cjs/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
-import { Legend,  TooltipBorder } from 'devextreme-react/pie-chart';
+import { Legend, TooltipBorder } from 'devextreme-react/pie-chart';
 
 function AdminDashboard({ token, onLogout }) {
-  const [setUsers] = useState([]);
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -24,26 +23,21 @@ function AdminDashboard({ token, onLogout }) {
   const tasksGoal = 500; // Example target for tasks
   const activitiesGoal = 100; // Example target for activities
 
-  
-
-
-
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('https://localhost:7050/api/admin/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUsers(response.data);
+
         setTotalUsers(response.data.length);
-  
+
         // Transform user roles into data suitable for the PieChart
         const roleCounts = response.data.reduce((acc, user) => {
           acc[user.role] = (acc[user.role] || 0) + 1;
           return acc;
         }, {});
-  
+
         const chartData = Object.entries(roleCounts).map(([role, count]) => ({
           category: role,
           value: count,
@@ -150,7 +144,7 @@ function AdminDashboard({ token, onLogout }) {
             <Legend verticalAlignment="bottom" horizontalAlignment="center" />
             <TooltipBorder enabled={true} />
           </PieChart>
-        </div>;
+        </div>
       </div>
     </Layout>
   );

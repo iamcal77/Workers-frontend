@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Layout from '../Layout';
 import { toast, ToastContainer } from 'react-toastify'; // Import ToastContainer and toast
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
@@ -13,15 +12,8 @@ function Notification() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const notification = {
-      title,
-      message,
-      timestamp,
-      userId, // Include userId in the notification object
-    };
 
     try {
-      const response = await axios.post('https://localhost:7050/api/notifications/send', notification);
 
       // Show success toast
       toast.success('Notification sent successfully!', {

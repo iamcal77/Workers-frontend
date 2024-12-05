@@ -10,10 +10,10 @@ import 'devextreme/dist/css/dx.light.css';
 import { PieChart } from 'devextreme-react';
 import { Series } from 'devextreme-react/cjs/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
-import { Legend, Tooltip, TooltipBorder } from 'devextreme-react/pie-chart';
+import { Legend,  TooltipBorder } from 'devextreme-react/pie-chart';
 
 function AdminDashboard({ token, onLogout }) {
-  const [ users,setUsers] = useState([]);
+  const [setUsers] = useState([]);
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);

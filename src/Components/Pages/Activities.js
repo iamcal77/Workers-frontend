@@ -72,6 +72,7 @@ const { activity, isLoading, error, addActivity} = useActivity();
                   handleDetailsClick(e.data.id); // Pass the farmer's ID to the handler
                 }
               }} 
+              columnHidingEnabled ={true}
             >
               <Paging defaultPageSize={10} />
 

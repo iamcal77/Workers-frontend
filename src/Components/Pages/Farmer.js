@@ -98,7 +98,8 @@ function Farmer({ onLogout }) {
                   }
                 }}
                 className="w-full"
-                style={{ height: 'calc(100vh - 200px)' }} // Adjust height as needed
+                style={{ height: 'calc(100vh - 200px)' }}
+                columnHidingEnabled ={true}
               >
                 <Paging defaultPageSize={10} />
                 <Column dataField="name" caption="Name" width={100} />
@@ -109,6 +110,9 @@ function Farmer({ onLogout }) {
                 <Column dataField="contact" caption="Contact" width={180} />
                 <Column dataField="gender" caption="Gender" width={100} />
                 <Column dataField="status" caption="Status" width={150} />
+                <Column dataField="email" caption="Email" width={200} />
+                <Column dataField="annualIncome" caption="Annual Income" width={150} />
+
               </DataGrid>
             </div>
           </div>

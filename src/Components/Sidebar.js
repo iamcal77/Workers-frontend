@@ -6,6 +6,7 @@ import { FaTasks } from "react-icons/fa";
 import { FiActivity } from "react-icons/fi";
 import { TbReport } from "react-icons/tb";
 import { MdLogout } from "react-icons/md";
+import { MdOutlineForum } from "react-icons/md";
 
 function Sidebar() {
   const location = useLocation(); // Get current location
@@ -50,6 +51,12 @@ function Sidebar() {
           <Link to="/crops" className="hover:text-gray-400 flex items-center">
             <TbReport className="mr-2 text-blue-500 text-2xl" />
             Reports
+          </Link>
+        </li>
+        <li className={`mb-4 flex items-center ${isActive('/crops')}`}>
+          <Link to="/postlist" className="hover:text-gray-400 flex items-center">
+            <MdOutlineForum className="mr-2 text-green-500 text-2xl" />
+            Forums
           </Link>
         </li>
       </ul>

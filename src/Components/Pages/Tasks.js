@@ -67,6 +67,7 @@ function Tasks({ onLogout }) {
                   handleDetailsClick(e.data.id);
                 }
               }}
+              columnHidingEnabled ={true}
             >
               <Paging defaultPageSize={10} />
               <Column dataField="id" caption="ID" />

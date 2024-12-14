@@ -4,16 +4,34 @@ import { toast } from 'react-toastify';  // Import the toast library
 
 // Function to fetch tasks
 const fetchActivity = async () => {
-  const response = await axios.get('https://localhost:7050/api/FarmActivities');
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+  const response = await axios.get('https://localhost:7050/api/WorkerActivities',{
+    headers:{
+      Authorization: `Bearer ${token}`, // Include the token in the header
+    },
+  });
   return response.data;
 };
 
 // Function to add a new task
 const createActivity = async (newActivity) => {
-  const response = await axios.post('https://localhost:7050/api/FarmActivities', newActivity);
-  return response.data;
-};
+  const token = localStorage.getItem('token'); // Retrieve the token
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
 
+  const response = await axios.post('https://localhost:7050/api/WorkerActivities', newActivity,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the header
+      },
+    });
+    return response.data;
+  };
+  
 // Custom hook
 const useActivity = () => {
   // Fetch tasks using useQuery

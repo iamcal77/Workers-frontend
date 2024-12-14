@@ -4,10 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import AdminDashboard from './Components/Pages/AdminDashboard';
-import Farmer from './Components/Pages/Farmer';
 import Activities from './Components/Pages/Activities';
 import Tasks from './Components/Pages/Tasks';
-import FarmerDetails from './Components/Pages/FarmerDetails';
 import ActivityDetails from './Components/Pages/ActivityDetails';
 import TaskDetails from './Components/Pages/TaskDetails';
 import AdminPage from './Components/Pages/Admin';
@@ -20,6 +18,9 @@ import Notification from './Components/Pages/Notification';
 import Post from './Components/Pages/Post';
 import PostList from './Components/Pages/PostList';
 import CommentSection from './Components/Pages/CommentSection';
+import { ToastContainer } from 'react-toastify';
+import Worker from './Components/Pages/Worker';
+import WorkerDetails from './Components/Pages/WorkerDetails';
 
 
 const queryClient = new QueryClient();
@@ -57,13 +58,13 @@ function App() {
           />
           <Route path="/logout" element={<Logout />} />
           <Route path="/dashboard" element={<AdminDashboard token={localStorage.getItem('token')} />} />
-          <Route path="/farmer" element={<Farmer />} />
-          <Route path="/farmer-details/:id" element={<FarmerDetails />} />
-          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/workers" element={<Worker token={localStorage.getItem('token')}/>} />
+          <Route path="/worker-details/:id" element={<WorkerDetails token={localStorage.getItem('token')}/>} />
+          <Route path="/tasks" element={<Tasks  token={localStorage.getItem('token')}/>} />
           <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/activities" element={<Activities />} />
           <Route path="/activity/:id" element={<ActivityDetails />} />
-          <Route path="/approvals" element={<ApprovalPage />} />
+          <Route path="/approvals" element={<ApprovalPage token={localStorage.getItem('token')}/>} />
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/posts" element={<Post token={localStorage.getItem('token')} />} />
@@ -78,6 +79,8 @@ function App() {
 
       </Router>
       </ErrorBoundary>
+      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
+
     </QueryClientProvider>
   );
 }

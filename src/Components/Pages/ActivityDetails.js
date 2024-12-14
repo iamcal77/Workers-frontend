@@ -12,15 +12,29 @@ function ActivityDetails(onLogout) {
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
+      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+      console.log('Fetched Token:', token); // Log the token for debugging
+      
+      if (!token) {
+        console.error('No token found. Please log in.');
+        setLoading(false);
+        return;
+      }
       try {
         setTimeout(async () => {
-        const response = await axios.get(`https://localhost:7050/api/FarmActivities/${id}`);
+        const response = await axios.get(`https://localhost:7050/api/WorkerActivities/${id}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`, // Include the token in the headers
+            },
+          });
+        
         setActivity(response.data);
         setLoading(false);
         }, 2000);
       }
        catch (error) {
-        console.error('Error fetching farmer details:', error);
+        console.error('Error fetching worker details:', error);
         setLoading(false);
       }
     };
@@ -38,7 +52,7 @@ function ActivityDetails(onLogout) {
              <h1 className="text-xl font-bold text-gray-800 mb-3 mt-7">Activity Details</h1>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-medium text-gray-600">
                <p>
-                 <span className="font-semibold text-gray-900">Farmer Id:</span> {activity.farmId}
+                 <span className="font-semibold text-gray-900">Worker Id:</span> {activity.workerId}
                </p>
                <p>
                  <span className="font-semibold text-gray-900">Activity Name:</span> {activity.activityName}

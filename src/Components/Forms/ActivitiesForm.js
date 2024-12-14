@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 function ActivityForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
   const [formData, setFormData] = useState({
-    farmId: '',          // Reference to the Farm (from FarmActivity model)
+    workerId: '',          // Reference to the Farm (from FarmActivity model)
     activityName: '',    // Activity name (replaces taskName)
     description: '',     // Task description
     startDate: '',       // Start date of the activity
@@ -31,12 +31,12 @@ function ActivityForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) 
       <form onSubmit={handleActivity}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
-            <label htmlFor="farmId" className="block font-medium">Farm ID</label>
+            <label htmlFor="workerId" className="block font-medium">Worker ID</label>
             <input
-              type="number"
-              id="farmId"
-              name="farmId"
-              value={formData.farmId}
+              type="workerId"
+              id="workerId"
+              name="workerId"
+              value={formData.workerId}
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
               required

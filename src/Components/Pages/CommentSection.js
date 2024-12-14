@@ -11,36 +11,54 @@ const CommentSection = ({ postId }) => {
   const [isCommenting, setIsCommenting] = useState(false);
 
   useEffect(() => {
-    const token = getAuthToken();
-
-    if (!token) {
+    if (!postId) {
+      toast.error('Invalid post ID');
+      console.error('postId is undefined');
       return;
     }
 
+    const token = getAuthToken();
+    if (!token) {
+      toast.warn('Please log in to see comments.');
+      return;
+    }
+
+    // Fetch comments
     getComments(postId, token)
       .then((res) => {
         setComments(res.data);
       })
       .catch((err) => {
         console.error('Error fetching comments:', err);
+        toast.error('Failed to load comments');
       });
   }, [postId]);
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!commentText.trim()) {
+      toast.warn('Comment cannot be empty!');
       return;
     }
 
     const token = getAuthToken();
-
     if (!token) {
+      toast.warn('Please log in to post a comment');
+      return;
+    }
+
+    if (!postId) {
+      toast.error('Invalid post ID');
+      console.error('postId is undefined');
       return;
     }
 
     try {
+      // Add the comment
       await addComment(postId, commentText, token);
       setCommentText('');
+
+      // Refetch comments after posting a new one
       getComments(postId, token)
         .then((res) => {
           setComments(res.data);
@@ -57,6 +75,7 @@ const CommentSection = ({ postId }) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mt-4 max-w-3xl mx-auto">
+
       <div className="flex items-center justify-between">
         <h4 className="font-semibold text-2xl text-gray-800">Comments</h4>
         <button
@@ -66,7 +85,7 @@ const CommentSection = ({ postId }) => {
           {isCommenting ? 'Cancel' : 'Add Comment'}
         </button>
       </div>
-  
+
       {isCommenting && (
         <div className="mt-4">
           <form onSubmit={handleCommentSubmit} className="flex flex-col space-y-4">
@@ -86,12 +105,10 @@ const CommentSection = ({ postId }) => {
           </form>
         </div>
       )}
-      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
-  
-      {/* Scrollable container for comments */}
+
       <div
         className="mt-6 space-y-4 overflow-y-auto"
-        style={{ maxHeight: '300px' }} // Set the desired height for scrollability
+        style={{ maxHeight: '300px' }}
       >
         {comments.length === 0 ? (
           <p className="text-gray-500">No comments yet. Be the first to comment!</p>
@@ -102,7 +119,10 @@ const CommentSection = ({ postId }) => {
               className="flex space-x-4 items-start bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               <img
-                src={comment.userAvatar || 'https://i.pinimg.com/474x/03/eb/d6/03ebd625cc0b9d636256ecc44c0ea324.jpg'}
+                src={
+                  comment.userAvatar ||
+                  'https://i.pinimg.com/474x/03/eb/d6/03ebd625cc0b9d636256ecc44c0ea324.jpg'
+                }
                 alt={`${comment.userName}'s avatar`}
                 className="w-10 h-10 rounded-full"
               />
@@ -112,11 +132,6 @@ const CommentSection = ({ postId }) => {
                   <span className="text-sm text-gray-500">{comment.timestamp}</span>
                 </div>
                 <p className="text-gray-700 mt-2">{comment.content}</p>
-                <div className="mt-2 flex space-x-4 text-sm text-gray-500">
-                  <button className="hover:text-green-500">Reply</button>
-                  <button className="hover:text-green-500">Like</button>
-                  <button className="hover:text-red-500">Report</button>
-                </div>
               </div>
             </div>
           ))
@@ -124,7 +139,6 @@ const CommentSection = ({ postId }) => {
       </div>
     </div>
   );
-  
 };
 
 export default CommentSection;

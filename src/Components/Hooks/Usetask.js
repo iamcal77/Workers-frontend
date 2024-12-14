@@ -1,16 +1,34 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { toast } from 'react-toastify';  // Import the toast library
+import { toast } from 'react-toastify'; // Import the toast library
 
 // Function to fetch tasks
 const fetchTasks = async () => {
-  const response = await axios.get('https://localhost:7050/api/farmertasks');
+  const token = localStorage.getItem('token'); // Retrieve the token
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+  
+  const response = await axios.get('https://localhost:7050/api/workertasks', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Include the token in the header
+    },
+  });
   return response.data;
 };
 
 // Function to add a new task
 const createTask = async (newTask) => {
-  const response = await axios.post('https://localhost:7050/api/farmertasks', newTask);
+  const token = localStorage.getItem('token'); // Retrieve the token
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  const response = await axios.post('https://localhost:7050/api/workertasks', newTask, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Include the token in the header
+    },
+  });
   return response.data;
 };
 
@@ -29,12 +47,12 @@ const useTasks = () => {
     mutationFn: createTask, // Pass the mutation function as `mutationFn`
     onSuccess: () => {
       console.log('Task created successfully');
-      refetch();  // Refetch tasks after adding a new task
-      toast.success('Task created successfully!');  // Show success toast
+      refetch(); // Refetch tasks after adding a new task
+      toast.success('Task created successfully!'); // Show success toast
     },
     onError: (error) => {
       console.error('Error creating task:', error);
-      toast.error('Error creating task');  // Show error toast
+      toast.error('Error creating task'); // Show error toast
     },
   });
 

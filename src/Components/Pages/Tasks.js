@@ -71,7 +71,7 @@ function Tasks({ onLogout }) {
             >
               <Paging defaultPageSize={10} />
               <Column dataField="id" caption="ID" />
-              <Column dataField="farmerId" caption="Farmer Id" />
+              <Column dataField="workerId" caption="Worker Id" />
               <Column dataField="taskName" caption="Task Name" />
               <Column dataField="description" caption="Description" />
               <Column

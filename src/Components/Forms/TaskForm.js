@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 function TaskForm({ onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
-    farmerId: '',
+    workerId: '',
     taskName: '',
     description: '',
     startDate: '',
@@ -32,12 +32,12 @@ function TaskForm({ onSubmit, onCancel }) {
       <form onSubmit={handleAddTask}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
-            <label htmlFor="farmerId" className="block font-medium">Farmer ID</label>
+            <label htmlFor="workerId" className="block font-medium">Worker ID</label>
             <input
               type="number"
-              id="farmerId"
-              name="farmerId"
-              value={formData.farmerId}
+              id="workerId"
+              name="workerId"
+              value={formData.workerId}
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
               required

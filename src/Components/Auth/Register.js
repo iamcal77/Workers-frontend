@@ -59,10 +59,6 @@ function Register() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
-      {/* Toast Notifications */}
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeButton={true} />
-
-      {/* Left Section: Form */}
       <div className="bg-white p-8 shadow-lg rounded-lg max-w-md w-full md:w-1/2 lg:w-1/3">
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
         <form onSubmit={handleRegister} className="space-y-4">

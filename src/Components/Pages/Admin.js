@@ -109,10 +109,6 @@ const AdminPage = ({ onLogout }) => {
         <h1 className='mt-14'>Admin Dashboard</h1>
         
         {error && <p style={{ color: 'red' }}>{error}</p>}
-
-
-        <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
-
         {loading ? (
           <div className="flex justify-center h-full pt-4">
             <DotLoader />

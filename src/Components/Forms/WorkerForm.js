@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
-function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
+function WorkerForm({ onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
     name: '',
     location: '',
@@ -10,17 +10,10 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
     nationalId: '',
     dateOfBirth: '',
     gender: '',
-    farmSize: '',
-    cropType: '',
-    status: '',
-    livestockType: '',
-    cooperativeMembership: '',
-    annualIncome: '',
-    hasIrrigation: false,
-    usesOrganicFarming: false,
-    email: '',
-    alternateContact: '',
-    notes: ''
+    employmentType: '',
+    startDate: '',
+    endDate: '',
+    status: 'Pending', // Default value for status
   });
 
   const handleInputChange = (e) => {
@@ -31,16 +24,32 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
     });
   };
 
-  const handleAddFarmer = async (e) => {
+  const handleAddWorker = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+  
+    // Validate required fields
+    if (!formData.name || !formData.nationalId || !formData.employmentType || !formData.startDate) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+  
+    // Format date fields and submit
+    const formattedData = {
+      ...formData,
+      startDate: new Date(formData.startDate).toISOString().split('T')[0],
+      endDate: formData.endDate ? new Date(formData.endDate).toISOString().split('T')[0] : null,
+    };
+  
+    onSubmit(formattedData); // Pass the validated and formatted data
   };
+  
+  
   
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
-      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Farmer</h3> {/* Lighter heading color */}
-      <form onSubmit={handleAddFarmer}>
+      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Worker</h3> {/* Lighter heading color */}
+      <form onSubmit={handleAddWorker}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
             <label htmlFor="name" className="block font-medium">Name</label>
@@ -119,6 +128,47 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
               <option value="Female">Female</option>
             </select>
           </div>
+
+          <div className="mb-4">
+            <label htmlFor="employmentType" className="block font-medium">Employment Type</label>
+            <select
+              id="employmentType"
+              name="employmentType"
+              value={formData.employmentType}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+            >
+              <option value="">Select Employment Type</option>
+              <option value="Permanent">Permanent</option>
+              <option value="Contract">Contract</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="startDate" className="block font-medium">Start Date</label>
+            <input
+              type="date"
+              id="startDate"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="endDate" className="block font-medium">End Date</label>
+            <input
+              type="date"
+              id="endDate"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+            />
+          </div>
+
           <div className="mb-4">
             <label htmlFor="status" className="block font-medium">Status</label>
             <select
@@ -128,127 +178,9 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
             >
-              <option value="">Select Gender</option>
-              <option value="Male">Pending</option>
-              <option value="Female">Approved</option>
+              <option value="Approved">Approved</option>
+              <option value="Pending">Pending</option>
             </select>
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="farmSize" className="block font-medium">Farm Size</label>
-            <input
-              type="text"
-              id="farmSize"
-              name="farmSize"
-              value={formData.farmSize}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="cropType" className="block font-medium">Crop Type</label>
-            <input
-              type="text"
-              id="cropType"
-              name="cropType"
-              value={formData.cropType}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="livestockType" className="block font-medium">Livestock Type</label>
-            <input
-              type="text"
-              id="livestockType"
-              name="livestockType"
-              value={formData.livestockType}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="cooperativeMembership" className="block font-medium">Cooperative Membership</label>
-            <input
-              type="text"
-              id="cooperativeMembership"
-              name="cooperativeMembership"
-              value={formData.cooperativeMembership}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="annualIncome" className="block font-medium">Annual Income</label>
-            <input
-              type="number"
-              id="annualIncome"
-              name="annualIncome"
-              value={formData.annualIncome}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4 flex items-center">
-            <label htmlFor="hasIrrigation" className="block font-medium mr-2">Has Irrigation</label>
-            <input
-              type="checkbox"
-              id="hasIrrigation"
-              name="hasIrrigation"
-              checked={formData.hasIrrigation}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="mb-4 flex items-center">
-            <label htmlFor="usesOrganicFarming" className="block font-medium mr-2">Uses Organic Farming</label>
-            <input
-              type="checkbox"
-              id="usesOrganicFarming"
-              name="usesOrganicFarming"
-              checked={formData.usesOrganicFarming}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="email" className="block font-medium">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="alternateContact" className="block font-medium">Alternate Contact</label>
-            <input
-              type="text"
-              id="alternateContact"
-              name="alternateContact"
-              value={formData.alternateContact}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="notes" className="block font-medium">Notes</label>
-            <textarea
-              id="notes"
-              name="notes"
-              value={formData.notes}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            />
           </div>
         </div>
 
@@ -274,4 +206,4 @@ function FarmerForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
   );
 }
 
-export default FarmerForm;
+export default WorkerForm;

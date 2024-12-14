@@ -2,12 +2,8 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
-function Layout({ children, onLogout }) {
-  // Log the props received by the Layout component
-  console.log('Layout props:', { children, onLogout });
-  
+function Layout({ children, onLogout }) {  
   if (onLogout === undefined) {
-    console.warn('onLogout prop is undefined');
   }
 
   return (

@@ -30,6 +30,14 @@ api.interceptors.request.use(
 // API requests
 export const loginUser = (credentials) => axios.post(`${API_URL}/auth/login`, credentials);
 export const registerUser = (user) => axios.post(`${API_URL}/auth/register`, user);
+export const addPost = (postData) => {
+  return api.post('/posts', postData, {
+    headers: {
+      'Content-Type': 'multipart/form-data', // Important for FormData
+    },
+  });
+};
+
 export const getPosts = () => api.get(`/posts`);
 export const likePost = (postId) => api.post(`/post/${postId}/like`);
 export const unlikePost = (postId) => api.post(`/post/${postId}/unlike`);
@@ -41,10 +49,14 @@ export const getComments = (postId, token) => {
     }
   });
 };
-export const addComment = (postId, content, token) => {
-  console.log('Posting comment with token:', token); // Log the token when posting comment
-  return api.post(`/comments`, {
-    postId,  // Ensure the postId is included in the body
-    content  // Send Content directly
-  });
+export const addComment = async (postId, content, token) => {
+  return fetch(`/api/comments/${postId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content }),
+  }).then((response) => response.json());
 };
+

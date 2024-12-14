@@ -27,9 +27,9 @@ function Sidebar() {
         </li>
 
         <li className={`mb-4 flex items-center ${isActive('/farmer')}`}>
-          <Link to="/farmer" className="hover:text-gray-400 flex items-center">
+          <Link to="/workers" className="hover:text-gray-400 flex items-center">
             <GiFarmer className="mr-2 text-blue-500 text-2xl" />
-            Farmers
+            Workers
           </Link>
         </li>
 

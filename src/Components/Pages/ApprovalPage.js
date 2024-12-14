@@ -18,9 +18,18 @@ const ApprovalPage = () => {
   const toggle = () => setIsToggled(!isToggled);
   const navigate = useNavigate();
 
+  // Fetch the token (e.g., from localStorage)
+  const token = localStorage.getItem('token');
+  console.log(token);
+  // Replace with your method of getting the token
+
   // Fetch pending approvals
   useEffect(() => {
-    axios.get('https://localhost:7050/api/farmers/pending-approvals')
+    axios.get('https://localhost:7050/api/workers/pending-approvals', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => {
         setFarmers(response.data);
       })
@@ -28,26 +37,30 @@ const ApprovalPage = () => {
         console.error('Error fetching pending approvals:', error);
         toast.error('Failed to load pending approvals.');
       });
-  }, []);
+  }, [token]);  // Ensure token is always updated
 
   // Approve a farmer
   const approveFarmer = (id) => {
-    axios.post(`https://localhost:7050/api/farmers/${id}/approve`)
+    axios.post(`https://localhost:7050/api/workers/${id}/status`, 
+    { status: 'Approved' }, 
+    { headers: { 'Authorization': `Bearer ${token}` } })
       .then(() => {
-        toast.success('Farmer approved successfully.');
+        toast.success('Worker approved successfully.');
         setFarmers(farmers.filter(farmer => farmer.id !== id));
       })
-      .catch(() => toast.error('Failed to approve farmer.'));
+      .catch(() => toast.error('Failed to approve Worker.'));
   };
 
   // Reject a farmer
   const rejectFarmer = (id) => {
-    axios.post(`https://localhost:7050/api/farmers/${id}/reject`)
+    axios.post(`https://localhost:7050/api/workers/${id}/status`, 
+    { status: 'Rejected' }, 
+    { headers: { 'Authorization': `Bearer ${token}` } })
       .then(() => {
-        toast.success('Farmer rejected successfully.');
+        toast.success('Worker rejected successfully.');
         setFarmers(farmers.filter(farmer => farmer.id !== id));
       })
-      .catch(() => toast.error('Failed to reject farmer.'));
+      .catch(() => toast.error('Failed to reject Worker.'));
   };
 
   // Handle row selection (single click on row)
@@ -55,18 +68,17 @@ const ApprovalPage = () => {
     setSelectedFarmer(e.data); // Store selected farmer's data
   };
 
-  const handleClick = ()=>{
-    navigate('/feedback')
-  }
+  const handleClick = ()=> {
+    navigate('/feedback');
+  };
 
   return (
     <Layout>
       <div className="approval-page mt-10">
-      <h1 className="flex items-center">
+        <h1 className="flex items-center">
           <FcInspection className="text-lg text-green-700 mr-2 " />
           Approvals
         </h1>
-
 
         {/* Buttons at the top of the page, aligned to the right */}
         <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
@@ -102,19 +114,20 @@ const ApprovalPage = () => {
         </div>
         <Sidebar toggle={toggle} />
 
-
         {/* Data Grid */}
         <DataGrid
           dataSource={farmers}
           keyExpr="id"
           showBorders={true}
           onRowClick={handleRowClick}
-          showRowLines ={true} 
+          showRowLines={true}
         >
           <Column dataField="name" caption="Name" />
-          <Column dataField="email" caption="Email" />
+          <Column dataField="contact" caption="Contact" />
           <Column dataField="location" caption="Farm Location" />
           <Column dataField="status" caption="Status" />
+          <Column dataField="employmentType" caption="Employment Type" />
+
         </DataGrid>
 
         <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />

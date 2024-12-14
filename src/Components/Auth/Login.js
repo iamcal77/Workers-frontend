@@ -44,8 +44,6 @@ function Login({ setToken }) {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
       {/* Toast Notifications */}
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar newestOnTop closeButton={true} />
-
       <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Member Login

@@ -13,7 +13,7 @@ import DataGrid, {
 import 'devextreme/dist/css/dx.light.css';
 import Layout from '../Layout';
 import DotLoader from '../Loader/Loader';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Make sure to import the styles for Toastify
 import ActionBar from '../ActionBar';
 import { useNavigate } from 'react-router-dom';

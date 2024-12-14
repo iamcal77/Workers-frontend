@@ -7,7 +7,7 @@ const PostForm = ({ onPostAdded }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [attachments, setAttachments] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting] = useState(false);
 
   const handleFileChange = (e) => {
     setAttachments([...e.target.files]);

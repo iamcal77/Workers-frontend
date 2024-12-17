@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
 import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
 import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';
@@ -9,8 +8,6 @@ import Layout from '../Layout';
 import ActionBar from '../ActionBar';
 import TaskForm from '../Forms/TaskForm';
 import { useNavigate } from 'react-router-dom';
-import { SlActionRedo } from 'react-icons/sl';
-import { FcInspection } from "react-icons/fc";
 import useTasks from '../Hooks/Usetask';
 import { ProgressBar } from 'devextreme-react';
 

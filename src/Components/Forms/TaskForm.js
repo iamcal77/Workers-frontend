@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 function TaskForm({ onSubmit, onCancel, initialData ={} }) {

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import DotLoader from '../Loader/Loader';
 import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
-import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; 
 import { FiActivity } from "react-icons/fi";
 import Layout from '../Layout';

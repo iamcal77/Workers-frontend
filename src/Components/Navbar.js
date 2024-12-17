@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBell, FaUserCircle } from 'react-icons/fa'; // Importing both icons
+import { FaBell, FaUserCircle } from 'react-icons/fa';
 import { HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
+import axios from 'axios'; // Make sure axios is installed if you're using it for fetching data
 
 function Navbar() {
   const [notifications, setNotifications] = useState([]);
@@ -20,6 +21,7 @@ function Navbar() {
       })
       .build();
 
+    // Start SignalR connection
     connection.start()
       .then(() => {
         console.log("Connected to the Notification Hub");
@@ -28,6 +30,7 @@ function Navbar() {
         console.error("Error connecting to the Notification Hub", err);
       });
 
+    // Listen for new notifications
     connection.on("ReceiveMessage", (message) => {
       console.log("New notification received: ", message);
       const newNotification = {
@@ -35,7 +38,7 @@ function Navbar() {
         timestamp: new Date(),
       };
 
-      // Add the new notification, filtering out those older than a week
+      // Filter out notifications older than one week and add the new one
       setNotifications((prevNotifications) => [
         ...prevNotifications.filter(
           (notif) => new Date(notif.timestamp) > oneWeekAgo
@@ -45,10 +48,27 @@ function Navbar() {
       setUnreadCount((prevCount) => prevCount + 1); // Increase unread count
     });
 
+    // Fetch initial notifications from the server (Optional)
+    fetchNotifications();
+
     return () => {
       connection.stop();
     };
-  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
+  }, []); // Empty dependency array ensures this effect runs only once
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("https://localhost:7050/api/notifications", {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // JWT token in localStorage
+        },
+      });
+      setNotifications(response.data);
+      setUnreadCount(response.data.filter((notif) => !notif.read).length); // Assuming your API returns a `read` field
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
 
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
@@ -64,7 +84,7 @@ function Navbar() {
       {/* Logo Section */}
       <div className="text-xl font-bold">
         <Link to="/" className="hover:text-gray-200 transition duration-300">
-        Efficio
+          Efficio
         </Link>
       </div>
 

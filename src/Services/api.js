@@ -41,7 +41,15 @@ export const addPost = (postData) => {
 export const getPosts = () => api.get(`/posts`);
 export const likePost = (postId) => api.post(`/post/${postId}/like`);
 export const unlikePost = (postId) => api.post(`/post/${postId}/unlike`);
-export const getLikeCount = (postId) => api.get(`/post/${postId}/likes/count`);
+export const getLikeCount = async (postId) => {
+  try {
+    const response = await api.get(`/post/${postId}/likes/count`);
+    return response.data; // Make sure this returns the correct structure
+  } catch (error) {
+    throw new Error('Error fetching like count: ' + error.message);
+  }
+};
+
 export const getComments = (postId, token) => {
   return api.get(`/comments/${postId}`, {
     headers: {
@@ -49,14 +57,26 @@ export const getComments = (postId, token) => {
     }
   });
 };
+
+// Use axios for addComment to keep consistency
 export const addComment = async (postId, content, token) => {
-  return fetch(`/api/comments/${postId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ content }),
-  }).then((response) => response.json());
+  try {
+    const response = await api.post(`/comments`, { postId, content }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data; // Return the response data (new comment or success message)
+  } catch (error) {
+    throw new Error('Error posting comment: ' + error.message);
+  }
+};
+export const getAttachments = async () => {
+  try {
+    const response = await api.get('/posts/attachments');
+    return response.data; // Return the list of attachments
+  } catch (error) {
+    throw new Error('Error fetching attachments: ' + error.message);
+  }
 };
 

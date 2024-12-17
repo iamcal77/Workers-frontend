@@ -20,7 +20,7 @@ function AdminDashboard({ token, onLogout }) {
   const [rolesData, setRolesData] = useState([]);
 
   const navigate = useNavigate();
-  const tasksGoal = 500; // Example target for tasks
+  const tasksGoal = 100; // Example target for tasks
   const activitiesGoal = 100; // Example target for activities
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function AdminDashboard({ token, onLogout }) {
 
     const fetchActivities = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/FarmActivities', {
+        const response = await axios.get('https://localhost:7050/api/WorkerActivities/completed', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setActivitiesCompleted(response.data.length);
@@ -59,20 +59,21 @@ function AdminDashboard({ token, onLogout }) {
       }
     };
 
-    const fetchTasks = async () => {
+    // Fetch completed tasks specifically
+    const fetchCompletedTasks = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/farmertasks', {
+        const response = await axios.get('https://localhost:7050/api/WorkerTasks/completed', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTasksCompleted(response.data.length);
       } catch (error) {
-        console.error('Error fetching tasks:', error);
+        console.error('Error fetching completed tasks:', error);
       }
     };
 
     fetchUsers();
     fetchActivities();
-    fetchTasks();
+    fetchCompletedTasks();
   }, [token]);
 
   const handleAdminClick = () => {
@@ -111,18 +112,19 @@ function AdminDashboard({ token, onLogout }) {
 
       {/* Dashboard Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7">
+      <Card
+          icon={<FaTasks className="text-3xl text-green-600" />}
+          title="Tasks Completed"
+          value={tasksCompleted}
+          color="bg-green-100"
+        />
         <Card
           icon={<FaCheckCircle className="text-3xl text-blue-600" />}
           title="Activities Completed"
           value={activitiesCompleted}
           color="bg-blue-100"
         />
-        <Card
-          icon={<FaTasks className="text-3xl text-green-600" />}
-          title="Tasks Completed"
-          value={tasksCompleted}
-          color="bg-green-100"
-        />
+
         <Card
           icon={<FaUsers className="text-3xl text-purple-600" />}
           title="Total Users"

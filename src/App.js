@@ -48,14 +48,13 @@ function App() {
             path="/"
             element={token ? <Navigate to="/admin" replace /> : <Login setToken={setToken} />}
           />
-         <Route path="/admin-details/:id" element={token ? <Navigate to="admin" replace /> : <AdminDetails setToken={setToken} />} />
 
 
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/admin"
-            element={token ? <AdminPage token={token} /> : <Navigate to="/" replace />}
-          />
+          <Route path="/admin" element={<AdminPage token={localStorage.getItem('token')}/>} />
+
+          <Route path="/admin-details/:id" element={<AdminDetails />} />
+
           <Route path="/logout" element={<Logout />} />
           <Route path="/dashboard" element={<AdminDashboard token={localStorage.getItem('token')} />} />
           <Route path="/workers" element={<Worker token={localStorage.getItem('token')}/>} />

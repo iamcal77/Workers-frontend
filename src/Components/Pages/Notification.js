@@ -1,30 +1,39 @@
 import React, { useState } from 'react';
 import Layout from '../Layout';
-import { toast, ToastContainer } from 'react-toastify'; // Import ToastContainer and toast
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'; // For making HTTP requests
 
 function Notification() {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
-  const [timestamp, setTimestamp] = useState('');
-  const [userId, setUserId] = useState(''); // State for userId
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const notification = {
+      title,
+      message,
+    };
 
     try {
-
-      // Show success toast
-      toast.success('Notification sent successfully!', {
-        position: 'top-center',
+      // Make the POST request to the backend API
+      const response = await axios.post('https://localhost:7050/api/notifications', notification, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming the JWT token is stored in localStorage
+        },
       });
 
-      // Clear input fields
-      setTitle('');
-      setMessage('');
-      setTimestamp('');
-      setUserId(''); // Reset userId after submission
+      if (response.status === 201) {
+        // Show success toast
+        toast.success('Notification sent successfully!', {
+          position: 'top-center',
+        });
+
+        // Clear input fields
+        setTitle('');
+        setMessage('');
+      }
     } catch (error) {
       // Show error toast
       toast.error('Error sending notification!', {
@@ -63,31 +72,6 @@ function Notification() {
             />
           </div>
 
-          <div>
-            <label htmlFor="timestamp" className="block text-lg font-medium text-gray-700">Timestamp</label>
-            <input
-              type="datetime-local"
-              id="timestamp"
-              className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={timestamp}
-              onChange={(e) => setTimestamp(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* User ID Field */}
-          <div>
-            <label htmlFor="userId" className="block text-lg font-medium text-gray-700">User ID</label>
-            <input
-              type="text"
-              id="userId"
-              className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              required
-            />
-          </div>
-
           <div className="flex justify-center">
             <button
               type="submit"
@@ -98,8 +82,6 @@ function Notification() {
           </div>
         </form>
 
-        {/* Toast Container to show toast notifications */}
-        <ToastContainer />
       </div>
     </Layout>
   );

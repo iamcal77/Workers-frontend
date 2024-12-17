@@ -3,6 +3,7 @@ import axios from 'axios';
 import Layout from '../Layout';
 import DotLoader from '../Loader/Loader';
 import { useParams } from 'react-router-dom'; // Hook to access the URL parameters
+import ActionBar from '../ActionBar';
 
 function WorkerDetails({ onLogout }) {
   const [worker, setWorker] = useState(null);
@@ -41,6 +42,9 @@ function WorkerDetails({ onLogout }) {
 
   return (
     <Layout onLogout={onLogout}>
+      <ActionBar
+          showBackButton={true}
+        />
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <DotLoader />
@@ -71,19 +75,19 @@ function WorkerDetails({ onLogout }) {
               <span className="font-semibold text-gray-900">Employment Type:</span> {worker.employmentType}
             </p>
             <p>
-              <span className="font-semibold text-gray-900">Start Date:</span> {worker.startDate}
+              <span className="font-semibold text-gray-900">Start Date:</span> {new Date(worker.startDate).toLocaleDateString()}
             </p>
             <p>
-              <span className="font-semibold text-gray-900">End Date:</span> {worker.endDate}
+              <span className="font-semibold text-gray-900">End Date:</span> {new Date(worker.endDate).toLocaleDateString()}
             </p>
             <p>
               <span className="font-semibold text-gray-900">Status:</span> {worker.status}
             </p>
             <p>
-              <span className="font-semibold text-gray-900">Created At:</span> {worker.createdAt}
+              <span className="font-semibold text-gray-900">Created At:</span> {new Date(worker.createdAt).toLocaleDateString()}
             </p>
             <p>
-              <span className="font-semibold text-gray-900">Updated At:</span> {worker.updatedAt}
+              <span className="font-semibold text-gray-900">Updated At:</span> {new Date(worker.updatedAt).toLocaleDateString()}
             </p>
           </div>
         </div>

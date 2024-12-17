@@ -56,8 +56,6 @@ function Logout() {
           </div>
         </div>
       </div>
-      {/* Toast Container for displaying notifications */}
-      <ToastContainer />
     </Layout>
   );
 }

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../Layout';
 import DotLoader from '../Loader/Loader';
-import { useParams } from 'react-router-dom'; // Hook to access the URL parameters
+import { useParams } from 'react-router-dom';
+import ActionBar from '../ActionBar';
 
 function TaskDetails({ onLogout }) {
   const [task, setTask] = useState(null);
@@ -42,6 +43,9 @@ function TaskDetails({ onLogout }) {
 
   return (
     <Layout onLogout={onLogout}>
+       <ActionBar
+          showBackButton={true}
+        />
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <DotLoader />
@@ -71,6 +75,12 @@ function TaskDetails({ onLogout }) {
               <span className="font-semibold text-gray-900">Status:</span>{' '}
               {task.isCompleted ? 'Completed' : 'Incomplete'}
             </p>
+            <p>
+               <span className="font-semibold text-gray-900">Created Date:</span> {new Date(task.createdAt).toLocaleDateString()}
+               </p>
+               <p>
+               <span className="font-semibold text-gray-900">Updated Date:</span> {new Date(task.updatedAt).toLocaleDateString()}
+               </p>
           </div>
         </div>
       )}

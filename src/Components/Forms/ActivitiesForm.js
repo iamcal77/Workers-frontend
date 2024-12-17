@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
-function ActivityForm({ onSubmit, onCancel, setFarmers, farmers, setShowForm }) {
+function ActivityForm({ onSubmit, onCancel, initialData = {}}) {
   const [formData, setFormData] = useState({
     workerId: '',          // Reference to the Farm (from FarmActivity model)
     activityName: '',    // Activity name (replaces taskName)
     description: '',     // Task description
     startDate: '',       // Start date of the activity
     endDate: '',         // End date of the activity
-    isCompleted: false,  // Activity completion status
+    isCompleted: false, 
+    ...initialData // Activity completion status
   });
 
   const handleInputChange = (e) => {

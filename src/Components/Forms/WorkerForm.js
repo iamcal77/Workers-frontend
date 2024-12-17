@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
-function WorkerForm({ onSubmit, onCancel }) {
+function WorkerForm({ onSubmit, onCancel ,initialData = {}}) {
   const [formData, setFormData] = useState({
     name: '',
     location: '',
@@ -13,7 +13,8 @@ function WorkerForm({ onSubmit, onCancel }) {
     employmentType: '',
     startDate: '',
     endDate: '',
-    status: 'Pending', // Default value for status
+    status: 'Pending',
+    ...initialData, // Default value for status
   });
 
   const handleInputChange = (e) => {

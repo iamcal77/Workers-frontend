@@ -64,7 +64,7 @@ function Navbar() {
       {/* Logo Section */}
       <div className="text-xl font-bold">
         <Link to="/" className="hover:text-gray-200 transition duration-300">
-          FarmFlux
+        Efficio
         </Link>
       </div>
 

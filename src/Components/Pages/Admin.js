@@ -120,6 +120,7 @@ const AdminPage = ({ onLogout }) => {
             showBorders={true}
             onRowRemoving={deleteUser}
             onRowUpdated={updateUserRole}
+            showColumnLines={true}
             onRowDblClick={(e) => {
               if (e?.data?.id) {
                 handleDetailsClick(e.data.id); // Pass the farmer's ID to the handler
@@ -133,23 +134,6 @@ const AdminPage = ({ onLogout }) => {
             <Column dataField="name" />
             <Column dataField="email" />
             <Column dataField="contact" />
-
-            <Editing
-              allowUpdating={true}
-              allowDeleting={true}
-              allowAdding={false}
-              mode="popup"
-            >
-              
-              <Popup title="Edit User" showTitle={true} width={700} height={525}>
-                <Form>
-                  <Item dataField="role" editorType="dxSelectBox">
-                    <Label text="Role" />
-                    <RequiredRule />
-                  </Item>
-                </Form>
-              </Popup>
-            </Editing>
           </DataGrid>
         )}
       </div>

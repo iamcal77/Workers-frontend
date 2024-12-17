@@ -14,9 +14,11 @@ import useActivity from '../Hooks/Useactivity';
 
 function Activities({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
+  const [editingActivity, setEditingActivity] = useState(null); // Track task being edited
+  
   const navigate = useNavigate(); // Initialize the navigate function
 
-const { activity, isLoading, error, addActivity} = useActivity();
+const { activity, isLoading, error, addActivity,editActivity, removeActivity} = useActivity();
 
   
   const toggleForm = () => {
@@ -28,17 +30,44 @@ const { activity, isLoading, error, addActivity} = useActivity();
     navigate(`/activity/${id}`);
   };
 
-  const handleAddActivity =(newActivity) => {
-    addActivity(newActivity)
+  const handleAddActivity = (newActivity) => {
+    if (editingActivity) {
+      // Update task if editing
+      editActivity({ ...newActivity, id: editingActivity.id }) // Merge newTask with the id
+        .then(() => toggleForm());
+    } else {
+      // Add new task
+      addActivity(newActivity)
+        .then(() => toggleForm());
+    }
+  };
+  const handleEditClick = () => {
+    if (editingActivity) {
+      setShowForm(true); // Show form when "Edit" is clicked
+    }
+  };
+  const handleDeleteClick = () => {
+    if (editingActivity) {
+      removeActivity(editingActivity.id) // Call removeTask with the editingTask's ID
+        .then(() => {
+          editingActivity(null); // Clear editing task after deletion
+        })
+        .catch((error) => {
+          console.error('Error deleting task:', error);
+        });
+    }
   };
 
   return (
     <Layout onLogout={onLogout}>
       <div className="flex flex-col p-4 h-screen overflow-x-hidden overflow-y-auto bg-white-100">
         <ActionBar
-          onAdd={toggleForm}
-          onEdit={toggleForm}
-          onDelete={() => console.log('Delete farmer')}
+          onAdd={() => {
+            setEditingActivity(null);
+            toggleForm();
+          }}
+          onEdit={handleEditClick}
+          onDelete={handleDeleteClick}
         />
           <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">
           <FiActivity className="mr-2 text-red-500" /> {/* Add icon here */}
@@ -46,8 +75,7 @@ const { activity, isLoading, error, addActivity} = useActivity();
          </h1>
 
 
-        {showForm && <ActivityForm onSubmit={handleAddActivity} onCancel={toggleForm} />}
-        <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
+        {showForm && <ActivityForm onSubmit={handleAddActivity} onCancel={toggleForm} initialData={editingActivity}/>}
 
 
         {isLoading ? (
@@ -73,11 +101,14 @@ const { activity, isLoading, error, addActivity} = useActivity();
                 }
               }} 
               columnHidingEnabled ={true}
+              onRowClick={(e) => setEditingActivity(e.data)}
+              
+
             >
               <Paging defaultPageSize={10} />
 
               <Column dataField="id" caption="ID" />
-              <Column dataField="farmId" caption="Farmer Id" />
+              <Column dataField="workerId" caption="Worker Id" />
               <Column dataField="activityName" caption="Activity Name" />
               <Column dataField="description" caption="Description" />
               <Column

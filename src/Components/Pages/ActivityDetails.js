@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../Layout';
 import DotLoader from '../Loader/Loader';
-import { useParams } from 'react-router-dom'; // Hook to access the URL parameters
+import { useParams } from 'react-router-dom'; 
+import ActionBar from '../ActionBar';
 
 function ActivityDetails(onLogout) {
   const [activity, setActivity] = useState(null);
@@ -44,9 +45,13 @@ function ActivityDetails(onLogout) {
 
   return (
     <Layout onLogout={onLogout}>
+        <ActionBar
+          showBackButton={true}
+        />
                 {loading ? (
           <div className="flex justify-center items-center h-full">
             <DotLoader />
+          
           </div>):(
              <div className="p-4 bg-white shadow-md rounded-lg h-screen overflow-y-auto">
              <h1 className="text-xl font-bold text-gray-800 mb-3 mt-7">Activity Details</h1>
@@ -70,6 +75,12 @@ function ActivityDetails(onLogout) {
                   <span className="font-semibold text-gray-900">Status:</span> 
                   {activity.isCompleted ? 'Completed' : 'Pending'}
                 </p>
+                <p>
+               <span className="font-semibold text-gray-900">Created Date:</span> {new Date(activity.createdAt).toLocaleDateString()}
+               </p>
+               <p>
+               <span className="font-semibold text-gray-900">Updated Date:</span> {new Date(activity.updatedAt).toLocaleDateString()}
+               </p>
 
              </div>
              

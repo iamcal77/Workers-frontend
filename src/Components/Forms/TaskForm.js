@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
-function TaskForm({ onSubmit, onCancel }) {
+function TaskForm({ onSubmit, onCancel, initialData ={} }) {
   const [formData, setFormData] = useState({
     workerId: '',
     taskName: '',
@@ -10,6 +11,7 @@ function TaskForm({ onSubmit, onCancel }) {
     startDate: '',
     endDate: '',
     isCompleted: false,
+    ...initialData,
   });
 
   const handleInputChange = (e) => {
@@ -22,10 +24,11 @@ function TaskForm({ onSubmit, onCancel }) {
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    // Pass the form data to the parent component to add the task
+    console.log('Form Data before submit:', formData); // Log the form data before submitting
     onSubmit(formData);
   };
-
+  
+  
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
       <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Task</h3>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios'; // Import axios
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -94,11 +94,12 @@ function Register() {
       {/* Right Section: Image */}
       <div className="hidden md:block md:w-1/2 lg:w-1/3 p-4">
         <img
-          src="https://i.pinimg.com/474x/ac/f6/0b/acf60b8deff5c620a8035ded6847ee06.jpg" 
+          src="https://i.pinimg.com/736x/95/d3/f4/95d3f495e91ab4e36bb8afe2271873cc.jpg" 
           alt="Sign up illustration"
           className="max-w-full h-auto object-contain"
         />
       </div>
+
     </div>
   );
 }

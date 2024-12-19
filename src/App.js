@@ -14,13 +14,14 @@ import ApprovalPage from './Components/Pages/ApprovalPage';
 import ErrorBoundary from './Components/ErrorBoundary';
 import FeedbackPage from './Components/Pages/FeedbackPage';
 import Logout from './Components/Auth/Logout';
-import Notification from './Components/Pages/Notification';
+import Notification from './Components/Forms/NotificationForm';
 import Post from './Components/Pages/Post';
 import PostList from './Components/Pages/PostList';
 import CommentSection from './Components/Pages/CommentSection';
 import { ToastContainer } from 'react-toastify';
 import Worker from './Components/Pages/Worker';
 import WorkerDetails from './Components/Pages/WorkerDetails';
+import NotificationsPage from './Components/Pages/NotificationsPage';
 
 
 const queryClient = new QueryClient();
@@ -65,7 +66,7 @@ function App() {
           <Route path="/activity/:id" element={<ActivityDetails />} />
           <Route path="/approvals" element={<ApprovalPage token={localStorage.getItem('token')}/>} />
           <Route path="/feedback" element={<FeedbackPage />} />
-          <Route path="/notification" element={<Notification />} />
+          <Route path="/notification" element={<NotificationsPage />} />
           <Route path="/posts" element={<Post token={localStorage.getItem('token')} />} />
           <Route path="/postlist" element={<PostList token={localStorage.getItem('token')} />}/>
           <Route path="/comments" element={<CommentSection token={localStorage.getItem('token')} />} />

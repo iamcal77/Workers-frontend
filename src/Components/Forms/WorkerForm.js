@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
+import { TextBox, SelectBox, DateBox } from 'devextreme-react';
 
-function WorkerForm({ onSubmit, onCancel ,initialData = {}}) {
+function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
   const [formData, setFormData] = useState({
     name: '',
     location: '',
@@ -18,10 +19,10 @@ function WorkerForm({ onSubmit, onCancel ,initialData = {}}) {
   });
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     });
   };
 
@@ -43,162 +44,174 @@ function WorkerForm({ onSubmit, onCancel ,initialData = {}}) {
   
     onSubmit(formattedData); // Pass the validated and formatted data
   };
-  
-  
-  
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
-      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Worker</h3> {/* Lighter heading color */}
+      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Worker</h3>
       <form onSubmit={handleAddWorker}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
-            <label htmlFor="name" className="block font-medium">Name</label>
-            <input
-              type="text"
+            <TextBox
               id="name"
               name="name"
               value={formData.name}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'name', value: e.value } })}
+              className="w-full"
+              label="Name"
+              labelMode="floating"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="location" className="block font-medium">Location</label>
-            <input
-              type="text"
+            <TextBox
               id="location"
               name="location"
               value={formData.location}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'location', value: e.value } })}
+              className="w-full"
+              label="Location"
+              labelMode="floating"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="contact" className="block font-medium">Contact</label>
-            <input
-              type="text"
+            <TextBox
               id="contact"
               name="contact"
               value={formData.contact}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'contact', value: e.value } })}
+              className="w-full"
+              label="Contact"
+              labelMode="floating"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="nationalId" className="block font-medium">National ID</label>
-            <input
-              type="text"
+            <TextBox
               id="nationalId"
               name="nationalId"
               value={formData.nationalId}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'nationalId', value: e.value } })}
+              className="w-full"
+              label="National ID"
+              labelMode="floating"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="dateOfBirth" className="block font-medium">Date of Birth</label>
-            <input
-              type="date"
+            <DateBox
               id="dateOfBirth"
               name="dateOfBirth"
               value={formData.dateOfBirth}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'dateOfBirth', value: e.value } })}
+              className="w-full"
+              label="Date of Birth"
+              labelMode="floating"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="gender" className="block font-medium">Gender</label>
-            <select
+            <SelectBox
               id="gender"
               name="gender"
               value={formData.gender}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            >
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
+              onValueChanged={(e) => handleInputChange({ target: { name: 'gender', value: e.value } })}
+              className="w-full"
+              label="Gender"
+              labelMode="floating"
+              items={[
+                { value: '', text: 'Select Gender' },
+                { value: 'Male', text: 'Male' },
+                { value: 'Female', text: 'Female' }
+              ]}
+              displayExpr="text"
+              valueExpr="value"
+            />
           </div>
 
+
           <div className="mb-4">
-            <label htmlFor="employmentType" className="block font-medium">Employment Type</label>
-            <select
+            <SelectBox
               id="employmentType"
               name="employmentType"
               value={formData.employmentType}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            >
-              <option value="">Select Employment Type</option>
-              <option value="Permanent">Permanent</option>
-              <option value="Contract">Contract</option>
-            </select>
+              onValueChanged={(e) => handleInputChange({ target: { name: 'employmentType', value: e.value } })}
+              className="w-full"
+              label="Employment Type"
+              labelMode="floating"
+              items={[
+                { value: '', text: 'Select Employment Type' },
+                { value: 'Permanent', text: 'Permanent' },
+                { value: 'Contract', text: 'Contract' }
+              ]}
+              displayExpr="text"
+              valueExpr="value"
+            />
           </div>
 
+
           <div className="mb-4">
-            <label htmlFor="startDate" className="block font-medium">Start Date</label>
-            <input
-              type="date"
+            <DateBox
               id="startDate"
               name="startDate"
               value={formData.startDate}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'startDate', value: e.value } })}
+              className="w-full"
+              label="Start Date"
+              labelMode="floating"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="endDate" className="block font-medium">End Date</label>
-            <input
-              type="date"
+            <DateBox
               id="endDate"
               name="endDate"
               value={formData.endDate}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+              onValueChanged={(e) => handleInputChange({ target: { name: 'endDate', value: e.value } })}
+              className="w-full"
+              label="End Date"
+              labelMode="floating"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="status" className="block font-medium">Status</label>
-            <select
+            <SelectBox
               id="status"
               name="status"
               value={formData.status}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-            >
-              <option value="Approved">Approved</option>
-              <option value="Pending">Pending</option>
-            </select>
+              onValueChanged={(e) => handleInputChange({ target: { name: 'status', value: e.value } })}
+              className="w-full"
+              label="Status"
+              labelMode="floating"
+              items={[
+                { value: 'Approved', text: 'Approved' },
+                { value: 'Pending', text: 'Pending' }
+              ]}
+              displayExpr="text"
+              valueExpr="value"
+            />
           </div>
+
         </div>
 
         <div className="flex justify-end space-x-4 mt-4">
           <button
             type="button"
             onClick={onCancel}
-            className=" text-red-400 px-4 py-2 flex items-center space-x-2"
+            className="text-red-400 px-4 py-2 flex items-center space-x-2"
           >
-            <FaTimes className="text-lg" /> {/* Times icon for Cancel */}
+            <FaTimes className="text-lg" />
             <span>Cancel</span>
           </button>
           <button
             type="submit"
-            className=" text-blue-500 px-4 py-2 flex items-center space-x-2"
+            className="text-blue-500 px-4 py-2 flex items-center space-x-2"
           >
-            <FaCheck className="text-lg" /> {/* Check icon for Submit */}
+            <FaCheck className="text-lg" />
             <span>Submit</span>
           </button>
         </div>

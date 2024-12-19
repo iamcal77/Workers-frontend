@@ -12,6 +12,7 @@ function Register() {
     role: '',
     contact: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +57,9 @@ function Register() {
       toast.error('Registration failed');
     }
   };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
@@ -63,10 +67,10 @@ function Register() {
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
         <form onSubmit={handleRegister} className="space-y-4">
           {/* Input Fields */}
-          {['username', 'name', 'email', 'password', 'role', 'contact'].map((field) => (
+          {['username', 'name', 'email', 'role', 'contact'].map((field) => (
             <div className="relative" key={field}>
               <input
-                type={field === 'email' ? 'email' : field === 'password' ? 'password' : 'text'}
+                type={field === 'email' ? 'email' : 'text'}
                 name={field}
                 placeholder={`Your ${field.charAt(0).toUpperCase() + field.slice(1)}`}
                 onChange={handleChange}
@@ -76,6 +80,28 @@ function Register() {
               />
             </div>
           ))}
+
+          {/* Password Field with Show/Hide Toggle */}
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Your Password"
+              onChange={handleChange}
+              value={formData.password}
+              className="w-full px-10 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-sm"
+              required
+            />
+            <div className="absolute inset-y-0 right-3 flex items-center">
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+            </div>
+          </div>
 
           {/* Submit Button */}
           <button
@@ -94,12 +120,11 @@ function Register() {
       {/* Right Section: Image */}
       <div className="hidden md:block md:w-1/2 lg:w-1/3 p-4">
         <img
-          src="https://i.pinimg.com/736x/95/d3/f4/95d3f495e91ab4e36bb8afe2271873cc.jpg" 
+          src="https://i.pinimg.com/736x/95/d3/f4/95d3f495e91ab4e36bb8afe2271873cc.jpg"
           alt="Sign up illustration"
           className="max-w-full h-auto object-contain"
         />
       </div>
-
     </div>
   );
 }

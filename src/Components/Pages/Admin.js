@@ -7,6 +7,9 @@ import DotLoader from '../Loader/Loader';
 import useAdminData from '../Hooks/useAdminData';
 import UserForm from '../Forms/UserForm';
 import { useNavigate } from 'react-router-dom';
+import { SlActionRedo } from 'react-icons/sl';
+import { RiAdminLine } from 'react-icons/ri';
+import { FaBell } from 'react-icons/fa';
 
 const AdminPage = ({ onLogout }) => {
   const {
@@ -21,6 +24,8 @@ const AdminPage = ({ onLogout }) => {
   const [showForm, setShowForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); 
   const navigate = useNavigate();
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  
 
   const handleAddClick = () => {
     setSelectedUser(null);
@@ -64,6 +69,9 @@ const AdminPage = ({ onLogout }) => {
   const handleDetailsClick = (id) => {
     navigate(`/admin-details/${id}`);
   };
+  const handleNotificationClick = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
 
   return (
     <Layout onLogout={onLogout}>
@@ -72,7 +80,30 @@ const AdminPage = ({ onLogout }) => {
         onEdit={handleEditClick}
         onDelete={handleDeleteClick}
       />
+
       <h1 className="mt-14">Admin Dashboard</h1>
+      <div className="relative z-10">
+        <button
+          onClick={handleNotificationClick}
+          className="fixed top-12 right-4 mt-12 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 transition duration-200 flex items-center space-x-2"
+        >
+          <SlActionRedo className="text-lg text-white" />
+          <span>Actions</span>
+        </button>
+        {isDropdownVisible && (
+          <div className="absolute right-0 bg-white shadow-lg rounded-lg w-40 p-2 mt-1">
+            <ul>
+              <li
+                className="p-1 hover:bg-gray-200 cursor-pointer flex items-center space-x-1"
+                onClick={() => navigate('/notification')}
+              >
+                <FaBell className="text-lg text-green-500" />
+                <span> Notifications</span>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {loading ? (

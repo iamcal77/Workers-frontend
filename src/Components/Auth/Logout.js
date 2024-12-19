@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 import Layout from '../Layout';
 
@@ -12,7 +12,7 @@ function Logout() {
 
     // Show a success toast
     toast.success('Successfully logged out!', {
-      position: 'top-centre',
+      position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,

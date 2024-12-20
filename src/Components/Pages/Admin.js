@@ -8,7 +8,6 @@ import useAdminData from '../Hooks/useAdminData';
 import UserForm from '../Forms/UserForm';
 import { useNavigate } from 'react-router-dom';
 import { SlActionRedo } from 'react-icons/sl';
-import { RiAdminLine } from 'react-icons/ri';
 import { FaBell } from 'react-icons/fa';
 
 const AdminPage = ({ onLogout }) => {

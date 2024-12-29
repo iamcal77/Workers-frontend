@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import TextBox from 'devextreme-react/text-box';
 import TextArea from 'devextreme-react/text-area';
@@ -7,9 +7,10 @@ import CheckBox from 'devextreme-react/check-box';
 import DateBox from 'devextreme-react/date-box';
 import 'devextreme/dist/css/dx.light.css'; // Import DevExtreme styles
 
-function TaskForm({ onSubmit, onCancel, initialData = {} }) {
+function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) {
+  // Initialize state with workerId from props or empty string
   const [formData, setFormData] = useState({
-    workerId: '',
+    workerId: workerIdFromParent || '', // Automatically fill the workerId if available
     taskName: '',
     description: '',
     startDate: '',
@@ -17,6 +18,16 @@ function TaskForm({ onSubmit, onCancel, initialData = {} }) {
     isCompleted: false,
     ...initialData,
   });
+
+  // If workerIdFromParent changes, update the workerId in formData
+  useEffect(() => {
+    if (workerIdFromParent) {
+      setFormData((prevData) => ({
+        ...prevData,
+        workerId: workerIdFromParent,
+      }));
+    }
+  }, [workerIdFromParent]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -46,7 +57,8 @@ function TaskForm({ onSubmit, onCancel, initialData = {} }) {
               className="w-full"
               label="Worker ID"
               labelMode="floating"
-              requireda
+              required
+              disabled
             />
           </div>
 

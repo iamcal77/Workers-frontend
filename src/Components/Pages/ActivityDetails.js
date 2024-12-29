@@ -42,7 +42,13 @@ function ActivityDetails({ onLogout }) {
 
   return (
     <Layout onLogout={onLogout}>
-      <ActionBar showBackButton={true} />
+      <ActionBar
+       showBackButton={true}
+       showDeleteButton={false}
+       showEditButton={false}
+       showAddButton={false}
+       showExportToExcelButton={ true}
+       />
 
       {loading ? (
         <div className="flex justify-center items-center h-full">

@@ -59,9 +59,9 @@ function App() {
           <Route path="/dashboard" element={<AdminDashboard token={localStorage.getItem('token')} />} />
           <Route path="/workers" element={<Worker token={localStorage.getItem('token')}/>} />
           <Route path="/worker-details/:id" element={<WorkerDetails token={localStorage.getItem('token')}/>} />
-          <Route path="/tasks" element={<Tasks  token={localStorage.getItem('token')}/>} />
+          <Route path="/workers/:id/tasks" element={<Tasks  token={localStorage.getItem('token')}/>} />
           <Route path="/task/:id" element={<TaskDetails />} />
-          <Route path="/activities" element={<Activities />} />
+          <Route path="/workers/:id/activities" element={<Activities />} />
           <Route path="/activity/:id" element={<ActivityDetails />} />
           <Route path="/approvals" element={<ApprovalPage token={localStorage.getItem('token')}/>} />
           <Route path="/feedback" element={<FeedbackPage />} />

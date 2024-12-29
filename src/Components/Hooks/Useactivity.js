@@ -3,12 +3,18 @@ import axios from 'axios';
 import { toast } from 'react-toastify';  // Import the toast library
 
 // Function to fetch activities
-const fetchActivity = async () => {
-  const token = localStorage.getItem('token');
+const fetchActivityByWorkerId = async (workerId) => {
+  console.log('fetchactivityByWorkerId workerId:', workerId); // Debugging line
+  const token = localStorage.getItem('token'); // Retrieve the token
   if (!token) {
     throw new Error('Authentication token is missing');
   }
-  const response = await axios.get('https://localhost:7050/api/WorkerActivities', {
+
+  if (!workerId) {
+    throw new Error('Worker ID is required');
+  }
+
+  const response = await axios.get(`https://localhost:7050/api/WorkerActivities/worker/${workerId}`, {
     headers: {
       Authorization: `Bearer ${token}`, // Include the token in the header
     },
@@ -17,16 +23,22 @@ const fetchActivity = async () => {
 };
 
 // Function to add a new activity
-const createActivity = async (newActivity) => {
+const createActivity = async (newActivity, workerId) => {
   const token = localStorage.getItem('token'); // Retrieve the token
   if (!token) {
     throw new Error('Authentication token is missing');
   }
+  const activityWithWorkerId ={
+    ...newActivity,
+    workerId: workerId,
 
-  const response = await axios.post('https://localhost:7050/api/WorkerActivities', newActivity, {
+  }
+
+  const response = await axios.post('https://localhost:7050/api/WorkerActivities', activityWithWorkerId, {
     headers: {
       Authorization: `Bearer ${token}`, // Include the token in the header
     },
+   
   });
   return response.data;
 };
@@ -62,8 +74,26 @@ const deleteActivity = async (activityId) => {
 };
 
 // Custom hook
-const useActivity = () => {
-  // Fetch activities using useQuery
+const useActivity = (workerId) => {
+   const fetchActivity = async () => {
+      if (!workerId) {
+        console.error('Worker ID is missing');
+        throw new Error('Worker ID is required');
+      }
+  
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Authentication token is missing');
+        throw new Error('Authentication token is missing');
+      }
+  
+      const response = await axios.get(`https://localhost:7050/api/WorkerActivities/worker/${workerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    };
   const { data: activity, isLoading, error, refetch } = useQuery({
     queryKey: ['activity'], // Query key
     queryFn: fetchActivity, // Fetch function
@@ -73,7 +103,7 @@ const useActivity = () => {
 
   // Create a new activity using useMutation
   const { mutateAsync: addActivity } = useMutation({
-    mutationFn: createActivity, // Pass the mutation function as `mutationFn`
+    mutationFn:(newActivity) => createActivity (newActivity,workerId), // Pass the mutation function as `mutationFn`
     onSuccess: () => {
       console.log('Activity created successfully');
       refetch(); 

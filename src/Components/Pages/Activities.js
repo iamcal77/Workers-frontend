@@ -7,7 +7,7 @@ import { FiActivity } from "react-icons/fi";
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
 import ActivityForm from '../Forms/ActivitiesForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ProgressBar from 'devextreme-react/cjs/progress-bar';
 import useActivity from '../Hooks/Useactivity';
 
@@ -15,9 +15,9 @@ function Activities({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
   const [editingActivity, setEditingActivity] = useState(null); // Track task being edited
   
-  const navigate = useNavigate(); // Initialize the navigate function
-
-const { activity, isLoading, error, addActivity,editActivity, removeActivity} = useActivity();
+  const navigate = useNavigate();
+  const {id:workerId} = useParams();
+  const { activity, isLoading, error, addActivity,editActivity, removeActivity} = useActivity(workerId);
 
   
   const toggleForm = () => {
@@ -36,7 +36,7 @@ const { activity, isLoading, error, addActivity,editActivity, removeActivity} = 
         .then(() => toggleForm());
     } else {
       // Add new task
-      addActivity(newActivity)
+      addActivity(newActivity,workerId)
         .then(() => toggleForm());
     }
   };
@@ -67,6 +67,7 @@ const { activity, isLoading, error, addActivity,editActivity, removeActivity} = 
           }}
           onEdit={handleEditClick}
           onDelete={handleDeleteClick}
+          showBackButton={true}
         />
           <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">
           <FiActivity className="mr-2 text-red-500" /> {/* Add icon here */}
@@ -74,7 +75,14 @@ const { activity, isLoading, error, addActivity,editActivity, removeActivity} = 
          </h1>
 
 
-        {showForm && <ActivityForm onSubmit={handleAddActivity} onCancel={toggleForm} initialData={editingActivity}/>}
+        {showForm && 
+        <ActivityForm 
+          onSubmit={handleAddActivity} 
+          onCancel={toggleForm}
+          initialData={editingActivity}
+          workerIdFromParent={workerId} // Pass the workerId here
+
+          />}
 
 
         {isLoading ? (

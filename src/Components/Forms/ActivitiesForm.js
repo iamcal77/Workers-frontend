@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import TextBox from 'devextreme-react/text-box';
 import TextArea from 'devextreme-react/text-area';
@@ -6,9 +6,9 @@ import DateBox from 'devextreme-react/date-box';
 import CheckBox from 'devextreme-react/check-box';
 import 'devextreme/dist/css/dx.light.css'; // Import DevExtreme styles
 
-function ActivityForm({ onSubmit, onCancel, initialData = {} }) {
+function ActivityForm({ onSubmit, onCancel, initialData = {},workerIdFromParent }) {
   const [formData, setFormData] = useState({
-    workerId: '',
+    workerId: workerIdFromParent || '',
     activityName: '',
     description: '',
     startDate: '',
@@ -16,6 +16,14 @@ function ActivityForm({ onSubmit, onCancel, initialData = {} }) {
     isCompleted: false,
     ...initialData
   });
+   useEffect(() => {
+      if (workerIdFromParent) {
+        setFormData((prevData) => ({
+          ...prevData,
+          workerId: workerIdFromParent,
+        }));
+      }
+    }, [workerIdFromParent]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -45,6 +53,7 @@ function ActivityForm({ onSubmit, onCancel, initialData = {} }) {
               label="Worker ID"
               labelMode="floating"
               required
+              disabled
             />
           </div>
 

@@ -15,6 +15,8 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
     startDate: '',
     endDate: '',
     status: 'Pending',
+    payment:'',
+    paymentStatus:'Pending',
     ...initialData, // Default value for status
   });
 
@@ -185,10 +187,38 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               value={formData.status}
               onValueChanged={(e) => handleInputChange({ target: { name: 'status', value: e.value } })}
               className="w-full"
-              label="Status"
+              label="Approval Status"
               labelMode="floating"
               items={[
                 { value: 'Approved', text: 'Approved' },
+                { value: 'Pending', text: 'Pending' }
+              ]}
+              displayExpr="text"
+              valueExpr="value"
+            />
+          </div>
+          <div className="mb-4">
+            <TextBox
+              id="payment"
+              name="payment"
+              value={formData.payment}
+              onValueChanged={(e) => handleInputChange({ target: { name: 'payment', value: e.value } })}
+              className="w-full"
+              label="Payment Amount"
+              labelMode="floating"
+            />
+          </div>
+          <div className="mb-4">
+            <SelectBox
+              id="paymentStatus"
+              name="paymentStatus"
+              value={formData.paymentStatus}
+              onValueChanged={(e) => handleInputChange({ target: { name: 'paymentStatus', value: e.value } })}
+              className="w-full"
+              label="Payment Status"
+              labelMode="floating"
+              items={[
+                { value: 'Paid', text: 'Paid' },
                 { value: 'Pending', text: 'Pending' }
               ]}
               displayExpr="text"

@@ -7,17 +7,18 @@ import { useNavigate } from 'react-router-dom';
 import { RiAdminLine } from 'react-icons/ri';
 import { SlActionRedo } from 'react-icons/sl';
 import 'devextreme/dist/css/dx.light.css';
-import { PieChart } from 'devextreme-react';
-import { Series } from 'devextreme-react/cjs/chart';
+import { PieChart } from 'devextreme-react/pie-chart';
+import { Series, Legend } from 'devextreme-react/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
-import { Legend, TooltipBorder } from 'devextreme-react/pie-chart';
+import PaymentStatusDashboard from '../Dashboards/PaymentStatusDashboard';
+import EmploymentStatsDashboard from '../Dashboards/EmploymentStatsDashboard';
 
 function AdminDashboard({ token, onLogout }) {
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [rolesData, setRolesData] = useState([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const navigate = useNavigate();
   const tasksGoal = 100; // Example target for tasks
@@ -43,6 +44,7 @@ function AdminDashboard({ token, onLogout }) {
           value: count,
         }));
         setRolesData(chartData);
+        console.log('Roles Data:', chartData); // Debugging
       } catch (error) {
         console.error('Error fetching users:', error.response?.data || error.message);
       }
@@ -59,7 +61,6 @@ function AdminDashboard({ token, onLogout }) {
       }
     };
 
-    // Fetch completed tasks specifically
     const fetchCompletedTasks = async () => {
       try {
         const response = await axios.get('https://localhost:7050/api/WorkerTasks/completed', {
@@ -112,7 +113,7 @@ function AdminDashboard({ token, onLogout }) {
 
       {/* Dashboard Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7">
-      <Card
+        <Card
           icon={<FaTasks className="text-3xl text-green-600" />}
           title="Tasks Completed"
           value={tasksCompleted}
@@ -124,7 +125,6 @@ function AdminDashboard({ token, onLogout }) {
           value={activitiesCompleted}
           color="bg-blue-100"
         />
-
         <Card
           icon={<FaUsers className="text-3xl text-purple-600" />}
           title="Total Users"
@@ -141,13 +141,28 @@ function AdminDashboard({ token, onLogout }) {
         {/* Pie Chart for User Roles Distribution */}
         <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">User Roles Distribution</h3>
-          <PieChart id="pieChart" dataSource={rolesData} width={300} height={300}>
-            <Series argumentField="category" valueField="value" />
-            <Legend verticalAlignment="bottom" horizontalAlignment="center" />
-            <TooltipBorder enabled={true} />
-          </PieChart>
+          {rolesData.length > 0 ? (
+            <PieChart id="pieChart" dataSource={rolesData} width={300} height={300}>
+              <Series argumentField="category" valueField="value" />
+              <Legend verticalAlignment="bottom" horizontalAlignment="center" />
+            </PieChart>
+          ) : (
+            <p>No data available for user roles.</p>
+          )}
         </div>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 ">
+      <div className="bg-white p-4 rounded-lg shadow-lg">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">Payment Status </h3>
+          <PaymentStatusDashboard />
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-lg">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">Employemts Status </h3>
+          <EmploymentStatsDashboard />
+        </div>
+      </div>
+      
+        
     </Layout>
   );
 }

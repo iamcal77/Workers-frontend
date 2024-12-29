@@ -9,6 +9,7 @@ import Layout from '../Layout';
 import Sidebar from '../Sidebar';
 import { FcInspection } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
+import ActionBar from '../ActionBar';
 
 const ApprovalPage = () => {
   const [farmers, setFarmers] = useState([]);
@@ -74,7 +75,14 @@ const ApprovalPage = () => {
 
   return (
     <Layout>
-      <div className="approval-page mt-10">
+      <ActionBar
+       showBackButton={true}
+       showDeleteButton={false}
+       showEditButton={false}
+       showAddButton={false}
+       showExportToExcelButton={ false}
+       />
+      <div className="approval-page mt-12">
         <h1 className="flex items-center">
           <FcInspection className="text-lg text-green-700 mr-2 " />
           Approvals

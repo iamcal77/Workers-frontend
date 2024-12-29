@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, Pager } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { GiFarmer } from "react-icons/gi";
 import Layout from '../Layout';
@@ -52,7 +52,7 @@ function Worker({ onLogout }) {
 
   return (
     <Layout onLogout={onLogout}>
-      <div className="flex flex-col p-4 h-screen overflow-x-hidden bg-white-100">
+      <div className="flex flex-col p-4  overflow-x-hidden bg-white-100">
         <ActionBar
           onAdd={() => {
             setEditingWorker(null);
@@ -60,6 +60,9 @@ function Worker({ onLogout }) {
           }}
           onEdit={handleEditClick} // Use the handleEditClick for toggling form on Edit
           onDelete={() => console.log('Delete worker')}
+          showBackButton={true} 
+          exportPage
+
         />
         <h1 className="text-2xl text-left mb-4 mt-11 flex items-center">
           <GiFarmer className="mr-2 text-blue-500" />
@@ -120,10 +123,13 @@ function Worker({ onLogout }) {
                 }}
                 onRowClick={(e) => setEditingWorker(e.data)} // Set worker when row is clicked
                 className="w-full"
-                style={{ height: 'calc(100vh - 250px)' }} // Adjust the height for the grid
+                style={{ height: 'calc(100vh - 150px)' }} // Adjust the height for the grid
                 columnHidingEnabled={true}
-              >
+                >
+                
                 <Paging defaultPageSize={10} />
+                <Pager visible={true} />
+
                 <Column dataField="name" caption="Name" width={150} />
                 <Column dataField="location" caption="Location" width={150} />
                 <Column dataField="contact" caption="Contact" width={180} />

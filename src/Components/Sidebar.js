@@ -33,19 +33,6 @@ function Sidebar() {
           </Link>
         </li>
 
-        <li className={`mb-4 flex items-center ${isActive('/tasks')}`}>
-          <Link to="/tasks" className="hover:text-gray-400 flex items-center">
-            <FaTasks className="mr-2 text-green-500 text-2xl" />
-            Tasks
-          </Link>
-        </li>
-
-        <li className={`mb-4 flex items-center ${isActive('/activities')}`}>
-          <Link to="/activities" className="hover:text-gray-400 flex items-center">
-            <FiActivity className="mr-2 text-red-500 text-2xl" />
-            Activities
-          </Link>
-        </li>
 
         <li className={`mb-4 flex items-center ${isActive('/crops')}`}>
           <Link to="/crops" className="hover:text-gray-400 flex items-center">

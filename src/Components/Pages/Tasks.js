@@ -7,16 +7,17 @@ import { FaTasks } from "react-icons/fa";
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
 import TaskForm from '../Forms/TaskForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useTasks from '../Hooks/Usetask';
 import { ProgressBar } from 'devextreme-react';
 
 function Tasks({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
-  const [editingTask, setEditingTask] = useState(null); // Track task being edited
+  const [editingTask, setEditingTask] = useState(null);
   const navigate = useNavigate();
-  
-  const { tasks, isLoading, error, addTask, editTask, removeTask } = useTasks(); // Ensure removeTask is available
+  const { id: workerId } = useParams();
+
+  const { tasks, isLoading, error, addTask, editTask, removeTask } = useTasks(workerId); // Pass workerId here
 
   const toggleForm = () => {
     setShowForm((prev) => !prev);
@@ -29,14 +30,15 @@ function Tasks({ onLogout }) {
   const handleAddTask = (newTask) => {
     if (editingTask) {
       // Update task if editing
-      editTask({ ...newTask, id: editingTask.id }) // Merge newTask with the id
+      editTask({ ...newTask, id: editingTask.id })
         .then(() => toggleForm());
     } else {
-      // Add new task
-      addTask(newTask)
+      // Add new task, passing the workerId
+      addTask(newTask, workerId)  // Include workerId here
         .then(() => toggleForm());
     }
   };
+  
 
   const handleEditClick = () => {
     if (editingTask) {
@@ -46,7 +48,7 @@ function Tasks({ onLogout }) {
 
   const handleDeleteClick = () => {
     if (editingTask) {
-      removeTask(editingTask.id) // Call removeTask with the editingTask's ID
+      removeTask(editingTask.id)
         .then(() => {
           setEditingTask(null); // Clear editing task after deletion
         })
@@ -64,8 +66,9 @@ function Tasks({ onLogout }) {
             setEditingTask(null);
             toggleForm();
           }}
-          onEdit={handleEditClick} // Use the handleEditClick for toggling form on Edit
-          onDelete={handleDeleteClick} // Use the handleDeleteClick for deleting task
+          onEdit={handleEditClick} 
+          onDelete={handleDeleteClick} 
+          showBackButton={true}
         />
         <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">
           <FaTasks className="mr-2 text-green-500" />
@@ -76,7 +79,9 @@ function Tasks({ onLogout }) {
           <TaskForm
             onSubmit={handleAddTask}
             onCancel={toggleForm}
-            initialData={editingTask} // Pass initial data for editing
+            initialData={editingTask} 
+            workerIdFromParent={workerId} // Pass the workerId here
+
           />
         )}
 
@@ -100,9 +105,9 @@ function Tasks({ onLogout }) {
                     handleDetailsClick(e.data.id);
                   }
                 }}
-                onRowClick={(e) => setEditingTask(e.data)} // Set task when row is clicked
+                onRowClick={(e) => setEditingTask(e.data)} 
                 className="w-full"
-                style={{ height: 'calc(100vh - 250px)' }} // Adjust the height for the grid
+                style={{ height: 'calc(100vh - 250px)' }} 
                 columnHidingEnabled={true}
               >
                 <Paging defaultPageSize={10} />
@@ -155,3 +160,4 @@ function Tasks({ onLogout }) {
 }
 
 export default Tasks;
+

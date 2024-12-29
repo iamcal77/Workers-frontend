@@ -15,16 +15,18 @@ function SearchBar() {
     setLoading(true);
     setResults(null); // Clear previous results
   
+    console.log(`Making request to: http://localhost:7050/api/search/search?q=${query}`); // Log request
+  
     try {
       const response = await fetch(`http://localhost:7050/api/search/search?q=${query}`);
-      
+      console.log('Response:', response); // Log full response
       if (!response.ok) {
         throw new Error(`Search request failed: ${response.statusText}`);
       }
   
       const data = await response.json();
-      
-      // Update to match the correct keys in the response (lowercase)
+      console.log('Data received:', data); // Log the data received
+  
       setResults({
         users: data.users || [],
         posts: data.posts || [],
@@ -37,6 +39,7 @@ function SearchBar() {
       setLoading(false);
     }
   };
+  
   
 
   return (
@@ -63,10 +66,10 @@ function SearchBar() {
           {/* Users Section */}
           <div>
             <h4 className="font-bold">Users</h4>
-            {results.Users && results.Users.length > 0 ? (
+            {results.users && results.users.length > 0 ? (
               <ul>
-                {results.Users.map((user) => (
-                  <li key={user.id}>{user.Name} ({user.Email})</li>
+                {results.users.map((user) => (
+                  <li key={user.id}>{user.name} ({user.email})</li>
                 ))}
               </ul>
             ) : (
@@ -77,10 +80,10 @@ function SearchBar() {
           {/* Posts Section */}
           <div>
             <h4 className="font-bold">Posts</h4>
-            {results.Posts && results.Posts.length > 0 ? (
+            {results.posts && results.posts.length > 0 ? (
               <ul>
-                {results.Posts.map((post) => (
-                  <li key={post.id}>{post.Title}</li>
+                {results.posts.map((post) => (
+                  <li key={post.id}>{post.title}</li>
                 ))}
               </ul>
             ) : (
@@ -91,10 +94,10 @@ function SearchBar() {
           {/* Comments Section */}
           <div>
             <h4 className="font-bold">Comments</h4>
-            {results.Comments && results.Comments.length > 0 ? (
+            {results.comments && results.comments.length > 0 ? (
               <ul>
-                {results.Comments.map((comment) => (
-                  <li key={comment.id}>{comment.Content}</li>
+                {results.comments.map((comment) => (
+                  <li key={comment.id}>{comment.content}</li>
                 ))}
               </ul>
             ) : (

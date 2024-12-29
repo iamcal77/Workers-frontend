@@ -2,14 +2,19 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import the toast library
 
-// Function to fetch tasks
-const fetchTasks = async () => {
+// Function to fetch tasks by worker ID
+const fetchTasksByWorkerId = async (workerId) => {
+  console.log('fetchTasksByWorkerId workerId:', workerId); // Debugging line
   const token = localStorage.getItem('token'); // Retrieve the token
   if (!token) {
     throw new Error('Authentication token is missing');
   }
 
-  const response = await axios.get('https://localhost:7050/api/workertasks', {
+  if (!workerId) {
+    throw new Error('Worker ID is required');
+  }
+
+  const response = await axios.get(`https://localhost:7050/api/workertasks/worker/${workerId}`, {
     headers: {
       Authorization: `Bearer ${token}`, // Include the token in the header
     },
@@ -17,19 +22,25 @@ const fetchTasks = async () => {
   return response.data;
 };
 
-// Function to add a new task
-const createTask = async (newTask) => {
+// Function to add a new task with workerId
+const createTask = async (newTask, workerId) => {
   const token = localStorage.getItem('token'); // Retrieve the token
   if (!token) {
     throw new Error('Authentication token is missing');
   }
 
   // Client-side validation for required fields
-  if (!newTask.taskName || !newTask.description) {
-    throw new Error('TaskName and Description are required');
+  if (!newTask.taskName || !newTask.description || !workerId) {
+    throw new Error('TaskName, Description, and WorkerId are required');
   }
 
-  const response = await axios.post('https://localhost:7050/api/workertasks', newTask, {
+  // Include the workerId in the new task object
+  const taskWithWorkerId = {
+    ...newTask,
+    workerId: workerId, // Adding the workerId to the task data
+  };
+
+  const response = await axios.post('https://localhost:7050/api/workertasks', taskWithWorkerId, {
     headers: {
       Authorization: `Bearer ${token}`, // Include the token in the header
     },
@@ -44,16 +55,10 @@ const updateTask = async (updatedTask) => {
     throw new Error('Authentication token is missing');
   }
 
-  // Log the updated task to check the structure just before validation
-  console.log('Before validation, updatedTask:', updatedTask);
-
-  // Ensure updatedTask is defined and has the required properties
   if (!updatedTask || !updatedTask.taskName || !updatedTask.description) {
-    console.log('Validation failed:', updatedTask);
     throw new Error('TaskName and Description are required');
   }
 
-  // Proceed with the update
   const response = await axios.put(
     `https://localhost:7050/api/workertasks/${updatedTask.id}`,
     updatedTask,
@@ -82,54 +87,70 @@ const deleteTask = async (taskId) => {
 };
 
 // Custom hook
-const useTasks = () => {
-  // Fetch tasks using useQuery
+const useTasks = (workerId) => {
+  // Debugging the workerId value
+  console.log('useTasks workerId:', workerId);
+
+  const fetchTasks = async () => {
+    if (!workerId) {
+      console.error('Worker ID is missing');
+      throw new Error('Worker ID is required');
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token is missing');
+      throw new Error('Authentication token is missing');
+    }
+
+    const response = await axios.get(`https://localhost:7050/api/workertasks/worker/${workerId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  };
+
   const { data: tasks, isLoading, error, refetch } = useQuery({
-    queryKey: ['tasks'], // Query key
-    queryFn: fetchTasks, // Fetch function
-    retry: 2, // Retry option
-    refetchOnWindowFocus: false, // Refetch on window focus option
+    queryKey: ['tasks', workerId],
+    queryFn: fetchTasks,
+    retry: 2,
+    refetchOnWindowFocus: false,
   });
 
-  // Create a new task using useMutation
   const { mutateAsync: addTask } = useMutation({
-    mutationFn: createTask, // Pass the mutation function as `mutationFn`
+    mutationFn: (newTask) => createTask(newTask, workerId), // Pass workerId here
     onSuccess: () => {
-      console.log('Task created successfully');
-      refetch(); // Refetch tasks after adding a new task
-      toast.success('Task created successfully!'); // Show success toast
+      refetch();
+      toast.success('Task created successfully!');
     },
     onError: (error) => {
       console.error('Error creating task:', error);
-      toast.error('Error creating task'); // Show error toast
+      toast.error('Error creating task');
     },
   });
 
-  // Update an existing task using useMutation
   const { mutateAsync: editTask } = useMutation({
-    mutationFn: updateTask, // Pass the update function as `mutationFn`
+    mutationFn: updateTask,
     onSuccess: () => {
-      console.log('Task updated successfully');
-      refetch(); // Refetch tasks after updating
-      toast.success('Task updated successfully!'); // Show success toast
+      refetch();
+      toast.success('Task updated successfully!');
     },
     onError: (error) => {
       console.error('Error updating task:', error);
-      toast.error('Error updating task'); // Show error toast
+      toast.error('Error updating task');
     },
   });
 
-  // Delete a task using useMutation
   const { mutateAsync: removeTask } = useMutation({
-    mutationFn: deleteTask, // Pass the delete function as `mutationFn`
+    mutationFn: deleteTask,
     onSuccess: () => {
-      console.log('Task deleted successfully');
-      refetch(); // Refetch tasks after deleting
-      toast.success('Task deleted successfully!'); // Show success toast
+      refetch();
+      toast.success('Task deleted successfully!');
     },
     onError: (error) => {
       console.error('Error deleting task:', error);
-      toast.error('Error deleting task'); // Show error toast
+      toast.error('Error deleting task');
     },
   });
 
@@ -137,9 +158,9 @@ const useTasks = () => {
     tasks,
     isLoading,
     error,
-    addTask, // Return the addTask function
-    editTask, // Return the editTask function
-    removeTask, // Return the removeTask function
+    addTask,
+    editTask,
+    removeTask,
   };
 };
 

@@ -109,6 +109,8 @@ function WorkerDetails({ onLogout }) {
           ) : (
             <>
               <h1 className="text-2xl font-bold text-gray-800 mb-6 mt-7">Worker Details</h1>
+              <div id="page-content">
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-sm">
                 <div className="flex items-center">
                   <span className="font-semibold text-gray-700 w-40">Name:</span>
@@ -166,6 +168,7 @@ function WorkerDetails({ onLogout }) {
                   <span className="font-semibold text-gray-700 w-40">Updated At:</span>
                   <span className="text-gray-900">{new Date(worker.updatedAt).toLocaleDateString()}</span>
                 </div>
+              </div>
               </div>
             </>
           )}

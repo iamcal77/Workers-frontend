@@ -1,60 +1,36 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { toast } from 'react-toastify'; // Import the toast library
+import { toast } from 'react-toastify';
 
-// Function to fetch tasks by worker ID
 const fetchTasksByWorkerId = async (workerId) => {
-  console.log('fetchTasksByWorkerId workerId:', workerId); // Debugging line
-  const token = localStorage.getItem('token'); // Retrieve the token
-  if (!token) {
-    throw new Error('Authentication token is missing');
-  }
-
-  if (!workerId) {
-    throw new Error('Worker ID is required');
-  }
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication token is missing');
+  if (!workerId) throw new Error('Worker ID is required');
 
   const response = await axios.get(`https://localhost:7050/api/workertasks/worker/${workerId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`, // Include the token in the header
-    },
+    headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
 };
 
-// Function to add a new task with workerId
 const createTask = async (newTask, workerId) => {
-  const token = localStorage.getItem('token'); // Retrieve the token
-  if (!token) {
-    throw new Error('Authentication token is missing');
-  }
-
-  // Client-side validation for required fields
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication token is missing');
   if (!newTask.taskName || !newTask.description || !workerId) {
     throw new Error('TaskName, Description, and WorkerId are required');
   }
 
-  // Include the workerId in the new task object
-  const taskWithWorkerId = {
-    ...newTask,
-    workerId: workerId, // Adding the workerId to the task data
-  };
-
-  const response = await axios.post('https://localhost:7050/api/workertasks', taskWithWorkerId, {
-    headers: {
-      Authorization: `Bearer ${token}`, // Include the token in the header
-    },
-  });
+  const response = await axios.post(
+    'https://localhost:7050/api/workertasks',
+    { ...newTask, workerId },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
   return response.data;
 };
 
-// Function to update an existing task
 const updateTask = async (updatedTask) => {
   const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('Authentication token is missing');
-  }
-
+  if (!token) throw new Error('Authentication token is missing');
   if (!updatedTask || !updatedTask.taskName || !updatedTask.description) {
     throw new Error('TaskName and Description are required');
   }
@@ -62,64 +38,47 @@ const updateTask = async (updatedTask) => {
   const response = await axios.put(
     `https://localhost:7050/api/workertasks/${updatedTask.id}`,
     updatedTask,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return response.data;
+};
+
+const deleteTask = async (taskId) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication token is missing');
+
+  const response = await axios.delete(`https://localhost:7050/api/workertasks/${taskId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+const filterTasksByDate = async (workerId, startDate, endDate) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication token is missing');
+  if (!workerId) throw new Error('Worker ID is required');
+  if (!startDate || !endDate) throw new Error('Start Date and End Date are required');
+
+  const response = await axios.get(
+    `https://localhost:7050/api/workertasks/filter`,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      params: { workerId, startDate, endDate },
+      headers: { Authorization: `Bearer ${token}` },
     }
   );
   return response.data;
 };
 
-// Function to delete a task
-const deleteTask = async (taskId) => {
-  const token = localStorage.getItem('token'); // Retrieve the token
-  if (!token) {
-    throw new Error('Authentication token is missing');
-  }
-
-  const response = await axios.delete(`https://localhost:7050/api/workertasks/${taskId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
-};
-
-// Custom hook
 const useTasks = (workerId) => {
-  // Debugging the workerId value
-  console.log('useTasks workerId:', workerId);
-
-  const fetchTasks = async () => {
-    if (!workerId) {
-      console.error('Worker ID is missing');
-      throw new Error('Worker ID is required');
-    }
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Authentication token is missing');
-      throw new Error('Authentication token is missing');
-    }
-
-    const response = await axios.get(`https://localhost:7050/api/workertasks/worker/${workerId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  };
-
   const { data: tasks, isLoading, error, refetch } = useQuery({
     queryKey: ['tasks', workerId],
-    queryFn: fetchTasks,
+    queryFn: () => fetchTasksByWorkerId(workerId),
     retry: 2,
     refetchOnWindowFocus: false,
   });
 
   const { mutateAsync: addTask } = useMutation({
-    mutationFn: (newTask) => createTask(newTask, workerId), // Pass workerId here
+    mutationFn: (newTask) => createTask(newTask, workerId),
     onSuccess: () => {
       refetch();
       toast.success('Task created successfully!');
@@ -154,6 +113,18 @@ const useTasks = (workerId) => {
     },
   });
 
+  const { mutateAsync: filterTasks } = useMutation({
+    mutationFn: ({ startDate, endDate }) => filterTasksByDate(workerId, startDate, endDate),
+    onSuccess: (data) => {
+      toast.success('Tasks filtered successfully!');
+      return data; // Return filtered data for usage
+    },
+    onError: (error) => {
+      console.error('Error filtering tasks:', error);
+      toast.error('Error filtering tasks');
+    },
+  });
+
   return {
     tasks,
     isLoading,
@@ -161,6 +132,7 @@ const useTasks = (workerId) => {
     addTask,
     editTask,
     removeTask,
+    filterTasks, // Expose the filter functionality
   };
 };
 

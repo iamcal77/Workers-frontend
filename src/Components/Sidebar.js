@@ -3,9 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { GiFarmer } from "react-icons/gi";
 import { RiAdminLine } from 'react-icons/ri';
-import { TbReport } from "react-icons/tb";
 import { MdLogout } from "react-icons/md";
-import { MdOutlineForum } from "react-icons/md";
 import { FcInspection } from "react-icons/fc";
 
 
@@ -45,20 +43,6 @@ function Sidebar() {
             Approvals
           </Link>
         </li>
-
-
-        {/* <li className={`mb-4 flex items-center ${isActive('/reports')}`}>
-          <Link to="/reports" className="hover:text-gray-400 flex items-center">
-            <TbReport className="mr-2 text-blue-500 text-2xl" />
-            Reports
-          </Link>
-        </li> */}
-        {/* <li className={`mb-4 flex items-center ${isActive('/crops')}`}>
-          <Link to="/postlist" className="hover:text-gray-400 flex items-center">
-            <MdOutlineForum className="mr-2 text-green-500 text-2xl" />
-            Forums
-          </Link>
-        </li> */}
       </ul>
 
       {/* Logout Button at the bottom */}

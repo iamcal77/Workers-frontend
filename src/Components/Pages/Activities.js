@@ -97,6 +97,7 @@ function Activities({ onLogout }) {
           ) : error?(
             <div>No  Activities For This Worker:{error.message}</div>
         ) : (
+          <div id="page-content">
             <DataGrid
               dataSource={activity}
               keyExpr="id"
@@ -166,6 +167,7 @@ function Activities({ onLogout }) {
                   }} 
                 />
             </DataGrid>
+            </div>
         )}
     </Layout>
   );

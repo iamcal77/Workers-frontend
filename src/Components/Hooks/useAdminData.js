@@ -23,7 +23,7 @@ const useAdminData = () => {
           }, 2000);
         })
       } catch (err) {
-        setError('Failed to fetch users');
+        setError('Only admins view this page');
         setLoading(false);
       }
     };

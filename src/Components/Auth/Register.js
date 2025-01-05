@@ -9,7 +9,7 @@ function Register() {
     name: '',
     email: '',
     password: '',
-    role: '',
+    role: '', // role is now a select input
     contact: '',
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -57,6 +57,7 @@ function Register() {
       toast.error('Registration failed');
     }
   };
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -67,7 +68,7 @@ function Register() {
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
         <form onSubmit={handleRegister} className="space-y-4">
           {/* Input Fields */}
-          {['username', 'name', 'email', 'role', 'contact'].map((field) => (
+          {['username', 'name', 'email', 'contact'].map((field) => (
             <div className="relative" key={field}>
               <input
                 type={field === 'email' ? 'email' : 'text'}
@@ -81,6 +82,21 @@ function Register() {
             </div>
           ))}
 
+          {/* Role Select Input */}
+          <div className="relative">
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full px-10 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-sm"
+              required
+            >
+              <option value="">Select Role</option>
+              <option value="admin">Admin</option>
+              <option value="supervisor">Supervisor</option>
+            </select>
+          </div>
+
           {/* Password Field with Show/Hide Toggle */}
           <div className="relative">
             <input
@@ -93,13 +109,13 @@ function Register() {
               required
             />
             <div className="absolute inset-y-0 right-3 flex items-center">
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
-            >
-              {showPassword ? 'Hide' : 'Show'}
-            </button>
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
             </div>
           </div>
 

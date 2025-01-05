@@ -55,6 +55,8 @@ function ActivityDetails({ onLogout }) {
           <DotLoader />
         </div>
       ) : (
+        <div id="page-content">
+
         <div className="p-6 bg-white shadow-md rounded-lg h-screen overflow-y-auto">
           <h1 className="text-2xl font-bold text-gray-800 mb-6 mt-7">Activity Details</h1>
 
@@ -102,7 +104,9 @@ function ActivityDetails({ onLogout }) {
             </div>
           </div>
         </div>
+        </div>
       )}
+
     </Layout>
   );
 }

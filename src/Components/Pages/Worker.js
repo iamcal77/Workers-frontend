@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging, Pager, SearchPanel, Export } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, Pager, SearchPanel } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { GiFarmer } from "react-icons/gi";
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
 import WorkerForm from '../Forms/WorkerForm';
-import { data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useWorker from '../Hooks/UseWorker';
 import { SlActionRedo } from 'react-icons/sl';
-import { FcInspection } from "react-icons/fc";
-import { TfiRuler } from 'react-icons/tfi';
+import { FcCalculator } from "react-icons/fc";
 import { toast } from 'react-toastify';
 
 function Worker({ onLogout }) {
@@ -91,10 +90,10 @@ function Worker({ onLogout }) {
               <ul>
                 <li
                   className="p-1 hover:bg-black-200 cursor-pointer flex items-center space-x-1"
-                  onClick={() => navigate('/approvals')}
+                  onClick={() => navigate('/payments-approval')}
                 >
-                  <FcInspection className="text-lg text-green-700" />
-                  <span>Approvals</span>
+                  <FcCalculator className="text-lg text-green-700" />
+                  <span>Payment Approval</span>
                 </li>
               </ul>
             </div>
@@ -116,7 +115,7 @@ function Worker({ onLogout }) {
         ) : error ? (
           <div>Error Loading Workers: {error.message}</div>
         ) : (
-          
+          <div id="page-content">
               <DataGrid
                 dataSource={workers}
                 keyExpr="id"
@@ -154,6 +153,8 @@ function Worker({ onLogout }) {
 
 
               </DataGrid>
+              </div>
+
  
         )}
     </Layout>

@@ -117,7 +117,7 @@ const UserForm = ({ initialData, onSave, onCancel }) => {
             items={[
               { value: '', text: 'Select Role' },
               { value: 'Admin', text: 'Admin' },
-              { value: 'User', text: 'User' },
+              { value: 'Supervisor', text: 'Supervisor' },
             ]}
             displayExpr="text"
             valueExpr="value"

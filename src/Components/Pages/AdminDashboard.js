@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../Layout';
 import { FaCheckCircle, FaTasks, FaUsers } from 'react-icons/fa';
+import { FcApproval, FcDeleteDatabase } from "react-icons/fc";
 import CircularGauge, { Scale, RangeContainer, Range, ValueIndicator } from 'devextreme-react/circular-gauge';
 import { useNavigate } from 'react-router-dom';
 import { RiAdminLine } from 'react-icons/ri';
@@ -12,7 +13,6 @@ import { Series, Legend } from 'devextreme-react/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import PaymentStatusDashboard from '../Dashboards/PaymentStatusDashboard';
 import EmploymentStatsDashboard from '../Dashboards/EmploymentStatsDashboard';
-import { Button } from 'devextreme-react/cjs/data-grid';
 
 function AdminDashboard({ token, onLogout }) {
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
@@ -91,6 +91,13 @@ function AdminDashboard({ token, onLogout }) {
   const handleAdmin = () => {
     navigate('/admin'); 
   };
+  const handlePaidClick = () => {
+    navigate('/paid-workers'); // Navigate to paid workers page
+  };
+
+  const handlePendingClick = () => {
+    navigate('/pending-workers'); // Navigate to pending workers page
+  };
 
   return (
     <Layout onLogout={onLogout}>
@@ -145,7 +152,7 @@ function AdminDashboard({ token, onLogout }) {
           onClick={handleAdmin}
         />
       </div>
-
+     
       {/* Circular Gauges */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <GaugeCard title="Task Completion" value={(tasksCompleted / tasksGoal) * 100} color="#4caf50" />
@@ -163,6 +170,20 @@ function AdminDashboard({ token, onLogout }) {
             <p>No data available for user roles.</p>
           )}
         </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5 mt-6">
+        <Card
+          icon={<FcApproval className="text-3xl text-green-500" />}
+          title="Paid Workers"
+          color="bg-green-100"
+          onClick={handlePaidClick}
+        />
+        <Card
+          icon={<FcDeleteDatabase className="text-3xl text-green-500" />}
+          title="Pending Workers"
+          color="bg-blue-100"
+          onClick={handlePendingClick}
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 ">
       <div className="bg-white p-4 rounded-lg shadow-lg">

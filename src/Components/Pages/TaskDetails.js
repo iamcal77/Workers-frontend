@@ -59,6 +59,8 @@ function TaskDetails({ onLogout }) {
           <h1 className="text-2xl font-bold text-gray-800 mb-6 mt-7">Task Details</h1>
 
           {/* Tailwind-styled Details Section */}
+          <div id="page-content">
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-sm">
             <div className="flex items-center">
               <span className="font-semibold text-gray-700 w-40">Worker ID:</span>
@@ -102,6 +104,8 @@ function TaskDetails({ onLogout }) {
             </div>
           </div>
         </div>
+        </div>
+
       )}
     </Layout>
   );

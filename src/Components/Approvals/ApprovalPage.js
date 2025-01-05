@@ -3,7 +3,7 @@ import { DataGrid, Column, SearchPanel, Paging } from 'devextreme-react/data-gri
 import { Button } from 'devextreme-react/button'; // Correct import for Button
 import 'devextreme/dist/css/dx.light.css';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../Layout';
 import Sidebar from '../Sidebar';
@@ -40,7 +40,7 @@ const ApprovalPage = () => {
       })
       .catch(error => {
         console.error('Error fetching pending approvals:', error);
-        toast.error('Failed to load pending approvals.');
+        toast.error('No pending approvals.');
       });
   }, [token]);  // Ensure token is always updated
 
@@ -164,7 +164,6 @@ const ApprovalPage = () => {
         </DataGrid>
         )}
 
-        <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
     </Layout>
   );
 };

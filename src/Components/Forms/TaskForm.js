@@ -30,6 +30,37 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
     }
   }, [workerIdFromParent]);
 
+  // Function to handle date changes and enforce 8-hour duration
+  const handleStartDateChange = (e) => {
+    const newStartDate = e.value;
+    setFormData((prevData) => {
+      const newEndDate = new Date(newStartDate);
+      newEndDate.setHours(newEndDate.getHours() + 8); // Set endDate to 8 hours after startDate
+      return {
+        ...prevData,
+        startDate: newStartDate,
+        endDate: newEndDate.toISOString(),
+      };
+    });
+  };
+
+  // Function to handle endDate manually and check if it exceeds 8 hours
+  const handleEndDateChange = (e) => {
+    const newEndDate = new Date(e.value);
+    const startDate = new Date(formData.startDate);
+    const timeDifference = newEndDate - startDate;
+    
+    if (timeDifference > 8 * 60 * 60 * 1000) { // 8 hours in milliseconds
+      toast.error("End date cannot be more than 8 hours from start date");
+      return; // Prevent setting endDate if it exceeds 8 hours
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      endDate: e.value,
+    }));
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -54,13 +85,12 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
   
     onSubmit(formattedData);
   };
-  
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
       <h3 className="text-2xl font-medium text-gray-700 mb-4">
-        {initialData?'Edit Task':'Add Task'}
-        </h3>
+        {initialData ? 'Edit Task' : 'Add Task'}
+      </h3>
       <form onSubmit={handleAddTask}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
@@ -109,14 +139,13 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               id="startDate"
               name="startDate"
               value={formData.startDate ? new Date(formData.startDate) : null}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'startDate', value: e.value } })}
+              onValueChanged={handleStartDateChange} // Update start date
               className="w-full"
               label="Start Date"
               labelMode="floating"
               required
               type="datetime"
               disabled={!isEditable} 
-
             />
           </div>
 
@@ -125,7 +154,7 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               id="endDate"
               name="endDate"
               value={formData.endDate ? new Date(formData.endDate) : null}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'endDate', value: e.value } })}
+              onValueChanged={handleEndDateChange} // Enforce 8-hour limit
               className="w-full"
               label="End Date"
               labelMode="floating"

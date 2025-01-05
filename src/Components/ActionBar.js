@@ -15,7 +15,8 @@ function ActionBar({
   showDeleteButton = true,
   showExportToExcel = true,
   showExportToPDF = true,
-  exportPage // New prop for page export functionality
+  exportPage, // New prop for page export functionality
+  dataGridId // ID for the DataGrid element for export
 }) {
   const navigate = useNavigate();
 
@@ -23,42 +24,101 @@ function ActionBar({
     navigate(-1); // Goes back to the previous page
   };
 
-  // Export the entire page to PDF
   const exportPageToPDF = () => {
-    const element = document.body; // Capture the entire page
-
-    // Styling the PDF export to keep the layout intact
+    const element = document.getElementById('page-content'); 
+    if (!element) {
+      console.error('Element not found');
+      return;
+    }
+  
+    // Capture the page title dynamically
+    const pageTitle = document.title || 'exported-page'; 
+  
+    // Define custom styles for the PDF content
+    const styles = `
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+        font-size: 14px;
+        color: #333;
+      }
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+      th {
+        background-color: #007BFF;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      td {
+        background-color: #f9f9f9;
+        font-size: 14px;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      tr:hover {
+        background-color: #e0e0e0;
+      }
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .content-wrapper {
+        margin: 20px;
+      }
+    `;
+  
+    // Create a <style> tag and append it to the head
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = styles;
+    document.head.appendChild(styleTag);
+  
     const options = {
-      margin:       [18, 15, 15, 18], // Margin for the PDF
-      filename:     'page.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { dpi: 192, letterRendering: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-
+      margin: [20, 15, 15, 15],
+      filename: `${pageTitle}.pdf`, // Use the page title for the filename
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { dpi: 192, letterRendering: true, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     };
-
+  
+    // Capture and export the page to PDF
     html2pdf()
       .from(element)
       .set(options)
-      .save();
+      .save()
+      .catch((err) => {
+        console.error('Error exporting to PDF:', err);
+      })
+      .finally(() => {
+        // Clean up the temporary style tag
+        document.head.removeChild(styleTag);
+      });
   };
-
-  // Export the entire page to Excel
+  
+  
+  
+  
   const exportPageToExcel = () => {
-    const element = document.body; // Capture the entire page
-    
-    // Create a new workbook
+    const element = document.getElementById('page-content'); // Capture the entire page
+    if (!element) {
+      console.error('Element not found');
+      return;
+    }
+  
     const wb = XLSX.utils.book_new();
-    
-    // You can define a worksheet for the main content, here we use the entire body
     const ws = XLSX.utils.table_to_sheet(element);
-
-    // Append the worksheet to the workbook
+  
     XLSX.utils.book_append_sheet(wb, ws, 'Page Content');
-
-    // Write the file to the user's computer
-    XLSX.writeFile(wb, "page-export.xlsx");
+    XLSX.writeFile(wb, 'page-export.xlsx');
   };
+  
 
   return (
     <div className="flex justify-between mb-1 items-center p-4 bg-transparent fixed top-12 left-64 w-[calc(100%-16rem)] z-20">

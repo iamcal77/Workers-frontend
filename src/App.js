@@ -10,7 +10,6 @@ import ActivityDetails from './Components/Pages/ActivityDetails';
 import TaskDetails from './Components/Pages/TaskDetails';
 import AdminPage from './Components/Pages/Admin';
 import AdminDetails from './Components/Pages/AdminDetails';
-import ApprovalPage from './Components/Pages/ApprovalPage';
 import ErrorBoundary from './Components/ErrorBoundary';
 import FeedbackPage from './Components/Pages/FeedbackPage';
 import Logout from './Components/Auth/Logout';
@@ -23,6 +22,10 @@ import WorkerDetails from './Components/Pages/WorkerDetails';
 import NotificationsPage from './Components/Pages/NotificationsPage';
 import CompletedTasks from './Components/Dashboards/CompletedTasks';
 import CompletedActivities from './Components/Dashboards/CompletedActivities';
+import PaidWorkers from './Components/Dashboards/PaidWorkers';
+import PendingWorkers from './Components/Dashboards/PendingWorkers';
+import PaymentApproval from './Components/Approvals/PaymentApproval';
+import ApprovalPage from './Components/Approvals/ApprovalPage';
 
 
 const queryClient = new QueryClient();
@@ -73,6 +76,12 @@ function App() {
           <Route path="/comments" element={<CommentSection token={localStorage.getItem('token')} />} />
           <Route path="/completed-tasks" element={<CompletedTasks token={localStorage.getItem('token')} />} />
           <Route path="/completed-activities" element={<CompletedActivities token={localStorage.getItem('token')} />} />
+          <Route path="/paid-workers" element={<PaidWorkers token={localStorage.getItem('token')} />} />
+          <Route path="/pending-workers" element={<PendingWorkers token={localStorage.getItem('token')} />} />
+          <Route path="/payments-approval" element={<PaymentApproval token={localStorage.getItem('token')} />} />
+
+
+
 
 
 

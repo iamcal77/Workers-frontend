@@ -15,8 +15,7 @@ const formatDate = (dateString) => {
 // Fetch workers
 const fetchWorkers = async () => {
   const token = localStorage.getItem('token');
-  console.log('Fetched Token:', token);
-
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const response = await axios.get('https://localhost:7050/api/workers', {
     headers: {
       'Authorization': `Bearer ${token}`,

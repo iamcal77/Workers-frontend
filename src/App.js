@@ -21,6 +21,8 @@ import { ToastContainer } from 'react-toastify';
 import Worker from './Components/Pages/Worker';
 import WorkerDetails from './Components/Pages/WorkerDetails';
 import NotificationsPage from './Components/Pages/NotificationsPage';
+import CompletedTasks from './Components/Dashboards/CompletedTasks';
+import CompletedActivities from './Components/Dashboards/CompletedActivities';
 
 
 const queryClient = new QueryClient();
@@ -69,6 +71,10 @@ function App() {
           <Route path="/posts" element={<Post token={localStorage.getItem('token')} />} />
           <Route path="/postlist" element={<PostList token={localStorage.getItem('token')} />}/>
           <Route path="/comments" element={<CommentSection token={localStorage.getItem('token')} />} />
+          <Route path="/completed-tasks" element={<CompletedTasks token={localStorage.getItem('token')} />} />
+          <Route path="/completed-activities" element={<CompletedActivities token={localStorage.getItem('token')} />} />
+
+
 
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, SearchPanel } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { FiActivity } from "react-icons/fi";
@@ -10,6 +10,7 @@ import ActivityForm from '../Forms/ActivitiesForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProgressBar from 'devextreme-react/cjs/progress-bar';
 import useActivity from '../Hooks/Useactivity';
+import { toast } from 'react-toastify';
 
 function Activities({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
@@ -41,9 +42,11 @@ function Activities({ onLogout }) {
     }
   };
   const handleEditClick = () => {
-    if (editingActivity) {
-      setShowForm(true); // Show form when "Edit" is clicked
+    if (!editingActivity) {
+      toast('Select activity to edit')
+      return;
     }
+    setShowForm(true);
   };
   const handleDeleteClick = () => {
     if (editingActivity) {
@@ -55,11 +58,13 @@ function Activities({ onLogout }) {
           console.error('Error deleting task:', error);
         });
     }
+    else{
+      toast('Select activity to delete')
+    }
   };
 
   return (
     <Layout onLogout={onLogout}>
-      <div className="flex flex-col p-4 h-screen overflow-x-hidden overflow-y-auto bg-white-100">
         <ActionBar
           onAdd={() => {
             setEditingActivity(null);
@@ -90,10 +95,8 @@ function Activities({ onLogout }) {
             <DotLoader />
           </div>
           ) : error?(
-            <div>Error Loading Activity{error.message}</div>
+            <div>No  Activities For This Worker:{error.message}</div>
         ) : (
-          // Removed the margin-top (mt-2) here
-          <div className="flex mt-2 p-4 bg-white shadow-md overflow-x-hidden overflow-y-auto ">
             <DataGrid
               dataSource={activity}
               keyExpr="id"
@@ -101,7 +104,8 @@ function Activities({ onLogout }) {
               showBorders={true}
               columnAutoWidth={true}
               autoNavigateToFocusedRow={true}
-              className="max-w-full w-full"
+              className="w-full"
+              style={{ height: 'calc(100vh - 150px)' }} 
               onRowDblClick={(e) => {
                 if (e?.data?.id) {
                   handleDetailsClick(e.data.id); // Pass the farmer's ID to the handler
@@ -112,17 +116,20 @@ function Activities({ onLogout }) {
               
 
             >
+             <SearchPanel
+                  visible ={true}
+                />
               <Paging defaultPageSize={10} />
 
               <Column dataField="id" caption="ID" />
-              <Column dataField="workerId" caption="Worker Id" />
+              <Column dataField="workerId" caption="Worker ID" />
               <Column dataField="activityName" caption="Activity Name" />
               <Column dataField="description" caption="Description" />
               <Column
                   dataField="startDate"
                   caption="Start Date"
                   cellRender={(data) => {
-                    const localDate = new Date(data.value).toLocaleDateString(); // Convert to local date
+                    const localDate = new Date(data.value).toLocaleString(); // Convert to local date
                     return <span>{localDate}</span>;
                   }}
                 />
@@ -130,7 +137,7 @@ function Activities({ onLogout }) {
                 dataField="endDate"
                 caption="End Date"
                 cellRender={(data) => {
-                  const localDate = new Date(data.value).toLocaleDateString(); // Convert to local date
+                  const localDate = new Date(data.value).toLocaleString(); // Convert to local date
                   return <span>{localDate}</span>;
                 }}
               />
@@ -159,9 +166,7 @@ function Activities({ onLogout }) {
                   }} 
                 />
             </DataGrid>
-          </div>
         )}
-      </div>
     </Layout>
   );
 }

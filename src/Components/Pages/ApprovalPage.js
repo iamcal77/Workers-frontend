@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, Column } from 'devextreme-react/data-grid';
+import { DataGrid, Column, SearchPanel, Paging } from 'devextreme-react/data-grid';
 import { Button } from 'devextreme-react/button'; // Correct import for Button
 import 'devextreme/dist/css/dx.light.css';
 import axios from 'axios';
@@ -10,14 +10,18 @@ import Sidebar from '../Sidebar';
 import { FcInspection } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 import ActionBar from '../ActionBar';
+import DotLoader from '../Loader/Loader';
+
 
 const ApprovalPage = () => {
   const [farmers, setFarmers] = useState([]);
-  const [selectedFarmer, setSelectedFarmer] = useState(null);
+  const [selectedWorker, setSelectedWorker] = useState(null);
   
   const [isToggled, setIsToggled] = useState(false);
   const toggle = () => setIsToggled(!isToggled);
   const navigate = useNavigate();
+  const {  isLoading, error } = useState([]);
+
 
   // Fetch the token (e.g., from localStorage)
   const token = localStorage.getItem('token');
@@ -66,12 +70,16 @@ const ApprovalPage = () => {
 
   // Handle row selection (single click on row)
   const handleRowClick = (e) => {
-    setSelectedFarmer(e.data); // Store selected farmer's data
+    setSelectedWorker(e.data); // Store selected farmer's data
   };
 
   const handleClick = ()=> {
     navigate('/feedback');
   };
+  const handleDetailsClick = (id) => {
+    navigate(`/worker-details/${id}`);
+  };
+
 
   return (
     <Layout>
@@ -82,33 +90,32 @@ const ApprovalPage = () => {
        showAddButton={false}
        showExportToExcelButton={ false}
        />
-      <div className="approval-page mt-12">
-        <h1 className="flex items-center">
-          <FcInspection className="text-lg text-green-700 mr-2 " />
+        <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">
+          <FcInspection className=" text-green-700 mr-2 text-2xl " />
           Approvals
         </h1>
 
         {/* Buttons at the top of the page, aligned to the right */}
-        <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
+        <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '5px', marginTop: '10px' }}>
           <Button
             icon="check"
             text="Approve"
-            onClick={() => selectedFarmer && approveFarmer(selectedFarmer.id)} // Approve selected farmer
+            onClick={() => selectedWorker && approveFarmer(selectedWorker.id)} // Approve selected farmer
             type="success"
             stylingMode="contained"
             width={150}
             style={{ marginLeft: '10px' }} // Add margin between buttons
-            disabled={!selectedFarmer} // Disable button if no farmer is selected
+            disabled={!selectedWorker} // Disable button if no farmer is selected
           />
           <Button
             icon="close"
             text="Reject"
-            onClick={() => selectedFarmer && rejectFarmer(selectedFarmer.id)} // Reject selected farmer
+            onClick={() => selectedWorker && rejectFarmer(selectedWorker.id)} // Reject selected farmer
             type="danger"
             stylingMode="contained"
             width={150}
             style={{ marginLeft: '10px' }} // Add margin between buttons
-            disabled={!selectedFarmer} // Disable button if no farmer is selected
+            disabled={!selectedWorker} // Disable button if no farmer is selected
           />
           <Button
             icon={"feedback"} // Add feedback icon
@@ -121,25 +128,43 @@ const ApprovalPage = () => {
           />
         </div>
         <Sidebar toggle={toggle} />
+        {isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <DotLoader />
+          </div>
+        ) : error ? (
+          <div>Error Loading Workers: {error.message}</div>
+        ) : (
 
-        {/* Data Grid */}
         <DataGrid
           dataSource={farmers}
           keyExpr="id"
           showBorders={true}
           onRowClick={handleRowClick}
           showRowLines={true}
+          className="w-full"
+          style={{ height: 'calc(100vh - 150px)' }} 
+          onRowDblClick={(e) => {
+                            if (e?.data?.id) {
+                              handleDetailsClick(e.data.id);
+                            }
+                          }}
         >
+          <SearchPanel
+            visible ={true}
+          />
+          <Paging defaultPageSize={10} />
+
           <Column dataField="name" caption="Name" />
           <Column dataField="contact" caption="Contact" />
-          <Column dataField="location" caption="Farm Location" />
-          <Column dataField="status" caption="Status" />
+          <Column dataField="location" caption="Location" />
+          <Column dataField="status" caption=" Approval Status" />
           <Column dataField="employmentType" caption="Employment Type" />
 
         </DataGrid>
+        )}
 
         <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} />
-      </div>
     </Layout>
   );
 };

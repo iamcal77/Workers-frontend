@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DataGrid, { Column, Paging } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Paging, SearchPanel } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
@@ -9,6 +9,9 @@ import UserForm from '../Forms/UserForm';
 import { useNavigate } from 'react-router-dom';
 import { SlActionRedo } from 'react-icons/sl';
 import { FaBell } from 'react-icons/fa';
+import { RiAdminLine } from 'react-icons/ri';
+import { toast } from 'react-toastify';
+
 
 const AdminPage = ({ onLogout }) => {
   const {
@@ -33,7 +36,7 @@ const AdminPage = ({ onLogout }) => {
 
   const handleEditClick = () => {
     if (!selectedUser) {
-      alert('Please select a user to edit.');
+      toast('Please select a user to edit.');
       return;
     }
     setShowForm(true);
@@ -44,7 +47,7 @@ const AdminPage = ({ onLogout }) => {
       deleteUser(selectedUser.id);
       setSelectedUser(null);
     } else {
-      alert('Please select a user to delete.');
+      toast('Please select a user to delete.');
     }
   };
 
@@ -78,9 +81,13 @@ const AdminPage = ({ onLogout }) => {
         onAdd={handleAddClick}
         onEdit={handleEditClick}
         onDelete={handleDeleteClick}
+        showBackButton={true}
       />
 
-      <h1 className="mt-14">Admin Dashboard</h1>
+      <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">
+      <RiAdminLine className=" text-green-500 mr-2 text-2xl " />
+        Admin Dashboard
+        </h1>
       <div className="relative z-10">
         <button
           onClick={handleNotificationClick}
@@ -132,6 +139,9 @@ const AdminPage = ({ onLogout }) => {
                 }
               }} 
             >
+            <SearchPanel
+                visible ={true}
+              />
               <Paging defaultPageSize={10} />
               <Column dataField="username" />
               <Column dataField="role" />

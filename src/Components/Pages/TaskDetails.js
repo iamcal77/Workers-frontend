@@ -75,13 +75,13 @@ function TaskDetails({ onLogout }) {
             <div className="flex items-center">
               <span className="font-semibold text-gray-700 w-40">Start Date:</span>
               <span className="text-gray-900">
-                {new Date(task.startDate).toLocaleDateString()}
+                {new Date(task.startDate).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center">
               <span className="font-semibold text-gray-700 w-40">End Date:</span>
               <span className="text-gray-900">
-                {new Date(task.endDate).toLocaleDateString()}
+                {new Date(task.endDate).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center">

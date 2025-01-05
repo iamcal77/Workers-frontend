@@ -12,6 +12,7 @@ import { Series, Legend } from 'devextreme-react/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import PaymentStatusDashboard from '../Dashboards/PaymentStatusDashboard';
 import EmploymentStatsDashboard from '../Dashboards/EmploymentStatsDashboard';
+import { Button } from 'devextreme-react/cjs/data-grid';
 
 function AdminDashboard({ token, onLogout }) {
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
@@ -81,6 +82,16 @@ function AdminDashboard({ token, onLogout }) {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
+  const handleTaskClick = () => {
+    navigate('/completed-tasks'); 
+  };
+  const handleActitiesClick = () => {
+    navigate('/completed-activities'); 
+  };
+  const handleAdmin = () => {
+    navigate('/admin'); 
+  };
+
   return (
     <Layout onLogout={onLogout}>
       <h1 className="text-2xl text-left mb-6 mt-11 flex items-center">
@@ -110,7 +121,6 @@ function AdminDashboard({ token, onLogout }) {
           </div>
         )}
       </div>
-
       {/* Dashboard Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7">
         <Card
@@ -118,18 +128,21 @@ function AdminDashboard({ token, onLogout }) {
           title="Tasks Completed"
           value={tasksCompleted}
           color="bg-green-100"
+          onClick={handleTaskClick}
         />
         <Card
           icon={<FaCheckCircle className="text-3xl text-blue-600" />}
           title="Activities Completed"
           value={activitiesCompleted}
           color="bg-blue-100"
+          onClick={handleActitiesClick}
         />
         <Card
           icon={<FaUsers className="text-3xl text-purple-600" />}
           title="Total Users"
           value={totalUsers}
           color="bg-purple-100"
+          onClick={handleAdmin}
         />
       </div>
 
@@ -167,8 +180,11 @@ function AdminDashboard({ token, onLogout }) {
   );
 }
 
-const Card = ({ icon, title, value, color }) => (
-  <div className={`${color} p-6 rounded-lg shadow-lg flex items-center`}>
+const Card = ({ icon, title, value, color,onClick }) => (
+  <div className={`${color} p-6 rounded-lg shadow-lg flex items-center`}
+  onClick={onClick}
+  >
+  
     {icon}
     <div className="ml-4">
       <h3 className="text-xl font-semibold text-gray-700">{title}</h3>

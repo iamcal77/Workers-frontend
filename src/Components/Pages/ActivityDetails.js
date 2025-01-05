@@ -75,13 +75,13 @@ function ActivityDetails({ onLogout }) {
             <div className="flex items-center">
               <span className="font-semibold text-gray-700 w-40">Start Date:</span>
               <span className="text-gray-900">
-                {new Date(activity.startDate).toLocaleDateString()}
+                {new Date(activity.startDate).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center">
               <span className="font-semibold text-gray-700 w-40">End Date:</span>
               <span className="text-gray-900">
-                {new Date(activity.endDate).toLocaleDateString()}
+                {new Date(activity.endDate).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center">

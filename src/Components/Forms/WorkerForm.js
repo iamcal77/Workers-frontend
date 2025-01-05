@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 import { TextBox, SelectBox, DateBox } from 'devextreme-react';
+import { toast } from 'react-toastify';
 
 function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
     paymentStatus:'Pending',
     ...initialData, // Default value for status
   });
+  const isEditable = !initialData;
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +36,7 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
   
     // Validate required fields
     if (!formData.name || !formData.nationalId || !formData.employmentType || !formData.startDate) {
-      alert('Please fill in all required fields.');
+      toast.error('Please fill in all required fields.');
       return;
     }
   
@@ -49,7 +52,10 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
-      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Worker</h3>
+      <h3 className="text-2xl font-medium text-gray-700 mb-4">
+        {initialData?'Edit Worker': 'Add Worker'}
+
+      </h3>
       <form onSubmit={handleAddWorker}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
@@ -100,6 +106,8 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               className="w-full"
               label="National ID"
               labelMode="floating"
+              disabled ={!isEditable}
+
             />
           </div>
 
@@ -112,6 +120,7 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               className="w-full"
               label="Date of Birth"
               labelMode="floating"
+              disabled ={!isEditable}
             />
           </div>
 
@@ -131,6 +140,7 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               ]}
               displayExpr="text"
               valueExpr="value"
+              disabled ={!isEditable}
             />
           </div>
 
@@ -165,6 +175,8 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               label="Start Date"
               labelMode="floating"
               required
+              disabled ={!isEditable}
+
             />
           </div>
 
@@ -195,6 +207,7 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               ]}
               displayExpr="text"
               valueExpr="value"
+              disabled ={!isEditable}
             />
           </div>
           <div className="mb-4">

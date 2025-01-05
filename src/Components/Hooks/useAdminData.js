@@ -16,9 +16,12 @@ const useAdminData = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        });
-        setUsers(response.data);
-        setLoading(false);
+        }).then((response) => {
+          setTimeout(() => {
+            setUsers(response.data);
+            setLoading(false);
+          }, 2000);
+        })
       } catch (err) {
         setError('Failed to fetch users');
         setLoading(false);

@@ -5,7 +5,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import TextBox from 'devextreme-react/text-box'; // Import TextBox from DevExtreme
 import TextArea from 'devextreme-react/text-area'; // Import TextArea from DevExtreme
 
-const NotificationForm = ({ onCancel }) => {  // Destructure onCancel from props
+const NotificationForm = ({ onCancel,initialData }) => {  // Destructure onCancel from props
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
 
@@ -17,6 +17,7 @@ const NotificationForm = ({ onCancel }) => {  // Destructure onCancel from props
     const notification = {
       title,
       message,
+      ...initialData
     };
 
     // Post notification using the custom hook
@@ -30,32 +31,38 @@ const NotificationForm = ({ onCancel }) => {  // Destructure onCancel from props
   return (
     <Layout>
       <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
-        <h2 className="text-2xl font-medium text-gray-700 mb-4">Add Notification</h2>
+        <h2 className="text-2xl font-medium text-gray-700 mb-4">
+          {initialData?'Edit Notification':'Add Notification'}
+          </h2>
 
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-6 bg-white p-6 shadow-lg rounded-lg">
-          <div>
-            <label htmlFor="title" className="block text-lg font-medium text-gray-700">Title</label>
+        <form onSubmit={handleSubmit} >
+
+          <div className='mb-4'>
             <TextBox
               id="title"
               value={title}
               onValueChanged={(e) => setTitle(e.value)} // DevExtreme uses onValueChanged for value updates
               className="w-full"
+              label='Title'
+              labelMode='floating'
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="message" className="block text-lg font-medium text-gray-700">Message</label>
+          <div className='mb-4'>
             <TextArea
               id="message"
               value={message}
               onValueChanged={(e) => setMessage(e.value)} // DevExtreme uses onValueChanged for value updates
               className="w-full"
+              label='Message'
+              labelMode='floating'
               required
             />
           </div>
 
-          <div className="flex justify-center">
+
+          <div className="flex justify-end space-x-4 mt-4">
             <button
               type="button"
               onClick={onCancel}

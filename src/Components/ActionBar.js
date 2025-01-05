@@ -29,11 +29,12 @@ function ActionBar({
 
     // Styling the PDF export to keep the layout intact
     const options = {
-      margin:       [10, 10, 10, 10], // Margin for the PDF
-      filename:     'page-export.pdf',
+      margin:       [18, 15, 15, 18], // Margin for the PDF
+      filename:     'page.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { dpi: 192, letterRendering: true },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+
     };
 
     html2pdf()

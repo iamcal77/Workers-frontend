@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, SearchPanel } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { FaTasks } from "react-icons/fa";
 import Layout from '../Layout';
@@ -10,6 +10,7 @@ import TaskForm from '../Forms/TaskForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import useTasks from '../Hooks/Usetask';
 import { ProgressBar } from 'devextreme-react';
+import { toast } from 'react-toastify';
 
 function Tasks({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
@@ -41,9 +42,11 @@ function Tasks({ onLogout }) {
   
 
   const handleEditClick = () => {
-    if (editingTask) {
-      setShowForm(true); // Show form when "Edit" is clicked
+    if (!editingTask) {
+      toast('Please select a task to edit')
+      return;
     }
+    setShowForm(true);
   };
 
   const handleDeleteClick = () => {
@@ -56,11 +59,13 @@ function Tasks({ onLogout }) {
           console.error('Error deleting task:', error);
         });
     }
+    else {
+          toast('Please select a task to delete.');
+        }
   };
 
   return (
     <Layout onLogout={onLogout}>
-      <div className="flex flex-col p-4 h-screen overflow-x-hidden bg-white-100">
         <ActionBar
           onAdd={() => {
             setEditingTask(null);
@@ -90,10 +95,8 @@ function Tasks({ onLogout }) {
             <DotLoader />
           </div>
         ) : error ? (
-          <div>Error Loading Tasks: {error.message}</div>
+          <div>No Tasks For This Worker: {error.message}</div>
         ) : (
-          <div className="flex mt-2 p-4 bg-white shadow-md w-full flex-grow">
-            <div className="w-full flex-grow">
               <DataGrid
                 dataSource={tasks}
                 keyExpr="id"
@@ -107,28 +110,31 @@ function Tasks({ onLogout }) {
                 }}
                 onRowClick={(e) => setEditingTask(e.data)} 
                 className="w-full"
-                style={{ height: 'calc(100vh - 250px)' }} 
+                style={{ height: 'calc(100vh - 150px)' }} 
                 columnHidingEnabled={true}
               >
+                 <SearchPanel
+                visible ={true}
+                />
                 <Paging defaultPageSize={10} />
                 <Column dataField="id" caption="ID" />
-                <Column dataField="workerId" caption="Worker Id" />
+                <Column dataField="workerId" caption="Worker ID" />
                 <Column dataField="taskName" caption="Task Name" />
                 <Column dataField="description" caption="Description" />
                 <Column
                   dataField="startDate"
                   caption="Start Date"
                   cellRender={(data) => {
-                    const localDate = new Date(data.value).toLocaleDateString();
-                    return <span>{localDate}</span>;
+                    const localDateTime = new Date(data.value).toLocaleString();
+                    return <span>{localDateTime}</span>;
                   }}
                 />
                 <Column
                   dataField="endDate"
                   caption="End Date"
                   cellRender={(data) => {
-                    const localDate = new Date(data.value).toLocaleDateString();
-                    return <span>{localDate}</span>;
+                    const localDateTime = new Date(data.value).toLocaleString();
+                    return <span>{localDateTime}</span>;
                   }}
                 />
                 <Column
@@ -151,10 +157,8 @@ function Tasks({ onLogout }) {
                   }}
                 />
               </DataGrid>
-            </div>
-          </div>
+         
         )}
-      </div>
     </Layout>
   );
 }

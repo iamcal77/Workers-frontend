@@ -6,9 +6,9 @@ import NumberBox from 'devextreme-react/number-box';
 import CheckBox from 'devextreme-react/check-box';
 import DateBox from 'devextreme-react/date-box';
 import 'devextreme/dist/css/dx.light.css'; // Import DevExtreme styles
+import { toast } from 'react-toastify';
 
 function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) {
-  // Initialize state with workerId from props or empty string
   const [formData, setFormData] = useState({
     workerId: workerIdFromParent || '', // Automatically fill the workerId if available
     taskName: '',
@@ -18,6 +18,7 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
     isCompleted: false,
     ...initialData,
   });
+  const isEditable = !initialData;
 
   // If workerIdFromParent changes, update the workerId in formData
   useEffect(() => {
@@ -39,13 +40,27 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    console.log('Form Data before submit:', formData); // Log the form data before submitting
-    onSubmit(formData);
+    
+    if (!formData.taskName || !formData.description || !formData.startDate || !formData.endDate) {
+      toast.error('Please fill in all required fields!');
+      return;
+    }
+
+    const formattedData = {
+      ...formData,
+      startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
+      endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
+    };
+  
+    onSubmit(formattedData);
   };
+  
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
-      <h3 className="text-2xl font-medium text-gray-700 mb-4">Add Task</h3>
+      <h3 className="text-2xl font-medium text-gray-700 mb-4">
+        {initialData?'Edit Task':'Add Task'}
+        </h3>
       <form onSubmit={handleAddTask}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="mb-4">
@@ -72,6 +87,7 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               label="Task Name"
               labelMode="floating"
               required
+              disabled={!isEditable} 
             />
           </div>
 
@@ -92,12 +108,15 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
             <DateBox
               id="startDate"
               name="startDate"
-              value={formData.startDate}
+              value={formData.startDate ? new Date(formData.startDate) : null}
               onValueChanged={(e) => handleInputChange({ target: { name: 'startDate', value: e.value } })}
               className="w-full"
               label="Start Date"
               labelMode="floating"
               required
+              type="datetime"
+              disabled={!isEditable} 
+
             />
           </div>
 
@@ -105,12 +124,13 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
             <DateBox
               id="endDate"
               name="endDate"
-              value={formData.endDate}
+              value={formData.endDate ? new Date(formData.endDate) : null}
               onValueChanged={(e) => handleInputChange({ target: { name: 'endDate', value: e.value } })}
               className="w-full"
               label="End Date"
               labelMode="floating"
               required
+              type="datetime"
             />
           </div>
 

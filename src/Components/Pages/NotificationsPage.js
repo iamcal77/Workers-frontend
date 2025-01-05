@@ -3,6 +3,8 @@ import Layout from '../Layout';
 import ActionBar from '../ActionBar';
 import NotificationForm from '../Forms/NotificationForm';
 import useNotifications from '../Hooks/useNotifications';
+import DotLoader from '../Loader/Loader';
+
 
 function NotificationsPage({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
@@ -58,7 +60,9 @@ function NotificationsPage({ onLogout }) {
       <div className="p-4 mt-5">
         <h2 className="text-2xl font-semibold mb-4">Notifications</h2>
         {loading ? (
-          <p>Loading notifications...</p>
+          <div className="flex justify-center items-center h-full">
+          <DotLoader />
+        </div>
         ) : error ? (
           <p>{error}</p>
         ) : notifications.length === 0 ? (

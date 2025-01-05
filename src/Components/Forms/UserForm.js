@@ -1,5 +1,7 @@
+import { NumberBox, SelectBox, TextBox } from 'devextreme-react';
 import React, { useState, useEffect } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import Layout from '../Layout';
 
 const UserForm = ({ initialData, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -40,14 +42,17 @@ const UserForm = ({ initialData, onSave, onCancel }) => {
   };
 
   return (
+    <Layout>
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
       <h2 className="text-2xl font-medium text-gray-700 mb-4">
         {initialData ? 'Edit User Role' : 'Add User'}
       </h2>
       <form onSubmit={handleSubmit}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Username</label>
-          <input
+
+          <TextBox
             type="text"
             name="username"
             value={formData.username}
@@ -55,58 +60,72 @@ const UserForm = ({ initialData, onSave, onCancel }) => {
             className="w-full px-3 py-2 border rounded-md"
             disabled  // Disable since it won't be updated
             required
+            label='Username'
+            labelMode='floating'
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Name</label>
-          <input
+          <TextBox
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded-md"
+            labelMode='floating'
+            label='Name'
             disabled  // Disable since it won't be updated
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input
+          <TextBox
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded-md"
+            label='Email Address'
+            labelMode='floating'
             disabled  // Disable since it won't be updated
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Contact</label>
-          <input
+          <NumberBox
             type="tel"
             name="contact"
             value={formData.contact}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded-md"
+            label='Contact'
+            labelMode='floating'
             disabled  // Disable since it won't be updated
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Role</label>
-          <select
+          <SelectBox
+            id="role"
             name="role"
             value={formData.role}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md"
-            required
-          >
-            <option value="">Select Role</option>
-            <option value="Admin">Admin</option>
-            <option value="User">User</option>
-          </select>
+            onValueChanged={(e) =>
+              handleChange({ target: { name: 'role', value: e.value } })
+            }
+            className="w-full"
+            label="Role"
+            labelMode="floating"
+            items={[
+              { value: '', text: 'Select Role' },
+              { value: 'Admin', text: 'Admin' },
+              { value: 'User', text: 'User' },
+            ]}
+            displayExpr="text"
+            valueExpr="value"
+          />
+
         </div>
+        </div>
+
 
         <div className="flex justify-end space-x-3">
           <button
@@ -127,6 +146,8 @@ const UserForm = ({ initialData, onSave, onCancel }) => {
         </div>
       </form>
     </div>
+    </Layout>
+
   );
 };
 

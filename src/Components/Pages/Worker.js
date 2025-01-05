@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging, Pager } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, Pager, SearchPanel, Export } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { GiFarmer } from "react-icons/gi";
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
 import WorkerForm from '../Forms/WorkerForm';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import useWorker from '../Hooks/UseWorker';
 import { SlActionRedo } from 'react-icons/sl';
 import { FcInspection } from "react-icons/fc";
+import { TfiRuler } from 'react-icons/tfi';
+import { toast } from 'react-toastify';
 
 function Worker({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
@@ -40,11 +42,18 @@ function Worker({ onLogout }) {
     }
   };
 
-  const handleEditClick = () => {
-    if (editingWorker) {
-      setShowForm(true); // Show form when "Edit" is clicked
-    }
-  };
+ const handleEditClick = () => {
+     if (!editingWorker) {
+       toast('Please select a worker to edit.');
+       return;
+     }
+     setShowForm(true);
+   };
+    const handleDeleteClick = () => {
+     
+         toast('Worker cannot be deleted conatact support');
+       
+     };
 
   const handleAdminClick = () => {
     setIsDropdownVisible(!isDropdownVisible);
@@ -52,14 +61,13 @@ function Worker({ onLogout }) {
 
   return (
     <Layout onLogout={onLogout}>
-      <div className="flex flex-col p-4  overflow-x-hidden bg-white-100">
         <ActionBar
           onAdd={() => {
             setEditingWorker(null);
             toggleForm();
           }}
           onEdit={handleEditClick} // Use the handleEditClick for toggling form on Edit
-          onDelete={() => console.log('Delete worker')}
+          onDelete={handleDeleteClick}
           showBackButton={true} 
           exportPage
 
@@ -108,8 +116,7 @@ function Worker({ onLogout }) {
         ) : error ? (
           <div>Error Loading Workers: {error.message}</div>
         ) : (
-          <div className="flex mt-2 p-4 bg-white shadow-md w-full flex-grow">
-            <div className="w-full flex-grow">
+          
               <DataGrid
                 dataSource={workers}
                 keyExpr="id"
@@ -126,24 +133,29 @@ function Worker({ onLogout }) {
                 style={{ height: 'calc(100vh - 150px)' }} // Adjust the height for the grid
                 columnHidingEnabled={true}
                 >
-                
+                <SearchPanel
+                visible ={true}
+                />
+
                 <Paging defaultPageSize={10} />
                 <Pager visible={true} />
 
                 <Column dataField="name" caption="Name" width={150} />
-                <Column dataField="location" caption="Location" width={150} />
-                <Column dataField="contact" caption="Contact" width={180} />
-                <Column dataField="nationalId" caption="National ID" width={180} />
+                <Column dataField="location" caption="Location" width={100} />
+                <Column dataField="contact" caption="Contact" width={100} />
+                <Column dataField="nationalId" caption="National ID" width={100} />
                 <Column dataField="gender" caption="Gender" width={100} />
                 <Column dataField="employmentType" caption="Employment Type" width={150} />
                 <Column dataField="startDate" caption="Start Date" width={120} dataType="date" />
                 <Column dataField="endDate" caption="End Date" width={120} dataType="date" />
-                <Column dataField="status" caption="Status" width={120} />
+                <Column dataField="status" caption=" Approval Status" width={120} />
+                <Column dataField="payment" caption="Payment Amount" width={130} />
+                <Column dataField="paymentStatus" caption="Payment Status" width={100} />
+
+
               </DataGrid>
-            </div>
-          </div>
+ 
         )}
-      </div>
     </Layout>
   );
 }

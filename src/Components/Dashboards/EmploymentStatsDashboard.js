@@ -6,8 +6,8 @@ import { Title } from 'devextreme-react/cjs/circular-gauge';
 
 function EmploymentStatsDashboard() {
   const [employmentStats, setEmploymentStats] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [, setLoading] = useState(true);
+  const [, setError] = useState(null);
 
   useEffect(() => {
     const fetchEmploymentStats = async () => {

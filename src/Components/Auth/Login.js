@@ -10,6 +10,8 @@ function Login({ setToken }) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the API base URL from .env
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!username || !password) {
@@ -18,7 +20,7 @@ function Login({ setToken }) {
     }
 
     try {
-      const response = await axios.post('https://localhost:7050/api/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         username,
         password,
       });

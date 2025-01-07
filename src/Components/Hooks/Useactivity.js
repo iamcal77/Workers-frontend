@@ -1,10 +1,12 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { toast } from 'react-toastify';  // Import the toast library
+import { toast } from 'react-toastify'; // Import the toast library
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the API base URL from .env
 
 // Function to fetch activities
 const fetchActivityByWorkerId = async (workerId) => {
-  console.log('fetchactivityByWorkerId workerId:', workerId); // Debugging line
+  console.log('fetchActivityByWorkerId workerId:', workerId); // Debugging line
   const token = localStorage.getItem('token'); // Retrieve the token
   if (!token) {
     throw new Error('Authentication token is missing');
@@ -14,9 +16,9 @@ const fetchActivityByWorkerId = async (workerId) => {
     throw new Error('Worker ID is required');
   }
 
-  const response = await axios.get(`https://localhost:7050/api/WorkerActivities/worker/${workerId}`, {
+  const response = await axios.get(`${API_BASE_URL}/api/WorkerActivities/worker/${workerId}`, {
     headers: {
-      Authorization: `Bearer ${token}`, // Include the token in the header
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
@@ -24,21 +26,20 @@ const fetchActivityByWorkerId = async (workerId) => {
 
 // Function to add a new activity
 const createActivity = async (newActivity, workerId) => {
-  const token = localStorage.getItem('token'); // Retrieve the token
+  const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('Authentication token is missing');
   }
-  const activityWithWorkerId ={
+
+  const activityWithWorkerId = {
     ...newActivity,
     workerId: workerId,
+  };
 
-  }
-
-  const response = await axios.post('https://localhost:7050/api/WorkerActivities', activityWithWorkerId, {
+  const response = await axios.post(`${API_BASE_URL}/api/WorkerActivities`, activityWithWorkerId, {
     headers: {
-      Authorization: `Bearer ${token}`, // Include the token in the header
+      Authorization: `Bearer ${token}`,
     },
-   
   });
   return response.data;
 };
@@ -50,11 +51,15 @@ const updateActivity = async (updatedActivity) => {
     throw new Error('Authentication token is missing');
   }
 
-  const response = await axios.put(`https://localhost:7050/api/WorkerActivities/${updatedActivity.id}`, updatedActivity, {
-    headers: {
-      Authorization: `Bearer ${token}`, // Include the token in the header
-    },
-  });
+  const response = await axios.put(
+    `${API_BASE_URL}/api/WorkerActivities/${updatedActivity.id}`,
+    updatedActivity,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
 
@@ -65,9 +70,9 @@ const deleteActivity = async (activityId) => {
     throw new Error('Authentication token is missing');
   }
 
-  const response = await axios.delete(`https://localhost:7050/api/WorkerActivities/${activityId}`, {
+  const response = await axios.delete(`${API_BASE_URL}/api/WorkerActivities/${activityId}`, {
     headers: {
-      Authorization: `Bearer ${token}`, // Include the token in the header
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
@@ -75,71 +80,49 @@ const deleteActivity = async (activityId) => {
 
 // Custom hook
 const useActivity = (workerId) => {
-   const fetchActivity = async () => {
-      if (!workerId) {
-        console.error('Worker ID is missing');
-        throw new Error('Worker ID is required');
-      }
-  
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('Authentication token is missing');
-        throw new Error('Authentication token is missing');
-      }
-  
-      const response = await axios.get(`https://localhost:7050/api/WorkerActivities/worker/${workerId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data;
-    };
   const { data: activity, isLoading, error, refetch } = useQuery({
-    queryKey: ['activity'], // Query key
-    queryFn: fetchActivity, // Fetch function
-    retry: 2, // Retry option
-    refetchOnWindowFocus: false, // Refetch on window focus option
+    queryKey: ['activity'],
+    queryFn: () => fetchActivityByWorkerId(workerId),
+    retry: 2,
+    refetchOnWindowFocus: false,
   });
 
-  // Create a new activity using useMutation
   const { mutateAsync: addActivity } = useMutation({
-    mutationFn:(newActivity) => createActivity (newActivity,workerId), // Pass the mutation function as `mutationFn`
+    mutationFn: (newActivity) => createActivity(newActivity, workerId),
     onSuccess: () => {
       console.log('Activity created successfully');
-      refetch(); 
-      toast.success('Activity created successfully!');  
+      refetch();
+      toast.success('Activity created successfully!');
     },
     onError: (error) => {
-      console.error('Error creating Activity:', error);
-      toast.error('Error creating Activity');  // Show error toast
+      console.error('Error creating activity:', error);
+      toast.error('Error creating activity');
     },
   });
 
-  // Update an existing activity using useMutation
   const { mutateAsync: editActivity } = useMutation({
-    mutationFn: updateActivity, // Pass the mutation function for update
+    mutationFn: updateActivity,
     onSuccess: () => {
       console.log('Activity updated successfully');
-      refetch(); 
-      toast.success('Activity updated successfully!');  
+      refetch();
+      toast.success('Activity updated successfully!');
     },
     onError: (error) => {
-      console.error('Error updating Activity:', error);
-      toast.error('Error updating Activity');  // Show error toast
+      console.error('Error updating activity:', error);
+      toast.error('Error updating activity');
     },
   });
 
-  // Delete an activity using useMutation
   const { mutateAsync: removeActivity } = useMutation({
-    mutationFn: deleteActivity, // Pass the mutation function for delete
+    mutationFn: deleteActivity,
     onSuccess: () => {
       console.log('Activity deleted successfully');
-      refetch(); 
-      toast.success('Activity deleted successfully!');  
+      refetch();
+      toast.success('Activity deleted successfully!');
     },
     onError: (error) => {
-      console.error('Error deleting Activity:', error);
-      toast.error('Error deleting Activity');  // Show error toast
+      console.error('Error deleting activity:', error);
+      toast.error('Error deleting activity');
     },
   });
 
@@ -147,9 +130,9 @@ const useActivity = (workerId) => {
     activity,
     isLoading,
     error,
-    addActivity,  // Return the addActivity function
-    editActivity, // Return the editActivity function
-    removeActivity, // Return the removeActivity function
+    addActivity,
+    editActivity,
+    removeActivity,
   };
 };
 

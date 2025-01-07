@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+// Get the base URL from the environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const useAdminData = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,16 +15,15 @@ const useAdminData = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/admin/users', {
+        const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        }).then((response) => {
-          setTimeout(() => {
-            setUsers(response.data);
-            setLoading(false);
-          }, 2000);
-        })
+        });
+        setTimeout(() => {
+          setUsers(response.data);
+          setLoading(false);
+        }, 2000);
       } catch (err) {
         setError('Only admins view this page');
         setLoading(false);
@@ -34,7 +36,7 @@ const useAdminData = () => {
   // Delete user
   const deleteUser = async (userId) => {
     try {
-      await axios.delete(`https://localhost:7050/api/admin/users/${userId}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/users/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setUsers((prev) => prev.filter((user) => user.id !== userId));
@@ -48,18 +50,10 @@ const useAdminData = () => {
   // Update user role
   const updateUserRole = async (userId, updatedData) => {
     try {
-      // Ensure that the role is passed correctly in the body
-      const dataToSend = {
-        Role: updatedData.role,  // Make sure the field is capitalized as `Role`
-      };
-  
-      await axios.put(
-        `https://localhost:7050/api/admin/users/${userId}`,
-        dataToSend,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        }
-      );
+      const dataToSend = { Role: updatedData.role };
+      await axios.put(`${API_BASE_URL}/api/admin/users/${userId}`, dataToSend, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
       setUsers((prev) =>
         prev.map((user) => (user.id === userId ? { ...user, ...updatedData } : user))
       );
@@ -68,8 +62,6 @@ const useAdminData = () => {
       toast.error('Failed to update user role');
     }
   };
-  
-  
 
   const toggleForm = () => {
     setShowForm((prev) => !prev);

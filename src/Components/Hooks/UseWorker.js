@@ -2,6 +2,9 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+// Get the API base URL dynamically
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 // Format date to "yyyy-MM-dd"
 const formatDate = (dateString) => {
   if (!dateString) return ''; // Return empty string if dateString is undefined or null
@@ -12,11 +15,21 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day}`;
 };
 
+// Helper function to get the auth token
+const getAuthToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+  return token;
+};
+
 // Fetch workers
 const fetchWorkers = async () => {
-  const token = localStorage.getItem('token');
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  const response = await axios.get('https://localhost:7050/api/workers', {
+  const token = getAuthToken();
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a delay for loading
+
+  const response = await axios.get(`${API_BASE_URL}/api/workers`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -33,10 +46,9 @@ const fetchWorkers = async () => {
 
 // Create a new worker
 const createWorker = async (newWorker) => {
-  const token = localStorage.getItem('token');
-  console.log('Fetched Token for creation:', token);
+  const token = getAuthToken();
 
-  const response = await axios.post('https://localhost:7050/api/workers', newWorker, {
+  const response = await axios.post(`${API_BASE_URL}/api/workers`, newWorker, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -46,24 +58,19 @@ const createWorker = async (newWorker) => {
 
 // Update a worker
 const updateWorker = async ({ id, updatedWorker }) => {
-  // Check if updatedWorker is undefined or missing
   if (!updatedWorker) {
-    console.error('Updated worker data is missing:', updatedWorker);
     throw new Error('Updated worker data is missing');
   }
 
-  const token = localStorage.getItem('token');
-  console.log('Fetched Token for update:', token);
-  console.log('Updating Worker with data:', updatedWorker);
-
-  // Ensure updatedWorker contains the required properties
+  const token = getAuthToken();
   const { dateOfBirth, ...otherData } = updatedWorker;
+
   const formattedWorker = {
     ...otherData,
     dateOfBirth: dateOfBirth ? formatDate(dateOfBirth) : '', // Ensure it's a valid date string
   };
 
-  const response = await axios.put(`https://localhost:7050/api/workers/${id}`, formattedWorker, {
+  const response = await axios.put(`${API_BASE_URL}/api/workers/${id}`, formattedWorker, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },

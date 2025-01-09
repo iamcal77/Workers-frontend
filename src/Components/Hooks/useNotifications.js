@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-// Custom hook to handle notifications
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Use the environment variable
+
 const useNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ const useNotifications = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('https://localhost:7050/api/notifications', {
+      const response = await axios.get(`${API_BASE_URL}/notifications`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure token is available
         },
@@ -43,7 +44,7 @@ const useNotifications = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('https://localhost:7050/api/notifications', notification, {
+      const response = await axios.post(`${API_BASE_URL}/notifications`, notification, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -66,7 +67,7 @@ const useNotifications = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.put(`https://localhost:7050/api/notifications/${notificationId}`, updatedNotification, {
+      const response = await axios.put(`${API_BASE_URL}/notifications/${notificationId}`, updatedNotification, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure token is available
         },
@@ -88,7 +89,7 @@ const useNotifications = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.delete(`https://localhost:7050/api/notifications/${notificationId}`, {
+      const response = await axios.delete(`${API_BASE_URL}/notifications/${notificationId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure token is available
         },

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const usePaidWorkers = () => {
   const [paidWorkers, setPaid] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,14 +18,14 @@ const usePaidWorkers = () => {
     }
 
     axios
-      .get('https://localhost:7050/api/workers/paid-workers', {
+      .get(`${API_BASE_URL}/api/workers/paid-workers`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         setTimeout(() => {
-            setPaid(response.data);
+          setPaid(response.data);
           setIsLoading(false);
         }, 2000);
       })

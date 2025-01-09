@@ -5,6 +5,9 @@ import DotLoader from '../Loader/Loader';
 import { useParams } from 'react-router-dom';
 import ActionBar from '../ActionBar';
 
+// Use the base URL from environment variables
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function ActivityDetails({ onLogout }) {
   const [activity, setActivity] = useState(null);
   const { id } = useParams(); // Get the activity ID from the URL
@@ -23,7 +26,7 @@ function ActivityDetails({ onLogout }) {
 
       try {
         setTimeout(async () => {
-          const response = await axios.get(`https://localhost:7050/api/WorkerActivities/${id}`, {
+          const response = await axios.get(`${API_BASE_URL}/WorkerActivities/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
             },
@@ -43,12 +46,12 @@ function ActivityDetails({ onLogout }) {
   return (
     <Layout onLogout={onLogout}>
       <ActionBar
-       showBackButton={true}
-       showDeleteButton={false}
-       showEditButton={false}
-       showAddButton={false}
-       showExportToExcelButton={ true}
-       />
+        showBackButton={true}
+        showDeleteButton={false}
+        showEditButton={false}
+        showAddButton={false}
+        showExportToExcelButton={true}
+      />
 
       {loading ? (
         <div className="flex justify-center items-center h-full">
@@ -56,57 +59,55 @@ function ActivityDetails({ onLogout }) {
         </div>
       ) : (
         <div id="page-content">
+          <div className="p-6 bg-white shadow-md rounded-lg h-screen overflow-y-auto">
+            <h1 className="text-2xl font-bold text-gray-800 mb-6 mt-7">Activity Details</h1>
 
-        <div className="p-6 bg-white shadow-md rounded-lg h-screen overflow-y-auto">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6 mt-7">Activity Details</h1>
-
-          {/* Tailwind-styled Details Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-sm">
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Worker ID:</span>
-              <span className="text-gray-900">{activity.workerId}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Activity Name:</span>
-              <span className="text-gray-900">{activity.activityName}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Description:</span>
-              <span className="text-gray-900">{activity.description}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Start Date:</span>
-              <span className="text-gray-900">
-                {new Date(activity.startDate).toLocaleString()}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">End Date:</span>
-              <span className="text-gray-900">
-                {new Date(activity.endDate).toLocaleString()}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Status:</span>
-              <span className="text-gray-900">{activity.isCompleted ? 'Completed' : 'Pending'}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Created Date:</span>
-              <span className="text-gray-900">
-                {new Date(activity.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-semibold text-gray-700 w-40">Updated Date:</span>
-              <span className="text-gray-900">
-                {new Date(activity.updatedAt).toLocaleDateString()}
-              </span>
+            {/* Tailwind-styled Details Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-sm">
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Worker ID:</span>
+                <span className="text-gray-900">{activity.workerId}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Activity Name:</span>
+                <span className="text-gray-900">{activity.activityName}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Description:</span>
+                <span className="text-gray-900">{activity.description}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Start Date:</span>
+                <span className="text-gray-900">
+                  {new Date(activity.startDate).toLocaleString()}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">End Date:</span>
+                <span className="text-gray-900">
+                  {new Date(activity.endDate).toLocaleString()}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Status:</span>
+                <span className="text-gray-900">{activity.isCompleted ? 'Completed' : 'Pending'}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Created Date:</span>
+                <span className="text-gray-900">
+                  {new Date(activity.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 w-40">Updated Date:</span>
+                <span className="text-gray-900">
+                  {new Date(activity.updatedAt).toLocaleDateString()}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        </div>
       )}
-
     </Layout>
   );
 }

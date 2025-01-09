@@ -14,6 +14,8 @@ import { LuLayoutDashboard } from 'react-icons/lu';
 import PaymentStatusDashboard from '../Dashboards/PaymentStatusDashboard';
 import EmploymentStatsDashboard from '../Dashboards/EmploymentStatsDashboard';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function AdminDashboard({ token, onLogout }) {
   const [activitiesCompleted, setActivitiesCompleted] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
@@ -28,7 +30,7 @@ function AdminDashboard({ token, onLogout }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/admin/users', {
+        const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -53,7 +55,7 @@ function AdminDashboard({ token, onLogout }) {
 
     const fetchActivities = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/WorkerActivities/completed', {
+        const response = await axios.get(`${API_BASE_URL}/api/WorkerActivities/completed`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setActivitiesCompleted(response.data.length);
@@ -64,7 +66,7 @@ function AdminDashboard({ token, onLogout }) {
 
     const fetchCompletedTasks = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/WorkerTasks/completed', {
+        const response = await axios.get(`${API_BASE_URL}/api/WorkerTasks/completed`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTasksCompleted(response.data.length);

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const usePending = () => {
   const [pendingWorkers, setPending] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,14 +18,14 @@ const usePending = () => {
     }
 
     axios
-      .get('https://localhost:7050/api/workers/pending-workers', {
+      .get(`${API_BASE_URL}/api/workers/pending-workers`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         setTimeout(() => {
-            setPending(response.data);
+          setPending(response.data);
           setIsLoading(false);
         }, 2000);
       })

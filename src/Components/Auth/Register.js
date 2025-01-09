@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios'; // Import axios
 import 'react-toastify/dist/ReactToastify.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Add the API base URL from environment variables
+
 function Register() {
   const [formData, setFormData] = useState({
     username: '',
@@ -32,8 +34,8 @@ function Register() {
     }
 
     try {
-      // Make the POST request to the registration endpoint
-      const response = await axios.post('https://localhost:7050/api/auth/register', formData, {
+      // Make the POST request to the registration endpoint using the API base URL
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -7,6 +7,8 @@ import ActionBar from '../ActionBar';
 import { FaInfoCircle, FaTasks } from 'react-icons/fa';
 import { FiActivity } from 'react-icons/fi';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Get API base URL from env
+
 function WorkerDetails({ onLogout }) {
   const [worker, setWorker] = useState(null);
   const { id } = useParams();
@@ -27,7 +29,7 @@ function WorkerDetails({ onLogout }) {
 
       try {
         setTimeout(async () => {
-          const response = await axios.get(`https://localhost:7050/api/workers/${id}`, {
+          const response = await axios.get(`${API_BASE_URL}/api/workers/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -68,12 +70,12 @@ function WorkerDetails({ onLogout }) {
   return (
     <Layout onLogout={onLogout}>
       <ActionBar
-       showBackButton={true}
-       showDeleteButton={false}
-       showEditButton={false}
-       showAddButton={false}
-       showExportToExcelButton={ true}
-       />
+        showBackButton={true}
+        showDeleteButton={false}
+        showEditButton={false}
+        showAddButton={false}
+        showExportToExcelButton={true}
+      />
       <div className="flex h-screen mt-8 mr-5">
         {/* Sidebar */}
         <div className="w-16 bg-gray-200 border-r border-gray-300 flex flex-col items-center py-4">
@@ -111,64 +113,64 @@ function WorkerDetails({ onLogout }) {
               <h1 className="text-2xl font-bold text-gray-800 mb-6 mt-7">Worker Details</h1>
               <div id="page-content">
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-sm">
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Name:</span>
-                  <span className="text-gray-900">{worker.name}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-sm">
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Name:</span>
+                    <span className="text-gray-900">{worker.name}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Location:</span>
+                    <span className="text-gray-900">{worker.location}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Contact:</span>
+                    <span className="text-gray-900">{worker.contact}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">National ID:</span>
+                    <span className="text-gray-900">{worker.nationalId}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Date of Birth:</span>
+                    <span className="text-gray-900">{worker.dateOfBirth}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Gender:</span>
+                    <span className="text-gray-900">{worker.gender}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Employment Type:</span>
+                    <span className="text-gray-900">{worker.employmentType}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Start Date:</span>
+                    <span className="text-gray-900">{new Date(worker.startDate).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">End Date:</span>
+                    <span className="text-gray-900">{new Date(worker.endDate).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Payment Amount:</span>
+                    <span className="text-gray-900">{worker.payment}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Payment Status:</span>
+                    <span className="text-gray-900">{worker.paymentStatus}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Approval Status:</span>
+                    <span className="text-gray-900">{worker.status}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Created At:</span>
+                    <span className="text-gray-900">{new Date(worker.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700 w-40">Updated At:</span>
+                    <span className="text-gray-900">{new Date(worker.updatedAt).toLocaleDateString()}</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Location:</span>
-                  <span className="text-gray-900">{worker.location}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Contact:</span>
-                  <span className="text-gray-900">{worker.contact}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">National ID:</span>
-                  <span className="text-gray-900">{worker.nationalId}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Date of Birth:</span>
-                  <span className="text-gray-900">{worker.dateOfBirth}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Gender:</span>
-                  <span className="text-gray-900">{worker.gender}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Employment Type:</span>
-                  <span className="text-gray-900">{worker.employmentType}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Start Date:</span>
-                  <span className="text-gray-900">{new Date(worker.startDate).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">End Date:</span>
-                  <span className="text-gray-900">{new Date(worker.endDate).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Payment Amount:</span>
-                  <span className="text-gray-900">{worker.payment}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Payment Status:</span>
-                  <span className="text-gray-900">{worker.paymentStatus}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Approval Status:</span>
-                  <span className="text-gray-900">{worker.status}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Created At:</span>
-                  <span className="text-gray-900">{new Date(worker.createdAt).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700 w-40">Updated At:</span>
-                  <span className="text-gray-900">{new Date(worker.updatedAt).toLocaleDateString()}</span>
-                </div>
-              </div>
               </div>
             </>
           )}

@@ -2,12 +2,14 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const fetchTasksByWorkerId = async (workerId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
   if (!workerId) throw new Error('Worker ID is required');
 
-  const response = await axios.get(`https://localhost:7050/api/workertasks/worker/${workerId}`, {
+  const response = await axios.get(`${API_BASE_URL}/api/workertasks/worker/${workerId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -21,7 +23,7 @@ const createTask = async (newTask, workerId) => {
   }
 
   const response = await axios.post(
-    'https://localhost:7050/api/workertasks',
+    `${API_BASE_URL}/api/workertasks`,
     { ...newTask, workerId },
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -36,7 +38,7 @@ const updateTask = async (updatedTask) => {
   }
 
   const response = await axios.put(
-    `https://localhost:7050/api/workertasks/${updatedTask.id}`,
+    `${API_BASE_URL}/api/workertasks/${updatedTask.id}`,
     updatedTask,
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -47,7 +49,7 @@ const deleteTask = async (taskId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
 
-  const response = await axios.delete(`https://localhost:7050/api/workertasks/${taskId}`, {
+  const response = await axios.delete(`${API_BASE_URL}/api/workertasks/${taskId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -60,7 +62,7 @@ const filterTasksByDate = async (workerId, startDate, endDate) => {
   if (!startDate || !endDate) throw new Error('Start Date and End Date are required');
 
   const response = await axios.get(
-    `https://localhost:7050/api/workertasks/filter`,
+    `${API_BASE_URL}/api/workertasks/filter`,
     {
       params: { workerId, startDate, endDate },
       headers: { Authorization: `Bearer ${token}` },

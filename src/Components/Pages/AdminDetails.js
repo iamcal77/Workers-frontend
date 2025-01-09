@@ -5,6 +5,8 @@ import DotLoader from '../Loader/Loader';
 import { useParams } from 'react-router-dom';
 import ActionBar from '../ActionBar';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function AdminDetails({ onLogout }) {
   const [admin, setAdmin] = useState(null);
   const { id } = useParams(); // Get the admin ID from the URL
@@ -24,7 +26,7 @@ function AdminDetails({ onLogout }) {
     const fetchAdminDetails = async () => {
       try {
         setTimeout(async () => {
-          const response = await axios.get(`https://localhost:7050/api/admin/users/${id}`, {
+          const response = await axios.get(`${API_BASE_URL}/api/admin/users/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the request header
             },

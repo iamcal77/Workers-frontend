@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { PieChart, Series, Label, Legend, Tooltip } from "devextreme-react/pie-chart";
 import axios from "axios";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Get API base URL from environment variables
+
 const PaymentStatusDashboard = () => {
   const [paymentStats, setPaymentStats] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("https://localhost:7050/api/workers/payment-stats", {
+      .get(`${API_BASE_URL}/api/workers/payment-stats`, { // Use the dynamic API base URL
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => setPaymentStats(response.data))

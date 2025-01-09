@@ -4,6 +4,8 @@ import { Chart, Series, Legend, ArgumentAxis, ValueAxis, Tooltip } from 'devextr
 import 'devextreme/dist/css/dx.light.css';
 import { Title } from 'devextreme-react/cjs/circular-gauge';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Add the API base URL from environment variables
+
 function EmploymentStatsDashboard() {
   const [employmentStats, setEmploymentStats] = useState([]);
   const [, setLoading] = useState(true);
@@ -14,7 +16,8 @@ function EmploymentStatsDashboard() {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get('https://localhost:7050/api/workers/employment-stats', {
+        // Use API_BASE_URL for the endpoint
+        const response = await axios.get(`${API_BASE_URL}/api/workers/employment-stats`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEmploymentStats(response.data);
@@ -27,8 +30,6 @@ function EmploymentStatsDashboard() {
 
     fetchEmploymentStats();
   }, []);
-
-  
 
   return (
     <div className="container">

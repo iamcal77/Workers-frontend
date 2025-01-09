@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const useCompletedActivities = () => {
   const [completedActivities, setCompletedActivities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +18,7 @@ const useCompletedActivities = () => {
     }
 
     axios
-      .get('https://localhost:7050/api/WorkerActivities/completed', {
+      .get(`${API_BASE_URL}/api/WorkerActivities/completed`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

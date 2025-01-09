@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+
 const fetchTasksByWorkerId = async (workerId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
@@ -23,7 +24,7 @@ const createTask = async (newTask, workerId) => {
   }
 
   const response = await axios.post(
-    `${API_BASE_URL}/api/workertasks`,
+    `${API_BASE_URL}api/workertasks`,
     { ...newTask, workerId },
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -38,7 +39,7 @@ const updateTask = async (updatedTask) => {
   }
 
   const response = await axios.put(
-    `${API_BASE_URL}/api/workertasks/${updatedTask.id}`,
+    `${API_BASE_URL}api/workertasks/${updatedTask.id}`,
     updatedTask,
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -49,7 +50,7 @@ const deleteTask = async (taskId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
 
-  const response = await axios.delete(`${API_BASE_URL}/api/workertasks/${taskId}`, {
+  const response = await axios.delete(`${API_BASE_URL}api/workertasks/${taskId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;

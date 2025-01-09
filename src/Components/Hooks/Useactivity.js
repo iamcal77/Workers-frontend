@@ -2,7 +2,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import the toast library
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the API base URL from .env
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Function to fetch activities
 const fetchActivityByWorkerId = async (workerId) => {

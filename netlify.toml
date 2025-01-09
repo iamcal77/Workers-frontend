@@ -9,7 +9,7 @@ GENERATE_SOURCEMAP = "false"
 # Redirect for API requests
 [[redirects]]
 from = "/api/*"
-to = "http://efficio-dev.eba-333pnkfu.us-east-1.elasticbeanstalk.com/:splat"
+to = "https://efficioweb-dwcch4drcucybdc3.canadacentral-01.azurewebsites.net/:splat"
 status = 200
 force = true
 

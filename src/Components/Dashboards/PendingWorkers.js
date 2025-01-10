@@ -32,7 +32,6 @@ const PendingWorkers = () => {
         showAddButton={false}
         showExportToExcelButton={false}
         exportPage={true} // Pass exportPage prop if you want to handle page export functionality
-        pageTitle={pageTitle} // Pass the page title to ActionBar
       />
       
       <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">

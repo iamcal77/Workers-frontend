@@ -6,7 +6,6 @@ import { RiAdminLine } from 'react-icons/ri';
 import { MdLogout } from "react-icons/md";
 import { FcInspection } from "react-icons/fc";
 
-
 function Sidebar() {
   const location = useLocation(); // Get current location
 
@@ -15,10 +14,8 @@ function Sidebar() {
 
   return (
     <div className="w-41 h-screen bg-gray-200 text-black p-5 fixed left-0 top-0 flex flex-col">
-      <h2 className="text-2xl font-bold text-center mb-8"></h2>
-
       <ul className="flex-grow">
-      <li className={`mb-4 flex items-center ${isActive('/admin')}`}>
+        <li className={`mb-4 flex items-center mt-7 ${isActive('/admin')}`}>
           <Link to="/admin" className="hover:text-gray-400 flex items-center">
             <RiAdminLine className="mr-2 text-green-500 text-2xl" />
             Admin

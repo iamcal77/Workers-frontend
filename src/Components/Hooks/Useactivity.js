@@ -77,6 +77,22 @@ const deleteActivity = async (activityId) => {
   });
   return response.data;
 };
+//filter
+const filterActivityByDate = async (workerId, startDate, endDate) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication token is missing');
+  if (!workerId) throw new Error('Worker ID is required');
+  if (!startDate || !endDate) throw new Error('Start Date and End Date are required');
+
+  const response = await axios.get(
+    `${API_BASE_URL}/api/WorkerActivities/filter`,
+    {
+      params: { workerId, startDate, endDate },
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return response.data;
+};
 
 // Custom hook
 const useActivity = (workerId) => {
@@ -126,6 +142,18 @@ const useActivity = (workerId) => {
     },
   });
 
+   const { mutateAsync: filterActivities } = useMutation({
+      mutationFn: ({ startDate, endDate }) => filterActivityByDate(workerId, startDate, endDate),
+      onSuccess: (data) => {
+        toast.success('Tasks filtered successfully!');
+        return data; // Return filtered data for usage
+      },
+      onError: (error) => {
+        console.error('Error filtering tasks:', error);
+        toast.error('Error filtering tasks');
+      },
+    });
+
   return {
     activity,
     isLoading,
@@ -133,6 +161,7 @@ const useActivity = (workerId) => {
     addActivity,
     editActivity,
     removeActivity,
+    filterActivities // Expose the filter functionality
   };
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DotLoader from '../Loader/Loader';
 import { DataGrid, Column, Paging, SearchPanel, Pager } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ProgressBar from 'devextreme-react/cjs/progress-bar';
 import useActivity from '../Hooks/Useactivity';
 import { toast } from 'react-toastify';
+import TaskFilter from '../Filters/TaskFilter';
 
 function Activities({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
@@ -18,18 +19,47 @@ function Activities({ onLogout }) {
   const navigate = useNavigate();
   const {id:workerId} = useParams();
   const { activity, isLoading, error, addActivity,editActivity, removeActivity} = useActivity(workerId);
-  const [selectedRow, setSelectedRow] = useState(null); // Track selected row for background color
+  const [selectedRow, setSelectedRow] = useState(null); 
+  const [filteredActivity, setFilteredTasks] = useState([]);
   
 
   
+   useEffect(() => {
+      if (activity) {
+        setFilteredTasks(activity);  
+      }
+    }, [activity]);
+
   const toggleForm = () => {
     setShowForm(prev =>!prev);
   };
-
-
   const handleDetailsClick = (id) => {
     navigate(`/activity/${id}`);
   };
+   const handleFilter = ({ startDate, endDate }) => {
+      if (startDate && endDate) {
+        // Normalize the start and end dates by setting the time to midnight
+        const normalizedStartDate = new Date(startDate);
+        normalizedStartDate.setHours(0, 0, 0, 0);
+    
+        const normalizedEndDate = new Date(endDate);
+        normalizedEndDate.setHours(23, 59, 59, 999);
+    
+        // Apply the filter
+        const filtered = activity.filter((activity) => {
+          const taskStartDate = new Date(activity.startDate);
+          const taskEndDate = new Date(activity.endDate);
+    
+          // Compare dates with normalized time values
+          return taskStartDate >= normalizedStartDate && taskEndDate <= normalizedEndDate;
+        });
+    
+        setFilteredTasks(filtered);
+      } else {
+        console.error('Please provide both start date and end date');
+        toast.error('Please provide both start date and end date');
+      }
+    };
 
   const handleAddActivity = (newActivity) => {
     if (editingActivity) {
@@ -81,6 +111,7 @@ function Activities({ onLogout }) {
           Activities
          </h1>
 
+         <TaskFilter onFilter={handleFilter} />
 
         {showForm && 
         <ActivityForm 
@@ -101,7 +132,7 @@ function Activities({ onLogout }) {
         ) : (
           <div id="page-content">
             <DataGrid
-              dataSource={activity}
+              dataSource={filteredActivity}
               keyExpr="id"
               showRowLines={true}
               showBorders={true}

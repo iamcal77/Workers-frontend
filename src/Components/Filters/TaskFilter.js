@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { DateBox } from 'devextreme-react/date-box';
 import { FaFilter } from 'react-icons/fa';
 
 function TaskFilter({ onFilter }) {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const handleFilter = () => {
     onFilter({ startDate, endDate });
@@ -11,21 +12,28 @@ function TaskFilter({ onFilter }) {
 
   return (
     <div className="flex space-x-4 mb-4">
-      <input
+      {/* Start Date Filter */}
+      <DateBox
         type="date"
         value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-        className="border px-2 py-1 rounded"
+        onValueChanged={(e) => setStartDate(e.value)}
         placeholder="Start Date"
+        displayFormat="yyyy-MM-dd"
+        className="w-40"
       />
-      <input
+
+      {/* End Date Filter */}
+      <DateBox
         type="date"
         value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-        className="border px-2 py-1 rounded"
+        onValueChanged={(e) => setEndDate(e.value)}
         placeholder="End Date"
+        displayFormat="yyyy-MM-dd"
+        className="w-40"
       />
-        <button
+
+      {/* Filter Button */}
+      <button
         onClick={handleFilter}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-300 flex items-center space-x-2"
         >

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserCircle, FaCamera } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
-import useAdminData from './Hooks/useAdminData';
+import { useCurrentUser } from './Hooks/useAdminData';
 
 function ProfileMenu() {
-  const { users, loading, error } = useAdminData(); // Fetch users using the custom hook
+  const { currentUser, loading, error } = useCurrentUser(); // Use the hook for current user
   const [isOpen, setIsOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState(null); 
+  const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
@@ -35,9 +35,6 @@ function ProfileMenu() {
       reader.readAsDataURL(file);
     }
   };
-
-  // Get the current user (for example, the first user in the list)
-  const currentUser = users.length > 0 ? users[0] : null;
 
   if (loading) return <div>Loading...</div>; // Show loading state
   if (error) return <div className="text-red-500">{error}</div>; // Show error state

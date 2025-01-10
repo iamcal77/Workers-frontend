@@ -77,5 +77,32 @@ const useAdminData = () => {
     toggleForm,
   };
 };
+export const useCurrentUser = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch current user's details
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/users/me`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setCurrentUser(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to fetch user details');
+        setLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  return { currentUser, loading, error };
+};
 
 export default useAdminData;

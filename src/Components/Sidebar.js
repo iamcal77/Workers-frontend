@@ -15,7 +15,7 @@ function Sidebar() {
 
   return (
     <div className="w-41 h-screen bg-gray-200 text-black p-5 fixed left-0 top-0 flex flex-col">
-      <h2 className="text-2xl font-bold text-center mb-8">FarmFlow</h2>
+      <h2 className="text-2xl font-bold text-center mb-8"></h2>
 
       <ul className="flex-grow">
       <li className={`mb-4 flex items-center ${isActive('/admin')}`}>

@@ -4,6 +4,7 @@ import ActionBar from '../ActionBar';
 import NotificationForm from '../Forms/NotificationForm';
 import useNotifications from '../Hooks/useNotifications';
 import DotLoader from '../Loader/Loader';
+import { toast } from 'react-toastify';
 
 function NotificationsPage({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
@@ -11,40 +12,45 @@ function NotificationsPage({ onLogout }) {
   const [editingNotification, setEditingNotification] = useState(null); // Track task being edited
   const { notifications = [], loading, error, postNotification, updateNotification, deleteNotification } = useNotifications();
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   const toggleForm = () => {
     setShowForm((prev) => !prev);
   };
 
   const handlePostNotification = (notification) => {
-    if (selectedNotifications.length > 0) {
-      // When editing, avoid passing the ID if it's auto-generated
-      updateNotification(selectedNotifications[0], {
-        title: notification.title,
-        message: notification.message,
-        // other fields to be updated
+    // Ensure you're only sending the necessary fields for update or create
+    if (selectedNotifications.length === 1) {
+      // For editing, call updateNotification with the id
+      const notificationId = selectedNotifications[0];
+      updateNotification(notificationId, {
+        ...notification, // Update the title, message, etc.
       });
     } else {
-      // When posting new notification, do not include ID
+      // When posting a new notification, do not include ID
       postNotification({
         title: notification.title,
         message: notification.message,
-        // other fields
+        // any other fields to create a new notification
       });
     }
     setShowForm(false);
   };
-  
 
   const handleUpdateNotification = () => {
-    const notificationId = selectedNotifications[0]; 
-    const notificationToEdit = notifications.find((notif) => notif.id === notificationId);
+    console.log("Selected Notifications for Edit:", selectedNotifications);  // Debugging line
 
-    if (notificationToEdit) {
-      setEditingNotification(notificationToEdit);
-      toggleForm();
+    if (selectedNotifications.length === 1) {
+      const notificationId = selectedNotifications[0];
+      const notificationToEdit = notifications.find((notif) => notif.id === notificationId);
+
+      if (notificationToEdit) {
+        setEditingNotification(notificationToEdit);
+        toggleForm();
+      }
+    } else {
+      // Handle case where no or multiple notifications are selected for editing
+      toast("Please select one notification to edit.");
     }
   };
 
@@ -56,11 +62,12 @@ function NotificationsPage({ onLogout }) {
 
   const handleSelectNotification = (notifId) => {
     setSelectedNotifications((prevSelected) => {
-      if (prevSelected.includes(notifId)) {
-        return prevSelected.filter((id) => id !== notifId);
-      } else {
-        return [...prevSelected, notifId];
-      }
+      const newSelected = prevSelected.includes(notifId)
+        ? prevSelected.filter((id) => id !== notifId)
+        : [...prevSelected, notifId];
+
+      console.log("Selected Notifications:", newSelected);  // Debugging line
+      return newSelected;
     });
   };
 

@@ -79,13 +79,16 @@ function Navbar() {
 
       <div className="flex-1"></div>
 
-      <SearchBar onSearch={handleSearch} />
+      {/* Centered Search Bar */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 mt-2">
+        <SearchBar onSearch={handleSearch} />
+      </div>
 
       <div className="flex-1"></div>
 
       <div className="relative mr-3">
         <FaBell
-          className="text-2xl  cursor-pointer hover:text-yellow-300 transition duration-300"
+          className="text-2xl cursor-pointer hover:text-yellow-300 transition duration-300"
           onClick={handleNotificationClick}
         />
         {unreadCount > 0 && (
@@ -97,6 +100,7 @@ function Navbar() {
 
       <ProfileMenu />
 
+      {/* Notifications Dropdown */}
       {showNotifications && notifications.length > 0 && (
         <div className="absolute top-14 right-0 bg-white shadow-lg rounded-lg w-64 p-4 max-h-60 overflow-y-auto">
           <h3 className="font-semibold text-lg mb-2">Notifications</h3>

@@ -22,6 +22,7 @@ const postNotificationToApi = async (notification) => {
   return response.data;
 };
 
+
 const updateNotificationToApi = async (notificationId, updatedNotification) => {
   const { id, ...notificationToUpdate } = updatedNotification;
   const response = await axios.put(`${API_BASE_URL}/api/notifications/${notificationId}`, notificationToUpdate, {
@@ -31,6 +32,8 @@ const updateNotificationToApi = async (notificationId, updatedNotification) => {
   });
   return response.data;
 };
+
+
 
 const deleteNotificationFromApi = async (notificationId) => {
   await axios.delete(`${API_BASE_URL}/api/notifications/${notificationId}`, {

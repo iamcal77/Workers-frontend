@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DataGrid, { Column, Paging, SearchPanel } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Pager, Paging, SearchPanel } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
@@ -27,6 +27,8 @@ const AdminPage = ({ onLogout }) => {
   const [selectedUser, setSelectedUser] = useState(null); 
   const navigate = useNavigate();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null); // Track selected row for background color
+  
   
 
   const handleAddClick = () => {
@@ -35,10 +37,11 @@ const AdminPage = ({ onLogout }) => {
   };
 
   const handleEditClick = () => {
-    if (!selectedUser) {
+    if (!selectedRow) {
       toast('Please select a user to edit.');
       return;
     }
+    setSelectedUser(selectedRow); 
     setShowForm(true);
   };
 
@@ -125,30 +128,45 @@ const AdminPage = ({ onLogout }) => {
               onCancel={handleCancel}
             />
           ) : (
+            <div id="page-content">
             <DataGrid
               dataSource={users}
               keyField="id"
               showBorders={true}
-              onRowClick={handleRowClick}
+              onRowClick={(e) => setSelectedRow(e.data)} 
               showColumnLines={true}
               showRowLines={true}
               showColumnHeaders={true}
+              className="w-full"
+              style={{ height: 'calc(100vh - 150px)' }} 
               onRowDblClick={(e) => {
                 if (e?.data?.id) {
                   handleDetailsClick(e.data.id); // Pass the farmer's ID to the handler
                 }
               }} 
+              onRowPrepared={(e) => {
+                // Ensure e.data exists before trying to access its properties
+                if (e.data && e.rowElement) {
+                  if (selectedRow && selectedRow.id === e.data.id) {
+                    e.rowElement.style.backgroundColor = '#cce5ff'; // Apply background color to selected row
+                  } else {
+                    e.rowElement.style.backgroundColor = ''; // Remove background color for unselected rows
+                  }
+                }
+              }}
             >
             <SearchPanel
                 visible ={true}
               />
               <Paging defaultPageSize={10} />
+              <Pager visible={true} />
               <Column dataField="username" />
               <Column dataField="role" />
               <Column dataField="name" />
               <Column dataField="email" />
               <Column dataField="contact" />
             </DataGrid>
+            </div>
           )}
         </>
       )}

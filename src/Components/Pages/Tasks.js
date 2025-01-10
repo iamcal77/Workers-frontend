@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging, SearchPanel } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, SearchPanel, Pager } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { FaTasks } from "react-icons/fa";
 import Layout from '../Layout';
@@ -19,6 +19,8 @@ function Tasks({ onLogout }) {
   const [filteredTasks, setFilteredTasks] = useState([]);
   const navigate = useNavigate();
   const { id: workerId } = useParams();
+  const [selectedRow, setSelectedRow] = useState(null); // Track selected row for background color
+  
 
   const { tasks, isLoading, error, addTask, editTask, removeTask } = useTasks(workerId); // Pass workerId here
 
@@ -75,16 +77,17 @@ function Tasks({ onLogout }) {
   };
 
   const handleEditClick = () => {
-    if (!editingTask) {
+    if (!selectedRow) {
       toast('Please select a task to edit')
       return;
     }
+    setEditingTask(selectedRow); 
     setShowForm(true);
   };
 
   const handleDeleteClick = () => {
-    if (editingTask) {
-      removeTask(editingTask.id)
+    if (selectedRow) {
+      removeTask(selectedRow.id)
         .then(() => {
           setEditingTask(null); // Clear editing task after deletion
         })
@@ -143,13 +146,24 @@ function Tasks({ onLogout }) {
                 handleDetailsClick(e.data.id);
               }
             }}
-            onRowClick={(e) => setEditingTask(e.data)} 
+            onRowClick={(e) => setSelectedRow(e.data)} 
             className="w-full"
             style={{ height: 'calc(100vh - 150px)' }} 
             columnHidingEnabled={true}
+            onRowPrepared={(e) => {
+              // Ensure e.data exists before trying to access its properties
+              if (e.data && e.rowElement) {
+                if (selectedRow && selectedRow.id === e.data.id) {
+                  e.rowElement.style.backgroundColor = '#cce5ff'; // Apply background color to selected row
+                } else {
+                  e.rowElement.style.backgroundColor = ''; // Remove background color for unselected rows
+                }
+              }
+            }}
           >
             <SearchPanel visible={true} />
             <Paging defaultPageSize={10} />
+            <Pager visible={true} />
             <Column dataField="id" caption="ID" />
             <Column dataField="workerId" caption="Worker ID" />
             <Column dataField="taskName" caption="Task Name" />

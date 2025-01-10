@@ -26,7 +26,7 @@ function ActivityDetails({ onLogout }) {
 
       try {
         setTimeout(async () => {
-          const response = await axios.get(`${API_BASE_URL}/WorkerActivities/${id}`, {
+          const response = await axios.get(`${API_BASE_URL}/api/WorkerActivities/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
             },

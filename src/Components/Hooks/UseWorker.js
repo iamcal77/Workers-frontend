@@ -64,7 +64,7 @@ const updateWorker = async ({ id, updatedWorker }) => {
     dateOfBirth: dateOfBirth ? formatDate(dateOfBirth) : '', // Ensure it's a valid date string
   };
 
-  const response = await axios.put(`${API_BASE_URL}api/workers/workers/${id}`, formattedWorker, {
+  const response = await axios.put(`${API_BASE_URL}/api/workers/${id}`, formattedWorker, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },

@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../Layout';
 import usePostNotification from '../Hooks/useNotifications'; // Import the custom hook
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import TextBox from 'devextreme-react/text-box'; // Import TextBox from DevExtreme
 import TextArea from 'devextreme-react/text-area'; // Import TextArea from DevExtreme
 
-const NotificationForm = ({ onCancel,initialData }) => {  // Destructure onCancel from props
+const NotificationForm = ({ onCancel, initialData }) => {  // Destructure onCancel from props
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
 
   const { postNotification, loading } = usePostNotification(); // Use the hook to post notifications
+
+  // Use useEffect to update title and message if initialData changes
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title || '');  // Set initial title from initialData
+      setMessage(initialData.message || '');  // Set initial message from initialData
+    }
+  }, [initialData]);  // Dependency on initialData to re-run whenever it changes
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +25,7 @@ const NotificationForm = ({ onCancel,initialData }) => {  // Destructure onCance
     const notification = {
       title,
       message,
-      ...initialData
+      ...initialData // Spread initialData if available
     };
 
     // Post notification using the custom hook
@@ -32,10 +40,10 @@ const NotificationForm = ({ onCancel,initialData }) => {  // Destructure onCance
     <Layout>
       <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
         <h2 className="text-2xl font-medium text-gray-700 mb-4">
-          {initialData?'Edit Notification':'Add Notification'}
-          </h2>
+          {initialData ? 'Edit Notification' : 'Add Notification'}
+        </h2>
 
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit}>
 
           <div className='mb-4'>
             <TextBox
@@ -60,7 +68,6 @@ const NotificationForm = ({ onCancel,initialData }) => {  // Destructure onCance
               required
             />
           </div>
-
 
           <div className="flex justify-end space-x-4 mt-4">
             <button

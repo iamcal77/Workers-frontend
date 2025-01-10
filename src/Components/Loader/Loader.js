@@ -1,9 +1,11 @@
 // DotLoader.js
 import React from 'react';
 import './Loader.css';  // Import the CSS for styling
+import Layout from '../Layout';
 
-const Loader = () => {
+const Loader = (onLogout) => {
   return (
+    <Layout onLogout={onLogout}>
     <div className="dot-loader-container">
       <div className="dot-loader">
         <div className="dot"></div>
@@ -12,6 +14,7 @@ const Loader = () => {
         <div className="dot"></div>
       </div>
     </div>
+    </Layout>
   );
 };
 

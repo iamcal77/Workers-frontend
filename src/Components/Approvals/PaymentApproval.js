@@ -131,6 +131,7 @@ const PaymentApproval = () => {
       ) : error ? (
         <div>Error Loading Workers: {error.message}</div>
       ) : (
+        <div id="page-content">
         <DataGrid
           dataSource={farmers}
           keyExpr="id"
@@ -154,6 +155,8 @@ const PaymentApproval = () => {
           <Column dataField="paymentStatus" caption="Payment Status" />
           <Column dataField="employmentType" caption="Employment Type" />
         </DataGrid>
+        </div>
+
       )}
     </Layout>
   );

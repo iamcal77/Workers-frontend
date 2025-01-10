@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging, SearchPanel } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, SearchPanel, Pager } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { FiActivity } from "react-icons/fi";
@@ -15,10 +15,11 @@ import { toast } from 'react-toastify';
 function Activities({ onLogout }) {
   const [showForm, setShowForm] = useState(false);
   const [editingActivity, setEditingActivity] = useState(null); // Track task being edited
-  
   const navigate = useNavigate();
   const {id:workerId} = useParams();
   const { activity, isLoading, error, addActivity,editActivity, removeActivity} = useActivity(workerId);
+  const [selectedRow, setSelectedRow] = useState(null); // Track selected row for background color
+  
 
   
   const toggleForm = () => {
@@ -42,15 +43,16 @@ function Activities({ onLogout }) {
     }
   };
   const handleEditClick = () => {
-    if (!editingActivity) {
+    if (!selectedRow) {
       toast('Select activity to edit')
       return;
     }
+    setEditingActivity(selectedRow); 
     setShowForm(true);
   };
   const handleDeleteClick = () => {
-    if (editingActivity) {
-      removeActivity(editingActivity.id) // Call removeTask with the editingTask's ID
+    if (selectedRow) {
+      removeActivity(selectedRow.id) // Call removeTask with the editingTask's ID
         .then(() => {
           editingActivity(null); // Clear editing task after deletion
         })
@@ -113,7 +115,17 @@ function Activities({ onLogout }) {
                 }
               }} 
               columnHidingEnabled ={true}
-              onRowClick={(e) => setEditingActivity(e.data)}
+              onRowClick={(e) => setSelectedRow(e.data)}
+              onRowPrepared={(e) => {
+                // Ensure e.data exists before trying to access its properties
+                if (e.data && e.rowElement) {
+                  if (selectedRow && selectedRow.id === e.data.id) {
+                    e.rowElement.style.backgroundColor = '#cce5ff'; // Apply background color to selected row
+                  } else {
+                    e.rowElement.style.backgroundColor = ''; // Remove background color for unselected rows
+                  }
+                }
+              }}
               
 
             >
@@ -121,7 +133,7 @@ function Activities({ onLogout }) {
                   visible ={true}
                 />
               <Paging defaultPageSize={10} />
-
+              <Pager visible={true} />
               <Column dataField="id" caption="ID" />
               <Column dataField="workerId" caption="Worker ID" />
               <Column dataField="activityName" caption="Activity Name" />

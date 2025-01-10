@@ -1,119 +1,100 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Use the environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+const fetchNotificationsFromApi = async () => {
+  const response = await axios.get(`${API_BASE_URL}/api/notifications`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  return response.data;
+};
+
+const postNotificationToApi = async (notification) => {
+  const response = await axios.post(`${API_BASE_URL}/api/notifications`, notification, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  return response.data;
+};
+
+const updateNotificationToApi = async (notificationId, updatedNotification) => {
+  const { id, ...notificationToUpdate } = updatedNotification;
+  const response = await axios.put(`${API_BASE_URL}/api/notifications/${notificationId}`, notificationToUpdate, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  return response.data;
+};
+
+const deleteNotificationFromApi = async (notificationId) => {
+  await axios.delete(`${API_BASE_URL}/api/notifications/${notificationId}`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+};
 
 const useNotifications = () => {
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [submitting, setSubmitting] = useState(false); // Track the submission state
+  const queryClient = useQueryClient();
 
-  // Fetch notifications when the hook is first used
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
+  // Fetch notifications
+  const { data: notifications, isLoading, error } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: fetchNotificationsFromApi,
+  });
 
-  // Function to fetch notifications
-  const fetchNotifications = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.get(`${API_BASE_URL}/notifications`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure token is available
-        },
-      });
-      if (response.status === 200) {
-        setNotifications(response.data);
-      }
-    } catch (err) {
-      setError('Error fetching notifications');
-      console.error('Error fetching notifications:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Function to post a notification
-  const postNotification = async (notification) => {
-    if (submitting) return; // Prevent posting if already submitting
-    setSubmitting(true); // Set submitting to true to prevent subsequent submissions
-
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.post(`${API_BASE_URL}/notifications`, notification, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      if (response.status === 201) {
-        toast.success('Notification sent successfully!', { position: 'top-center' });
-        fetchNotifications(); // Refresh notifications after posting
-      }
-    } catch (err) {
+  // Mutation for creating a new notification
+  const postNotificationMutation = useMutation({
+    mutationFn: postNotificationToApi,
+    onSuccess: () => {
+      toast.success('Notification sent successfully!', { position: 'top-center' });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] }); // Refresh notifications after posting
+    },
+    onError: (error) => {
       toast.error('Error sending notification!', { position: 'top-center' });
-      console.error('Error posting notification:', err);
-    } finally {
-      setLoading(false);
-      setSubmitting(false); // Reset submitting state after request is finished
-    }
-  };
+      console.error('Error posting notification:', error);
+    },
+  });
 
-  // Function to update a notification
-  const updateNotification = async (notificationId, updatedNotification) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.put(`${API_BASE_URL}/notifications/${notificationId}`, updatedNotification, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure token is available
-        },
-      });
-      if (response.status === 200) {
-        toast.success('Notification updated successfully!', { position: 'top-center' });
-        fetchNotifications(); // Refresh notifications after updating
-      }
-    } catch (err) {
+  // Mutation for updating a notification
+  const updateNotificationMutation = useMutation({
+    mutationFn: updateNotificationToApi,
+    onSuccess: () => {
+      toast.success('Notification updated successfully!', { position: 'top-center' });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] }); // Refresh notifications after updating
+    },
+    onError: (error) => {
       toast.error('Error updating notification!', { position: 'top-center' });
-      console.error('Error updating notification:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+      console.error('Error updating notification:', error);
+    },
+  });
 
-  // Function to delete a notification
-  const deleteNotification = async (notificationId) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/notifications/${notificationId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ensure token is available
-        },
-      });
-      if (response.status === 200) {
-        toast.success('Notification deleted successfully!', { position: 'top-center' });
-        fetchNotifications(); // Refresh notifications after deleting
-      }
-    } catch (err) {
+  // Mutation for deleting a notification
+  const deleteNotificationMutation = useMutation({
+    mutationFn: deleteNotificationFromApi,
+    onSuccess: () => {
+      toast.success('Notification deleted successfully!', { position: 'top-center' });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] }); // Refresh notifications after deleting
+    },
+    onError: (error) => {
       toast.error('Error deleting notification!', { position: 'top-center' });
-      console.error('Error deleting notification:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+      console.error('Error deleting notification:', error);
+    },
+  });
 
   return {
     notifications,
-    loading,
+    isLoading,
     error,
-    fetchNotifications, // Allow the component to trigger fetch manually
-    postNotification,
-    updateNotification,
-    deleteNotification,
+    postNotification: postNotificationMutation.mutate,
+    updateNotification: updateNotificationMutation.mutate,
+    deleteNotification: deleteNotificationMutation.mutate,
   };
 };
 

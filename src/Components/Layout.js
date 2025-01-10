@@ -1,25 +1,26 @@
-import React from 'react';
-import Sidebar from './Sidebar';
-import Navbar from './Navbar';
+import React, { memo } from "react";  // Use memo to prevent unnecessary re-renders
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
-function Layout({ children, onLogout }) {  
-  if (onLogout === undefined) {
-  }
-
+const Layout = memo(({ children, onLogout }) => {
   return (
-    <div style={{ display: 'flex' }}>
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main content */}
-      <div style={{ marginLeft: '160px', padding: '20px', width: '100%' }}>
-        <Navbar onLogout={onLogout} />
-
-        {/* Main content space */}
-        <div>{children}</div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <div style={{ display: "flex", flexGrow: 1 }}>
+        {/* Sidebar */}
+        <Sidebar />
+        
+        {/* Main content */}
+        <div style={{ marginLeft: "160px", padding: "20px", width: "100%" }}>
+          <Navbar onLogout={onLogout} />
+          <div style={{ flex: 1 }}>{children}</div>
+        </div>
       </div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
-}
+});
 
 export default Layout;

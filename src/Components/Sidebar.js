@@ -15,7 +15,7 @@ function Sidebar() {
   return (
     <div className="w-41 h-screen bg-gray-200 text-black p-5 fixed left-0 top-0 flex flex-col">
       <ul className="flex-grow">
-        <li className={`mb-4 flex items-center mt-7 ${isActive('/admin')}`}>
+        <li className={`mb-4 flex items-center mt-10 ${isActive('/admin')}`}>
           <Link to="/admin" className="hover:text-gray-400 flex items-center">
             <RiAdminLine className="mr-2 text-green-500 text-2xl" />
             Admin

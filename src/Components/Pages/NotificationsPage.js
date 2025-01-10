@@ -12,7 +12,6 @@ function NotificationsPage({ onLogout }) {
   const { notifications = [], loading, error, postNotification, updateNotification, deleteNotification } = useNotifications();
 
   useEffect(() => {
-    // You may trigger a fetchNotifications manually here if needed
   }, []);
 
   const toggleForm = () => {
@@ -20,8 +19,13 @@ function NotificationsPage({ onLogout }) {
   };
 
   const handlePostNotification = (notification) => {
+    if (selectedNotifications) {
+      // Update only the role when editing a user
+      updateNotification(selectedNotifications.id, { role: notification.role });
+    } else {
     postNotification(notification);
-    toggleForm(); // Close the form after submission
+    }
+    setShowForm(false);
   };
 
   const handleUpdateNotification = () => {

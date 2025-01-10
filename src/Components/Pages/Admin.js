@@ -64,9 +64,7 @@ const AdminPage = ({ onLogout }) => {
     setShowForm(false);
   };
 
-  const handleRowClick = (e) => {
-    setSelectedUser(e.data);
-  };
+
 
   const handleCancel = () => {
     setShowForm(false);

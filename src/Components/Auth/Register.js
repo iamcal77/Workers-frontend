@@ -94,8 +94,8 @@ function Register() {
               required
             >
               <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="supervisor">Supervisor</option>
+              <option value="Admin">Admin</option>
+              <option value="Supervisor">Supervisor</option>
             </select>
           </div>
 

@@ -19,14 +19,24 @@ function NotificationsPage({ onLogout }) {
   };
 
   const handlePostNotification = (notification) => {
-    if (selectedNotifications) {
-      // Update only the role when editing a user
-      updateNotification(selectedNotifications.id, { role: notification.role });
+    if (selectedNotifications.length > 0) {
+      // When editing, avoid passing the ID if it's auto-generated
+      updateNotification(selectedNotifications[0], {
+        title: notification.title,
+        message: notification.message,
+        // other fields to be updated
+      });
     } else {
-    postNotification(notification);
+      // When posting new notification, do not include ID
+      postNotification({
+        title: notification.title,
+        message: notification.message,
+        // other fields
+      });
     }
     setShowForm(false);
   };
+  
 
   const handleUpdateNotification = () => {
     const notificationId = selectedNotifications[0]; 

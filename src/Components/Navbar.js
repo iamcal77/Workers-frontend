@@ -5,6 +5,8 @@ import { HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
 import SearchBar from './Search';
 import ProfileMenu from './ProfileMenu';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function Navbar() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -14,7 +16,7 @@ function Navbar() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await fetch('https://localhost:7050/api/notifications');
+        const response = await fetch(`${API_BASE_URL}/api/notifications`);
         const data = await response.json();
         setNotifications(data);
         setUnreadCount(data.filter((notif) => !notif.read).length); // Assuming the API has a 'read' property
@@ -30,7 +32,7 @@ function Navbar() {
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
     const connection = new HubConnectionBuilder()
-      .withUrl('https://localhost:7050/notificationHub', {
+      .withUrl(`${API_BASE_URL}/notificationHub`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
       })

@@ -37,7 +37,7 @@ const createWorker = async (newWorker) => {
   const token = localStorage.getItem('token');
   console.log('Fetched Token for creation:', token);
 
-  const response = await axios.post(`${API_BASE_URL}api/workers`, newWorker, {
+  const response = await axios.post(`${API_BASE_URL}/api/workers`, newWorker, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },

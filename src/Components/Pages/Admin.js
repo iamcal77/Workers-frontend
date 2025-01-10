@@ -136,6 +136,7 @@ const AdminPage = ({ onLogout }) => {
               showRowLines={true}
               showColumnHeaders={true}
               className="w-full"
+              columnHidingEnabled={true}
               style={{ height: 'calc(100vh - 150px)' }} 
               onRowDblClick={(e) => {
                 if (e?.data?.id) {

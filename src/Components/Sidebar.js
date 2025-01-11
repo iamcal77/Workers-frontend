@@ -31,7 +31,7 @@ function Sidebar() {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-9 h-[calc(100vh-4rem)] bg-gray-200 text-black p-5 z-40 flex flex-col ${
+        className={`fixed left-0 top-12  h-[calc(100vh-3rem)] bg-gray-200 text-black p-5 z-40 flex flex-col ${
           isOpen ? "w-41" : "w-0 overflow-hidden"
         } lg:w-41 transition-width duration-300 ease-in-out`}
       >

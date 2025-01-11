@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, Column, SearchPanel, Paging } from 'devextreme-react/data-grid';
+import { DataGrid, Column, SearchPanel, Paging, Pager } from 'devextreme-react/data-grid';
 import { Button } from 'devextreme-react/button'; // Correct import for Button
 import 'devextreme/dist/css/dx.light.css';
 import axios from 'axios';
@@ -148,7 +148,7 @@ const PaymentApproval = () => {
         >
           <SearchPanel visible={true} />
           <Paging defaultPageSize={10} />
-
+          <Pager visible={true} />
           <Column dataField="name" caption="Name" />
           <Column dataField="contact" caption="Contact" />
           <Column dataField="location" caption="Location" />

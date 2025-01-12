@@ -65,7 +65,7 @@ const CompletedActivities = () => {
         <SearchPanel visible={true} />
       </div>
           <Paging defaultPageSize={10} />
-          <Column dataField="workerId" caption="Worker ID" width={100}/>
+          <Column dataField="workerName" caption="Worker Name" width={200} />
           <Column dataField="activityName" caption="Activity Name" />
           <Column dataField="description" caption="Description" />
           <Column

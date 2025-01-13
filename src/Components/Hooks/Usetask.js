@@ -19,17 +19,22 @@ const fetchTasksByWorkerId = async (workerId) => {
 const createTask = async (newTask, workerId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
-  if (!newTask.taskName || !newTask.description || !workerId) {
-    throw new Error('TaskName, Description, and WorkerId are required');
+  
+  if (!newTask.taskName || !newTask.description || !workerId || !newTask.department) {
+    throw new Error('TaskName, Description, WorkerId, and Department are required');
   }
+
+  // Make sure department is part of the request data
+  const taskData = { ...newTask, workerId };
 
   const response = await axios.post(
     `${API_BASE_URL}/api/workertasks`,
-    { ...newTask, workerId },
+    taskData,
     { headers: { Authorization: `Bearer ${token}` } }
   );
   return response.data;
 };
+
 
 const updateTask = async (updatedTask) => {
   const token = localStorage.getItem('token');

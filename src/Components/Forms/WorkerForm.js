@@ -7,27 +7,25 @@ import { toast } from 'react-toastify';
 function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
   const [formData, setFormData] = useState({
     name: '',
-    location: '',
+    location: 'NTFL casuals', // Default value for location
     contact: '',
     nationalId: '',
     dateOfBirth: '',
     gender: '',
-    employmentType: '',
+    employmentType: 'Casual', // Default value for employmentType
     startDate: '',
     endDate: '',
-    status: 'Pending',
-    payment:'',
-    paymentStatus:'Pending',
-    ...initialData, // Default value for status
+    payment: '',
+    ...initialData,
   });
-  const isEditable = !initialData;
 
+  const isEditable = !initialData;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -40,21 +38,24 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
       return;
     }
   
-    // Format date fields and submit
+    // Format date fields and add default values for missing fields
     const formattedData = {
       ...formData,
       startDate: new Date(formData.startDate).toISOString().split('T')[0],
       endDate: formData.endDate ? new Date(formData.endDate).toISOString().split('T')[0] : null,
+      status: 'Pending', // Default value for Status
+      paymentStatus: 'Pending', // Default value for PaymentStatus
     };
   
-    onSubmit(formattedData); // Pass the validated and formatted data
+    // Pass the data with default values for Status and PaymentStatus
+    onSubmit(formattedData);
   };
+  
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
       <h3 className="text-2xl font-medium text-gray-700 mb-4">
-        {initialData?'Edit Worker': 'Add Worker'}
-
+        {initialData ? 'Edit Worker' : 'Add Worker'}
       </h3>
       <form onSubmit={handleAddWorker}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -75,12 +76,11 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
             <TextBox
               id="location"
               name="location"
-              value={formData.location}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'location', value: e.value } })}
+              value="NTFL casuals" // Set the value explicitly
               className="w-full"
               label="Location"
               labelMode="floating"
-              required
+              readOnly // Make the field read-only to prevent user edits
             />
           </div>
 
@@ -106,8 +106,7 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               className="w-full"
               label="National ID"
               labelMode="floating"
-              disabled ={!isEditable}
-
+              disabled={!isEditable}
             />
           </div>
 
@@ -120,7 +119,8 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               className="w-full"
               label="Date of Birth"
               labelMode="floating"
-              disabled ={!isEditable}
+              disabled={!isEditable}
+              max={new Date(new Date().setFullYear(new Date().getFullYear() - 18))} // Set max date to 18 years ago
             />
           </div>
 
@@ -136,34 +136,25 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               items={[
                 { value: '', text: 'Select Gender' },
                 { value: 'Male', text: 'Male' },
-                { value: 'Female', text: 'Female' }
+                { value: 'Female', text: 'Female' },
               ]}
               displayExpr="text"
               valueExpr="value"
-              disabled ={!isEditable}
+              disabled={!isEditable}
             />
           </div>
 
-
           <div className="mb-4">
-            <SelectBox
+            <TextBox
               id="employmentType"
               name="employmentType"
-              value={formData.employmentType}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'employmentType', value: e.value } })}
+              value="Casual" // Display "Casuals" as the only value
               className="w-full"
               label="Employment Type"
               labelMode="floating"
-              items={[
-                { value: '', text: 'Select Employment Type' },
-                { value: 'Permanent', text: 'Permanent' },
-                { value: 'Contract', text: 'Contract' }
-              ]}
-              displayExpr="text"
-              valueExpr="value"
+              readOnly // Prevent editing
             />
           </div>
-
 
           <div className="mb-4">
             <DateBox
@@ -175,11 +166,9 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               label="Start Date"
               labelMode="floating"
               required
-              disabled ={!isEditable}
-
+              disabled={!isEditable}
             />
           </div>
-
           <div className="mb-4">
             <DateBox
               id="endDate"
@@ -193,24 +182,6 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
           </div>
 
           <div className="mb-4">
-            <SelectBox
-              id="status"
-              name="status"
-              value={formData.status}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'status', value: e.value } })}
-              className="w-full"
-              label="Approval Status"
-              labelMode="floating"
-              items={[
-                { value: 'Approved', text: 'Approved' },
-                { value: 'Pending', text: 'Pending' }
-              ]}
-              displayExpr="text"
-              valueExpr="value"
-              disabled ={!isEditable}
-            />
-          </div>
-          <div className="mb-4">
             <TextBox
               id="payment"
               name="payment"
@@ -221,24 +192,6 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
               labelMode="floating"
             />
           </div>
-          <div className="mb-4">
-            <SelectBox
-              id="paymentStatus"
-              name="paymentStatus"
-              value={formData.paymentStatus}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'paymentStatus', value: e.value } })}
-              className="w-full"
-              label="Payment Status"
-              labelMode="floating"
-              items={[
-                { value: 'Paid', text: 'Paid' },
-                { value: 'Pending', text: 'Pending' }
-              ]}
-              displayExpr="text"
-              valueExpr="value"
-            />
-          </div>
-
         </div>
 
         <div className="flex justify-end space-x-4 mt-4">

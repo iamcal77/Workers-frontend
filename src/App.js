@@ -26,6 +26,7 @@ import PaidWorkers from './Components/Dashboards/PaidWorkers';
 import PendingWorkers from './Components/Dashboards/PendingWorkers';
 import PaymentApproval from './Components/Approvals/PaymentApproval';
 import ApprovalPage from './Components/Approvals/ApprovalPage';
+import TaskApproval from './Components/Approvals/TaskApproval';
 
 
 const queryClient = new QueryClient();
@@ -68,7 +69,7 @@ function App() {
           <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/workers/:id/activities" element={<Activities />} />
           <Route path="/activity/:id" element={<ActivityDetails />} />
-          <Route path="/approvals" element={<ApprovalPage token={localStorage.getItem('token')}/>} />
+          <Route path="/worker-approvals" element={<ApprovalPage token={localStorage.getItem('token')}/>} />
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/notification" element={<NotificationsPage />} />
           <Route path="/posts" element={<Post token={localStorage.getItem('token')} />} />
@@ -79,6 +80,8 @@ function App() {
           <Route path="/paid-workers" element={<PaidWorkers token={localStorage.getItem('token')} />} />
           <Route path="/pending-workers" element={<PendingWorkers token={localStorage.getItem('token')} />} />
           <Route path="/payments-approval" element={<PaymentApproval token={localStorage.getItem('token')} />} />
+          <Route path="/tasks-approval" element={<TaskApproval token={localStorage.getItem('token')} />} />
+
 
 
 

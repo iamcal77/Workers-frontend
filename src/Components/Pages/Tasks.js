@@ -166,6 +166,7 @@ function Tasks({ onLogout }) {
             <Pager visible={true} />
             <Column dataField="id" caption="ID" />
             <Column dataField="workerId" caption="Worker ID" />
+            <Column dataField="department" caption="Department" />
             <Column dataField="taskName" caption="Task Name" />
             <Column dataField="description" caption="Description" />
             <Column

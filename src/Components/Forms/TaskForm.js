@@ -3,10 +3,10 @@ import { FaTimes, FaCheck } from 'react-icons/fa';
 import TextBox from 'devextreme-react/text-box';
 import TextArea from 'devextreme-react/text-area';
 import NumberBox from 'devextreme-react/number-box';
-import CheckBox from 'devextreme-react/check-box';
 import DateBox from 'devextreme-react/date-box';
 import 'devextreme/dist/css/dx.light.css'; // Import DevExtreme styles
 import { toast } from 'react-toastify';
+import { SelectBox } from 'devextreme-react';
 
 function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) {
   const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
     startDate: '',
     endDate: '',
     isCompleted: false,
+    department: '',  // Add department field
     ...initialData,
   });
   const isEditable = !initialData;
@@ -72,19 +73,24 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
   const handleAddTask = (e) => {
     e.preventDefault();
     
-    if (!formData.taskName || !formData.description || !formData.startDate || !formData.endDate) {
+    console.log(formData);  // Log to verify the department value
+    
+    // Ensure all required fields are filled
+    if (!formData.taskName || !formData.description || !formData.startDate || !formData.endDate || !formData.department) {
       toast.error('Please fill in all required fields!');
       return;
     }
-
+  
     const formattedData = {
       ...formData,
+      isCompleted: false,  // Set isCompleted to false here
       startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
       endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
     };
   
     onSubmit(formattedData);
   };
+  
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
@@ -106,9 +112,20 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               disabled
             />
           </div>
-
           <div className="mb-4">
             <TextBox
+              id="department"
+              name="department"
+              value={formData.department}
+              onValueChanged={(e) => handleInputChange({ target: { name: 'department', value: e.value } })}
+              className="w-full"
+              label="Department"
+              labelMode="floating"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <SelectBox
               id="taskName"
               name="taskName"
               value={formData.taskName}
@@ -116,8 +133,17 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               className="w-full"
               label="Task Name"
               labelMode="floating"
-              required
-              disabled={!isEditable} 
+              items={[
+                { value: '', text: 'Select Task' },
+                { value: 'Production Operations', text: 'Production Operations' },
+                { value: 'Production Field Extension', text: 'Production Field Extension' },
+                { value: 'Engineering Operations', text: 'Engineering Operations' },
+                { value: 'Engineering Boiler', text: 'Engineering Boiler' },
+                { value: 'Human Resource', text: 'Human Resource' },
+
+              ]}
+              displayExpr="text"
+              valueExpr="value"
             />
           </div>
 
@@ -160,17 +186,6 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               labelMode="floating"
               required
               type="datetime"
-            />
-          </div>
-
-          <div className="mb-4 flex items-center">
-            <CheckBox
-              id="isCompleted"
-              name="isCompleted"
-              value={formData.isCompleted}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'isCompleted', value: e.value } })}
-              label="Is Completed"
-              labelMode="floating"
             />
           </div>
         </div>

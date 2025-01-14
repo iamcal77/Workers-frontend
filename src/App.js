@@ -35,10 +35,8 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
 
   useEffect(() => {
-    console.log('Token set to:', token); // Debugging token
 
     if (token) {
-      console.log('Token stored in localStorage:', localStorage.getItem('token'));
       localStorage.setItem('token', token);
     } else {
       localStorage.removeItem('token');

@@ -61,21 +61,33 @@ const deleteTask = async (taskId) => {
   return response.data;
 };
 
-const filterTasksByDate = async (workerId, startDate, endDate) => {
+const filterTasksByDateAndTaskName = async (workerId, startDate, endDate, taskName) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
   if (!workerId) throw new Error('Worker ID is required');
   if (!startDate || !endDate) throw new Error('Start Date and End Date are required');
 
+  // Prepare the params object
+  const params = {
+    workerId,
+    startDate,
+    endDate,
+    taskName,  // Add taskName to the filter
+  };
+
+  // Remove any undefined parameters to avoid sending unnecessary filters
+  Object.keys(params).forEach(key => params[key] === undefined && delete params[key]);
+
   const response = await axios.get(
     `${API_BASE_URL}/api/workertasks/filter`,
     {
-      params: { workerId, startDate, endDate },
+      params,
       headers: { Authorization: `Bearer ${token}` },
     }
   );
   return response.data;
 };
+
 
 const useTasks = (workerId) => {
   const { data: tasks, isLoading, error, refetch } = useQuery({
@@ -122,7 +134,7 @@ const useTasks = (workerId) => {
   });
 
   const { mutateAsync: filterTasks } = useMutation({
-    mutationFn: ({ startDate, endDate }) => filterTasksByDate(workerId, startDate, endDate),
+    mutationFn: ({ startDate, endDate,taskName }) => filterTasksByDateAndTaskName(workerId, startDate, endDate,taskName),
     onSuccess: (data) => {
       toast.success('Tasks filtered successfully!');
       return data; // Return filtered data for usage

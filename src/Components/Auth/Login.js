@@ -30,7 +30,21 @@ function Login({ setToken }) {
         setToken(token);
         localStorage.setItem('token', token);
         toast.success('Login successful');
-        navigate('/admin');
+
+        // Fetch the user role
+        const userResponse = await axios.get(`${API_BASE_URL}/api/users/role`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const role = userResponse.data.role;
+
+        if (role === 'Admin') {
+          navigate('/admin');
+        } else {
+          navigate('/workers'); // Navigate to the "Workers" page if not Admin
+        }
       }
     } catch (error) {
       console.error('Login error:', error.response ? error.response.data : error.message);

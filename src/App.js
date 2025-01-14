@@ -27,6 +27,8 @@ import PendingWorkers from './Components/Dashboards/PendingWorkers';
 import PaymentApproval from './Components/Approvals/PaymentApproval';
 import ApprovalPage from './Components/Approvals/ApprovalPage';
 import TaskApproval from './Components/Approvals/TaskApproval';
+import ForgotPassword from './Components/Auth/Forgot';
+import ResetPassword from './Components/Auth/Reset';
 
 
 const queryClient = new QueryClient();
@@ -56,9 +58,9 @@ function App() {
 
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminPage token={localStorage.getItem('token')}/>} />
-
+          <Route path="/forgot" element={<ForgotPassword token={localStorage.getItem('token')}/>} />
+          <Route path="/reset" element={<ResetPassword token={localStorage.getItem('token')}/>} />
           <Route path="/admin-details/:id" element={<AdminDetails />} />
-
           <Route path="/logout" element={<Logout />} />
           <Route path="/dashboard" element={<AdminDashboard token={localStorage.getItem('token')} />} />
           <Route path="/workers" element={<Worker token={localStorage.getItem('token')}/>} />

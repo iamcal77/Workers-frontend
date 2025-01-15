@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBell } from 'react-icons/fa';
 import { HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
-import SearchBar from './Search';
 import ProfileMenu from './ProfileMenu';
+import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -11,6 +11,10 @@ function Navbar() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState({ users: [], workers: [], workerTasks: [] });
+  const [isLoading, setIsLoading] = useState(false);
+  const [, setError] = useState('');
 
   // Fetch notifications from the API
   useEffect(() => {
@@ -65,8 +69,20 @@ function Navbar() {
     setUnreadCount(0);
   };
 
-  const handleSearch = (query) => {
-    console.log('Searching for:', query);
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    if (!query.trim()) return;
+
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/search/search?q=${query}`);
+      setResults(response.data);
+    } catch (err) {
+      setError('An error occurred while fetching results.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -77,14 +93,72 @@ function Navbar() {
         </Link>
       </div>
 
-      <div className="flex-1"></div>
+      {/* Search Bar - Centered and Reduced Size */}
+      <form onSubmit={handleSearch} className="flex-1 mx-4 relative flex justify-center">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full max-w-sm px-2 py-1.5 border rounded-lg text-base text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Search Users, Workers, Tasks..."
+        />
+        <button
+          type="submit"
+          className="ml-1 top-0 right-0 px-2 py-1 bg-blue-600 text-white rounded-r-lg focus:outline-none"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Searching...' : 'Search'}
+        </button>
+      </form>
 
-      {/* Centered Search Bar */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 mt-2">
-        <SearchBar onSearch={handleSearch} />
-      </div>
 
-      <div className="flex-1"></div>
+
+
+      {/* Display Search Results - Centered and Smaller Size */}
+      {query && results.users.length > 0 && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-96 bg-white shadow-lg rounded-lg max-h-60 overflow-y-auto z-20">
+          <h3 className="font-semibold text-lg p-2">Users</h3>
+          <ul className="space-y-2 p-2">
+            {results.users.map((user, index) => (
+              <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer">
+                <Link to={`/admin-details/${user.id}`} className="text-blue-600">
+                  {user.name} - {user.email}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {query && results.workers.length > 0 && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-96 bg-white shadow-lg rounded-lg max-h-60 overflow-y-auto z-20">
+          <h3 className="font-semibold text-lg p-2">Workers</h3>
+          <ul className="space-y-2 p-2">
+            {results.workers.map((worker, index) => (
+              <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer">
+                <Link to={`/worker-details/${worker.id}`} className="text-blue-600">
+                  {worker.name} - {worker.nationalId}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {query && results.workerTasks.length > 0 && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-96 bg-white shadow-lg rounded-lg max-h-60 overflow-y-auto z-20">
+          <h3 className="font-semibold text-lg p-2">Tasks</h3>
+          <ul className="space-y-2 p-2">
+            {results.workerTasks.map((task, index) => (
+              <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer">
+                <Link to={`/task/${task.id}`} className="text-blue-600">
+                  {task.taskName} - {task.description}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="relative mr-3">
         <FaBell

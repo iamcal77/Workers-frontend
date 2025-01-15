@@ -30,6 +30,8 @@ import TaskApproval from './Components/Approvals/TaskApproval';
 import ForgotPassword from './Components/Auth/Forgot';
 import ResetPassword from './Components/Auth/Reset';
 import UserApproval from './Components/Approvals/UserApproval';
+import TermsAndConditions from './Components/TermsAndConditions';
+import PrivacyPolicy from './Components/PrivacyPolicy';
 
 
 const queryClient = new QueryClient();
@@ -81,6 +83,11 @@ function App() {
           <Route path="/payments-approval" element={<PaymentApproval token={localStorage.getItem('token')} />} />
           <Route path="/tasks-approval" element={<TaskApproval token={localStorage.getItem('token')} />} />
           <Route path="/users-approval" element={<UserApproval token={localStorage.getItem('token')} />} />
+          <Route path="/terms" element={<TermsAndConditions token={localStorage.getItem('token')} />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy token={localStorage.getItem('token')} />} />
+
+
+          
 
 
 

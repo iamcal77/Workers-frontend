@@ -19,7 +19,6 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
     department: '',  // Add department field
     ...initialData,
   });
-  const isEditable = !initialData;
 
   // If workerIdFromParent changes, update the workerId in formData
   useEffect(() => {
@@ -171,7 +170,7 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
               labelMode="floating"
               required
               type="datetime"
-              disabled={!isEditable} 
+              // disabled={!isEditable} 
             />
           </div>
 

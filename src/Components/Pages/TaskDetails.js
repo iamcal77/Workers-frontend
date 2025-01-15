@@ -50,6 +50,7 @@ function TaskDetails({ onLogout }) {
         showDeleteButton={false}
         showEditButton={false}
         showAddButton={false}
+        showExportToExcel={false}  
       />
 
       {loading ? (

@@ -51,8 +51,8 @@ function AdminDetails({ onLogout }) {
           showDeleteButton={false}
           showEditButton={false}
           showAddButton={false}
-          showExportToExcelButton={ true}
-        />
+          showExportToExcel={false}  
+          />
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <DotLoader />

@@ -83,6 +83,8 @@ const AdminPage = ({ onLogout }) => {
         onEdit={handleEditClick}
         onDelete={handleDeleteClick}
         showBackButton={true}
+        showAddButton={false}
+
       />
 
       <h1 className="text-2xl text-left mb-4 mt-10 flex items-center">

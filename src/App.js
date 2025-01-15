@@ -29,6 +29,7 @@ import ApprovalPage from './Components/Approvals/ApprovalPage';
 import TaskApproval from './Components/Approvals/TaskApproval';
 import ForgotPassword from './Components/Auth/Forgot';
 import ResetPassword from './Components/Auth/Reset';
+import UserApproval from './Components/Approvals/UserApproval';
 
 
 const queryClient = new QueryClient();
@@ -54,8 +55,6 @@ function App() {
             path="/"
             element={token ? <Navigate to="/admin" replace /> : <Login setToken={setToken} />}
           />
-
-
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminPage token={localStorage.getItem('token')}/>} />
           <Route path="/forgot" element={<ForgotPassword token={localStorage.getItem('token')}/>} />
@@ -81,6 +80,8 @@ function App() {
           <Route path="/pending-workers" element={<PendingWorkers token={localStorage.getItem('token')} />} />
           <Route path="/payments-approval" element={<PaymentApproval token={localStorage.getItem('token')} />} />
           <Route path="/tasks-approval" element={<TaskApproval token={localStorage.getItem('token')} />} />
+          <Route path="/users-approval" element={<UserApproval token={localStorage.getItem('token')} />} />
+
 
 
 

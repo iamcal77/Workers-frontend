@@ -74,7 +74,7 @@ function WorkerDetails({ onLogout }) {
         showDeleteButton={false}
         showEditButton={false}
         showAddButton={false}
-        showExportToExcelButton={true}
+        showExportToExcel={false}  
       />
       <div className="flex h-screen mt-8 mr-5">
         {/* Sidebar */}

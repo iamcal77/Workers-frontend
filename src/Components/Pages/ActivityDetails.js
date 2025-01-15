@@ -50,7 +50,7 @@ function ActivityDetails({ onLogout }) {
         showDeleteButton={false}
         showEditButton={false}
         showAddButton={false}
-        showExportToExcelButton={true}
+        showExportToExcel={false}  
       />
 
       {loading ? (

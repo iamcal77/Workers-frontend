@@ -11,7 +11,6 @@ const NotificationForm = ({ onCancel, initialData }) => {  // Destructure onCanc
 
   const { postNotification, loading } = usePostNotification(); // Use the hook to post notifications
 
-  // Use useEffect to update title and message if initialData changes
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title || '');  // Set initial title from initialData
@@ -25,13 +24,11 @@ const NotificationForm = ({ onCancel, initialData }) => {  // Destructure onCanc
     const notification = {
       title,
       message,
-      ...initialData // Spread initialData if available
+      ...initialData 
     };
 
-    // Post notification using the custom hook
     await postNotification(notification);
 
-    // Clear input fields after successful submission
     setTitle('');
     setMessage('');
   };

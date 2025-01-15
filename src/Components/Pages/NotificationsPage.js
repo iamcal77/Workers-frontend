@@ -19,10 +19,9 @@ function NotificationsPage({ onLogout }) {
   };
 
   const handlePostNotification = (notification) => {
-    // Ensure you're only sending the necessary fields for update or create
-    if (selectedNotifications.length === 1) {
+   if (editingNotification) {
       // For editing, call updateNotification with the id
-      const notificationId = selectedNotifications[0];
+      const notificationId = editingNotification.id;
       updateNotification(notificationId, {
         ...notification, // Update the title, message, etc.
       });
@@ -36,14 +35,14 @@ function NotificationsPage({ onLogout }) {
     }
     setShowForm(false);
   };
+  
+  
 
   const handleUpdateNotification = () => {
-    console.log("Selected Notifications for Edit:", selectedNotifications);  // Debugging line
-
     if (selectedNotifications.length === 1) {
       const notificationId = selectedNotifications[0];
       const notificationToEdit = notifications.find((notif) => notif.id === notificationId);
-
+  
       if (notificationToEdit) {
         setEditingNotification(notificationToEdit);
         toggleForm();
@@ -53,6 +52,7 @@ function NotificationsPage({ onLogout }) {
       toast("Please select one notification to edit.");
     }
   };
+  
 
   const handleDeleteNotification = () => {
     selectedNotifications.forEach((notifId) => {
@@ -79,8 +79,9 @@ function NotificationsPage({ onLogout }) {
           toggleForm();
         }}
         onEdit={handleUpdateNotification} // Pass update function to the Edit button
-        onDelete={handleDeleteNotification} // Pass delete function to the Delete button
-      />
+        onDelete={handleDeleteNotification}
+        showExportToExcel={false}  // Ensure this is false
+        />
 
       {/* Render the NotificationForm component */}
       {showForm && (

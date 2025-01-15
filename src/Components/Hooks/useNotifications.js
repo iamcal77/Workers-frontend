@@ -24,23 +24,28 @@ const postNotificationToApi = async (notification) => {
 
 
 const updateNotificationToApi = async (notificationId, updatedNotification) => {
-  const { id, ...notificationToUpdate } = updatedNotification;
-  const response = await axios.put(`${API_BASE_URL}/api/notifications/${notificationId}`, notificationToUpdate, {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
+  const response = await axios.put(
+    `${API_BASE_URL}/api/notifications/${notificationId}`,
+    updatedNotification, // Ensure the ID is part of the object if needed by the API
+    {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    }
+  );
   return response.data;
 };
 
 
 
+
 const deleteNotificationFromApi = async (notificationId) => {
-  await axios.delete(`${API_BASE_URL}/api/notifications/${notificationId}`, {
+  const response = await axios.delete(`${API_BASE_URL}/api/notifications/${notificationId}`, {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
   });
+  return response.data;
 };
 
 const useNotifications = () => {
@@ -66,17 +71,20 @@ const useNotifications = () => {
   });
 
   // Mutation for updating a notification
-  const updateNotificationMutation = useMutation({
-    mutationFn: updateNotificationToApi,
-    onSuccess: () => {
-      toast.success('Notification updated successfully!', { position: 'top-center' });
-      queryClient.invalidateQueries({ queryKey: ['notifications'] }); // Refresh notifications after updating
-    },
-    onError: (error) => {
-      toast.error('Error updating notification!', { position: 'top-center' });
-      console.error('Error updating notification:', error);
-    },
-  });
+ // Mutation for updating a notification
+const updateNotificationMutation = useMutation({
+  mutationFn: updateNotificationToApi,
+  onSuccess: () => {
+    toast.success('Notification updated successfully!', { position: 'top-center' });
+    queryClient.invalidateQueries({ queryKey: ['notifications'] }); // Refresh notifications after updating
+  },
+  onError: (error) => {
+    toast.error('Error updating notification!', { position: 'top-center' });
+    console.error('Error updating notification:', error);
+  },
+});
+
+  
 
   // Mutation for deleting a notification
   const deleteNotificationMutation = useMutation({
@@ -86,10 +94,13 @@ const useNotifications = () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] }); // Refresh notifications after deleting
     },
     onError: (error) => {
-      toast.error('Error deleting notification!', { position: 'top-center' });
+      const errorMessage =
+        error.response?.data?.Message || 'Error deleting notification!';
+      toast.error(errorMessage, { position: 'top-center' });
       console.error('Error deleting notification:', error);
     },
   });
+  
 
   return {
     notifications,

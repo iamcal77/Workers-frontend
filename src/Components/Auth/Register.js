@@ -42,7 +42,7 @@ function Register() {
       });
 
       if (response.status === 200) {
-        toast.success('Registration successful');
+        toast.success('Registration successful. Awaiting Admin approval');
         setFormData({
           username: '',
           name: '',

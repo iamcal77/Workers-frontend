@@ -5,7 +5,7 @@ import { LuLayoutDashboard, LuMenu } from "react-icons/lu";
 import { GiFarmer } from "react-icons/gi";
 import { RiAdminLine } from "react-icons/ri";
 import { MdLogout } from "react-icons/md";
-import { FcCalculator, FcInspection, FcOk } from "react-icons/fc";
+import { FcCalculator, FcInspection, FcOk, FcPortraitMode } from "react-icons/fc";
 import { HiX } from "react-icons/hi";
 import { VscTasklist } from 'react-icons/vsc';
 
@@ -107,15 +107,16 @@ function Sidebar() {
               </button>
               {isApprovalsOpen && isOpen && (
                 <ul className="pl-6 mt-2">
-                  <li className={`mb-2 ${isActive("/tasks-approval")}`}>
-                    <Link to="/tasks-approval" className="hover:text-gray-400 flex items-center">
-                      <VscTasklist className="mr-2 text-red-500 text-2xl" />
-                      Task Approval
-                    </Link>
-                  </li>
+                 
                   {/* Admin only links */}
                   {userRole === 'Admin' && (
                     <>
+                    <li className={`mb-2 ${isActive("/users-approval")}`}>
+                        <Link to="/users-approval" className="hover:text-gray-400 flex items-center">
+                          <FcPortraitMode className="mr-2 text-2xl" />
+                          User Approval
+                        </Link>
+                      </li>
                       <li className={`mb-2 ${isActive("/worker-approvals")}`}>
                         <Link to="/worker-approvals" className="hover:text-gray-400 flex items-center">
                           <FcOk className="mr-2 text-green-500 text-2xl" />
@@ -130,6 +131,12 @@ function Sidebar() {
                       </li>
                     </>
                   )}
+                   <li className={`mb-2 ${isActive("/tasks-approval")}`}>
+                    <Link to="/tasks-approval" className="hover:text-gray-400 flex items-center">
+                      <VscTasklist className="mr-2 text-red-500 text-2xl" />
+                      Task Approval
+                    </Link>
+                  </li>
                 </ul>
               )}
             </li>

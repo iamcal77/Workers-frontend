@@ -9,8 +9,6 @@ import ActionBar from '../ActionBar';
 import WorkerForm from '../Forms/WorkerForm';
 import { useNavigate } from 'react-router-dom';
 import useWorker from '../Hooks/UseWorker';
-import { SlActionRedo } from 'react-icons/sl';
-import { FcCalculator } from "react-icons/fc";
 import { toast } from 'react-toastify';
 
 function Worker({ onLogout }) {
@@ -18,7 +16,6 @@ function Worker({ onLogout }) {
   const [editingWorker, setEditingWorker] = useState(null); // Track worker being edited
   const [selectedRow, setSelectedRow] = useState(null); // Track selected row for background color
   const navigate = useNavigate();
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const { workers, isLoading, error, addWorker, editWorker } = useWorker();
 
@@ -59,9 +56,7 @@ function Worker({ onLogout }) {
     toast('Worker cannot be deleted, contact support');
   };
 
-  const handleAdminClick = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
+ 
 
   return (
     <Layout onLogout={onLogout}>
@@ -79,31 +74,6 @@ function Worker({ onLogout }) {
         <GiFarmer className="mr-2 text-blue-500" />
         Workers
       </h1>
-
-      <div className="relative z-10">
-        <button
-          onClick={handleAdminClick}
-          className="fixed top-12 right-4 mt-12 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600 transition duration-200 flex items-center space-x-2"
-          style={{ zIndex: 999 }}
-        >
-          <SlActionRedo className="text-lg text-white" />
-          <span>Actions</span>
-        </button>
-        {isDropdownVisible && (
-          <div className="absolute right-0 bg-white shadow-lg rounded-lg w-40 p-2 mt-1 mr-5">
-            <ul>
-              <li
-                className="p-1 hover:bg-black-200 cursor-pointer flex items-center space-x-1"
-                onClick={() => navigate('/payments-approval')}
-              >
-                <FcCalculator className="text-lg text-green-700" />
-                <span>Payment Approval</span>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
-
       {showForm && (
         <WorkerForm
           onSubmit={handleAddWorker}

@@ -85,6 +85,7 @@ const PendingWorkers = () => {
                 return <span>{localDate}</span>;
               }}
             />
+            <Column dataField="payment" caption="Payment Amount" width={130} />
             <Column
               dataField="paymentStatus"
               caption="Payment Status"

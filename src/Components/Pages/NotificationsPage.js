@@ -80,7 +80,8 @@ function NotificationsPage({ onLogout }) {
         }}
         onEdit={handleUpdateNotification} // Pass update function to the Edit button
         onDelete={handleDeleteNotification}
-        showExportToExcel={false}  // Ensure this is false
+        showExportToExcel={false} 
+        showEditButton={false}
         />
 
       {/* Render the NotificationForm component */}

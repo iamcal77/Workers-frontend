@@ -46,7 +46,7 @@ const CompletedActivities = () => {
         ) : error ? (
           <div>Error Loading Activities: {error.message}</div>
         ) : (
-
+      <div id="page-content">
         <DataGrid
           dataSource={completedActivities}
           keyExpr="id"
@@ -105,6 +105,7 @@ const CompletedActivities = () => {
                 />
 
         </DataGrid>
+        </div>
         )}
     </Layout>
   );

@@ -46,7 +46,7 @@ const PaidWorkers = () => {
         ) : error ? (
           <div>Error Loading Workers: {error.message}</div>
         ) : (
-
+        <div id="page-content">
         <DataGrid
           dataSource={paidWorkers}
           keyExpr="id"
@@ -105,6 +105,7 @@ const PaidWorkers = () => {
                 />
 
         </DataGrid>
+        </div>
         )}
     </Layout>
   );

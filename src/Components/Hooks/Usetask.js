@@ -24,16 +24,54 @@ const createTask = async (newTask, workerId) => {
     throw new Error('TaskName, Description, WorkerId, and Department are required');
   }
 
-  // Make sure department is part of the request data
-  const taskData = { ...newTask, workerId };
+  // Create the new task first
+  const taskData = { 
+    ...newTask, 
+    WorkerId: workerId, // Make sure you're sending WorkerId as part of the request
+    Payment: newTask.Payment ? parseFloat(newTask.Payment).toFixed(2) : 0, // Ensure Payment is valid
+  };
 
-  const response = await axios.post(
-    `${API_BASE_URL}/api/workertasks`,
-    taskData,
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
-  return response.data;
+  try {
+    const taskResponse = await axios.post(
+      `${API_BASE_URL}/api/workertasks`,
+      taskData,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    // Now that the task is created, check if it's the first task
+    const response = await axios.get(`${API_BASE_URL}/api/workertasks/worker/${workerId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    // Check if this is the first task for the worker
+    const isFirstTask = response.data.length === 1; // If the worker has exactly 1 task, it is the first task
+
+    if (!isFirstTask) {
+      // If it's not the first task, double the worker's payment
+      const workerResponse = await axios.get(`${API_BASE_URL}/api/workers/${workerId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const worker = workerResponse.data;
+
+      // Ensure the payment is a valid numeric value and double it
+      const updatedPayment = (worker.Payment * 2).toFixed(2); // Ensure it's a number and format it to 2 decimal places
+
+      // Update the worker's payment
+      await axios.put(
+        `${API_BASE_URL}/api/workers/${workerId}`,
+        { Payment: parseFloat(updatedPayment) }, // Ensure payment is a valid Decimal type
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.info(`Worker's payment has been doubled and set to pending.`);
+    }
+    return taskResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
 };
+
 
 
 const updateTask = async (updatedTask) => {

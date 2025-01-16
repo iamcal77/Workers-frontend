@@ -52,7 +52,7 @@ const PaymentApproval = () => {
         setFarmers(farmers.filter(farmer => !selectedFarmers.includes(farmer)));
         setSelectedFarmers([]); // Clear selection
       })
-      .catch(() => toast.error('Approval failed for some Workers.'));
+      .catch(() => toast.error('Approval failed for some Workers.Check there completion status'));
   };
 
   const rejectFarmers = () => {

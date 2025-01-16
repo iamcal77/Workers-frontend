@@ -163,6 +163,9 @@ const ApprovalPage = () => {
             keyExpr="id"
             showBorders={true}
             showRowLines={true}
+            columnAutoWidth={true}
+            adaptivityEnabled={true}
+            columnHidingEnabled={true}
             className="w-full"
             style={{ height: 'calc(100vh - 150px)' }}
             onSelectionChanged={handleRowSelection}

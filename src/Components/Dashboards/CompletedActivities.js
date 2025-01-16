@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DataGrid, Column, SearchPanel, Paging } from 'devextreme-react/data-grid';
+import { DataGrid, Column, SearchPanel, Paging, FilterRow, HeaderFilter, Scrolling } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../Layout';
@@ -64,6 +64,9 @@ const CompletedActivities = () => {
          <div className="flex justify-center mb-4">
         <SearchPanel visible={true} />
       </div>
+          <FilterRow visible={true} />
+          <HeaderFilter visible={true} />
+          <Scrolling mode="virtual" />
           <Paging defaultPageSize={10} />
           <Column dataField="workerName" caption="Worker Name" width={200} />
           <Column dataField="activityName" caption="Activity Name" />

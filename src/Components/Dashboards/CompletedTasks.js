@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataGrid, Column, SearchPanel, Paging } from 'devextreme-react/data-grid';
+import { DataGrid, Column, SearchPanel, Paging, FilterRow, HeaderFilter, Scrolling } from 'devextreme-react/data-grid';
 import 'react-toastify/dist/ReactToastify.css';
 import 'devextreme/dist/css/dx.light.css';
 import { useNavigate } from 'react-router-dom';
@@ -58,6 +58,9 @@ const CompletedTasks = () => {
         >
           <SearchPanel visible={true} />
           <Paging defaultPageSize={10} />
+          <FilterRow visible={true} />
+          <HeaderFilter visible={true} />
+          <Scrolling mode="virtual" />
           <Column dataField="workerName" caption="Worker Name" width={200} />
           <Column dataField="taskName" caption="Task Name" />
           <Column dataField="description" caption="Description" />

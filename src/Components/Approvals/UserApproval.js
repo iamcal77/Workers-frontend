@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, Column, SearchPanel, Paging, Pager, Selection } from 'devextreme-react/data-grid';
+import { DataGrid, Column, SearchPanel, Paging, Pager, Selection, FilterRow, HeaderFilter, Scrolling } from 'devextreme-react/data-grid';
 import { Button } from 'devextreme-react/button';
 import 'devextreme/dist/css/dx.light.css';
 import axios from 'axios';
@@ -133,6 +133,9 @@ const UserApproval = () => {
             style={{ height: 'calc(100vh - 150px)' }}
           >
             <SearchPanel visible={true} />
+            <FilterRow visible={true} />
+            <HeaderFilter visible={true} />
+            <Scrolling mode="virtual" />
             <Selection mode="multiple" />
             <Pager visible={true} />
             <Paging defaultPageSize={10} />

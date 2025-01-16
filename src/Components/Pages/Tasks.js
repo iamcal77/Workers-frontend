@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging, SearchPanel, Pager } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, SearchPanel, Pager, FilterRow, HeaderFilter, Scrolling } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { FaTasks } from "react-icons/fa";
 import Layout from '../Layout';
@@ -164,6 +164,9 @@ function Tasks({ onLogout }) {
               <SearchPanel visible={true} />
               <Paging defaultPageSize={10} />
               <Pager visible={true} />
+              <FilterRow visible={true} />
+              <HeaderFilter visible={true} />
+              <Scrolling mode="virtual" />
               <Column dataField="id" caption="ID" />
               <Column dataField="workerId" caption="Worker ID" />
               <Column dataField="department" caption="Department" />

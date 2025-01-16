@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DataGrid, { Column, Pager, Paging, SearchPanel } from 'devextreme-react/data-grid';
+import DataGrid, { Column, FilterRow, HeaderFilter, Pager, Paging, Scrolling, SearchPanel } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import Layout from '../Layout';
 import ActionBar from '../ActionBar';
@@ -159,6 +159,9 @@ const AdminPage = ({ onLogout }) => {
             <SearchPanel
                 visible ={true}
               />
+                <FilterRow visible={true} />
+                <HeaderFilter visible={true} />
+                <Scrolling mode="virtual" />
               <Paging defaultPageSize={10} />
               <Pager visible={true} />
               <Column dataField="username" />

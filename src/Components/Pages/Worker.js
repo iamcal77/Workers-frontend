@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import DotLoader from '../Loader/Loader';
-import { DataGrid, Column, Paging, Pager, SearchPanel } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Paging, Pager, SearchPanel, FilterRow, HeaderFilter, Scrolling } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.light.css';
 import { GiFarmer } from "react-icons/gi";
 import Layout from '../Layout';
@@ -119,7 +119,9 @@ function Worker({ onLogout }) {
             <SearchPanel visible={true} />
             <Paging defaultPageSize={10} />
             <Pager visible={true} />
-
+            <FilterRow visible={true} />
+            <HeaderFilter visible={true} />
+            <Scrolling mode="virtual" />
             <Column dataField="name" caption="Name" width={150} />
             <Column dataField="location" caption="Location" width={100} />
             <Column dataField="contact" caption="Contact" width={100} />

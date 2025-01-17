@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import TextBox from 'devextreme-react/text-box';
-import TextArea from 'devextreme-react/text-area';
 import NumberBox from 'devextreme-react/number-box';
 import DateBox from 'devextreme-react/date-box';
 import 'devextreme/dist/css/dx.light.css'; // Import DevExtreme styles
@@ -12,7 +11,6 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
   const [formData, setFormData] = useState({
     workerId: workerIdFromParent || '', // Automatically fill the workerId if available
     taskName: '',
-    description: '',
     startDate: '',
     endDate: '',
     isCompleted: false,
@@ -75,7 +73,7 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
     console.log(formData);  // Log to verify the department value
     
     // Ensure all required fields are filled
-    if (!formData.taskName || !formData.description || !formData.startDate || !formData.endDate || !formData.department) {
+    if (!formData.taskName || !formData.startDate || !formData.endDate || !formData.department) {
       toast.error('Please fill in all required fields!');
       return;
     }
@@ -112,25 +110,13 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
             />
           </div>
           <div className="mb-4">
-            <TextBox
+            <SelectBox
               id="department"
               name="department"
               value={formData.department}
               onValueChanged={(e) => handleInputChange({ target: { name: 'department', value: e.value } })}
               className="w-full"
               label="Department"
-              labelMode="floating"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <SelectBox
-              id="taskName"
-              name="taskName"
-              value={formData.taskName}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'taskName', value: e.value } })}
-              className="w-full"
-              label="Task Name"
               labelMode="floating"
               items={[
                 { value: '', text: 'Select Task' },
@@ -139,26 +125,24 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
                 { value: 'Engineering Operations', text: 'Engineering Operations' },
                 { value: 'Engineering Boiler', text: 'Engineering Boiler' },
                 { value: 'Human Resource', text: 'Human Resource' },
-
+                { value: 'Firewood', text: 'Firewood' }
               ]}
               displayExpr="text"
               valueExpr="value"
             />
           </div>
-
           <div className="mb-4">
-            <TextArea
-              id="description"
-              name="description"
-              value={formData.description}
-              onValueChanged={(e) => handleInputChange({ target: { name: 'description', value: e.value } })}
+            <TextBox
+              id="taskName"
+              name="taskName"
+              value={formData.taskName}
+              onValueChanged={(e) => handleInputChange({ target: { name: 'taskName', value: e.value } })}
               className="w-full"
-              label="Description"
+              label="Task Name"
               labelMode="floating"
               required
             />
           </div>
-
           <div className="mb-4">
             <DateBox
               id="startDate"

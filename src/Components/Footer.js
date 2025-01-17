@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-100 border-t border-gray-300 fixed bottom-0 left-0 w-full text-center py-0 text-sm ml-[149px]">
       <div className="text-gray-600 text-center">
-        <p>&copy; {currentYear} Efficio. All Rights Reserved.</p>
+        <p>&copy; {currentYear} NTFL Casuals. All Rights Reserved.</p>
         <p>
           <a href="/privacy-policy" className="text-blue-500 hover:underline">
             Privacy Policy

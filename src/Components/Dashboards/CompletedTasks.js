@@ -62,8 +62,8 @@ const CompletedTasks = () => {
           <HeaderFilter visible={true} />
           <Scrolling mode="virtual" />
           <Column dataField="workerName" caption="Worker Name" width={200} />
+          <Column dataField="department" caption="Department" />
           <Column dataField="taskName" caption="Task Name" />
-          <Column dataField="description" caption="Description" />
           <Column
             dataField="startDate"
             caption="Start Date"

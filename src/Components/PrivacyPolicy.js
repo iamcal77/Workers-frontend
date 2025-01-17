@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
         </h1>
         
         <p className="text-lg mb-6 text-gray-700">
-          Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use Efficio.
+          Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use NTFL Casuals.
         </p>
 
         <section className="mb-8">

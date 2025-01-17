@@ -171,7 +171,6 @@ function Tasks({ onLogout }) {
               <Column dataField="workerId" caption="Worker ID" />
               <Column dataField="department" caption="Department" />
               <Column dataField="taskName" caption="Task Name" />
-              <Column dataField="description" caption="Description" />
               <Column
                 dataField="startDate"
                 caption="Start Date"

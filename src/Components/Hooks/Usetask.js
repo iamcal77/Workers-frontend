@@ -20,8 +20,8 @@ const createTask = async (newTask, workerId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
   
-  if (!newTask.taskName || !newTask.description || !workerId || !newTask.department) {
-    throw new Error('TaskName, Description, WorkerId, and Department are required');
+  if (!newTask.taskName || !workerId || !newTask.department) {
+    throw new Error('TaskName, WorkerId, and Department are required');
   }
 
   // Create the new task first
@@ -77,8 +77,8 @@ const createTask = async (newTask, workerId) => {
 const updateTask = async (updatedTask) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
-  if (!updatedTask || !updatedTask.taskName || !updatedTask.description) {
-    throw new Error('TaskName and Description are required');
+  if (!updatedTask || !updatedTask.taskName || !updatedTask.department) {
+    throw new Error('TaskName and Department are required');
   }
 
   const response = await axios.put(
@@ -99,7 +99,7 @@ const deleteTask = async (taskId) => {
   return response.data;
 };
 
-const filterTasksByDateAndTaskName = async (workerId, startDate, endDate, taskName) => {
+const filterTasksByDateAndTaskName = async (workerId, startDate, endDate, department) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
   if (!workerId) throw new Error('Worker ID is required');
@@ -110,7 +110,7 @@ const filterTasksByDateAndTaskName = async (workerId, startDate, endDate, taskNa
     workerId,
     startDate,
     endDate,
-    taskName,  // Add taskName to the filter
+    department,  // Add taskName to the filter
   };
 
   // Remove any undefined parameters to avoid sending unnecessary filters
@@ -172,14 +172,14 @@ const useTasks = (workerId) => {
   });
 
   const { mutateAsync: filterTasks } = useMutation({
-    mutationFn: ({ startDate, endDate,taskName }) => filterTasksByDateAndTaskName(workerId, startDate, endDate,taskName),
+    mutationFn: ({ startDate, endDate,department }) => filterTasksByDateAndTaskName(workerId, startDate, endDate,department),
     onSuccess: (data) => {
-      toast.success('Tasks filtered successfully!');
+      toast.success('Departments filtered successfully!');
       return data; // Return filtered data for usage
     },
     onError: (error) => {
-      console.error('Error filtering tasks:', error);
-      toast.error('Error filtering tasks');
+      console.error('Error filtering departments:', error);
+      toast.error('Error filtering departments');
     },
   });
 

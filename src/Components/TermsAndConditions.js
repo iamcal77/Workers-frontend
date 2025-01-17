@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
         </h1>
         
         <p className="text-lg mb-6 text-gray-700">
-          These Terms and Conditions outline the rules and regulations for the use of Efficio. By accessing and using our platform, you accept and agree to these terms.
+          These Terms and Conditions outline the rules and regulations for the use of NTFL Casuals. By accessing and using our platform, you accept and agree to these terms.
         </p>
 
         <section className="mb-8">
@@ -46,7 +46,7 @@ const TermsAndConditions = () => {
             Limitation of Liability
           </h2>
           <p className="text-lg text-gray-700">
-            Efficio shall not be held responsible for any indirect, incidental, or consequential damages arising from your use of the platform.
+          NTFL Casuals shall not be held responsible for any indirect, incidental, or consequential damages arising from your use of the platform.
           </p>
         </section>
 

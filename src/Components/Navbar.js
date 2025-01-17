@@ -89,7 +89,7 @@ function Navbar() {
     <div className="bg-blue-600 text-white px-3 py-1 flex items-center fixed w-full top-0 left-0 z-10 shadow-md">
       <div className="text-lg font-bold">
         <Link to="/" className="hover:text-gray-200 transition duration-300">
-          Efficio
+        NTFL Casuals
         </Link>
       </div>
 
@@ -152,7 +152,7 @@ function Navbar() {
             {results.workerTasks.map((task, index) => (
               <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer">
                 <Link to={`/task/${task.id}`} className="text-blue-600">
-                  {task.taskName} - {task.description}
+                  {task.taskName} - {task.department}
                 </Link>
               </li>
             ))}

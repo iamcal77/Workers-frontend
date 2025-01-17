@@ -143,7 +143,6 @@ const TaskApproval = () => {
             <Column dataField="department" caption="Department" />
             <Column dataField="workerName" caption="Worker Name" />
             <Column dataField="taskName" caption="Task Name" />
-            <Column dataField="description" caption="Description" />
             <Column
               dataField="startDate"
               caption="Start Date"

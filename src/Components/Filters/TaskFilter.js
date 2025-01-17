@@ -6,11 +6,11 @@ import { FaFilter } from 'react-icons/fa';
 function TaskFilter({ onFilter }) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [taskName, setTaskName] = useState('');
+  const [department, setDepartment] = useState('');
 
   const handleFilter = () => {
     // Combine the filters into a single object and call the filter handler
-    onFilter({ startDate, endDate, taskName });
+    onFilter({ startDate, endDate, department });
   };
 
   return (
@@ -37,21 +37,22 @@ function TaskFilter({ onFilter }) {
 
       {/* Task Name Filter */}
       <SelectBox
-        id="taskName"
-        value={taskName}
-        onValueChanged={(e) => setTaskName(e.value)}
+        id="department"
+        value={department}
+        onValueChanged={(e) => setDepartment(e.value)}
         className="w-56"
         items={[
-          { value: '', text: 'Select Task' },
+          { value: '', text: 'Select Department' },
           { value: 'Production Operations', text: 'Production Operations' },
           { value: 'Production Field Extension', text: 'Production Field Extension' },
           { value: 'Engineering Operations', text: 'Engineering Operations' },
           { value: 'Engineering Boiler', text: 'Engineering Boiler' },
           { value: 'Human Resource', text: 'Human Resource' },
+          { value: 'Firewood', text: 'Firewood' }
         ]}
         displayExpr="text"
         valueExpr="value"
-        placeholder="Select Task"
+        placeholder="Select Department"
         labelMode="floating"
       />
 

@@ -125,7 +125,9 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
                 { value: 'Engineering Operations', text: 'Engineering Operations' },
                 { value: 'Engineering Boiler', text: 'Engineering Boiler' },
                 { value: 'Human Resource', text: 'Human Resource' },
-                { value: 'Firewood', text: 'Firewood' }
+                { value: 'Firewood', text: 'Firewood' },
+                { value: 'Finance', text: 'Finance' }
+
               ]}
               displayExpr="text"
               valueExpr="value"

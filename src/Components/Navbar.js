@@ -86,7 +86,7 @@ function Navbar() {
   };
 
   return (
-    <div className="bg-blue-600 text-white px-3 py-1 flex items-center fixed w-full top-0 left-0 z-10 shadow-md">
+    <div className="bg-green-700 text-white px-3 py-1 flex items-center fixed w-full top-0 left-0 z-10 shadow-md">
       <div className="text-lg font-bold">
         <Link to="/" className="hover:text-gray-200 transition duration-300">
         NTFL Casuals
@@ -104,7 +104,7 @@ function Navbar() {
         />
         <button
           type="submit"
-          className="ml-1 top-0 right-0 px-2 py-1 bg-blue-600 text-white rounded-r-lg focus:outline-none"
+          className="ml-1 top-0 right-0 px-2 py-1 bg-green-700 text-white rounded-r-lg focus:outline-none"
           disabled={isLoading}
         >
           {isLoading ? 'Searching...' : 'Search'}

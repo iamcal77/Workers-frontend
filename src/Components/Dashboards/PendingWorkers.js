@@ -88,7 +88,7 @@ const PendingWorkers = () => {
                 return <span>{localDate}</span>;
               }}
             />
-            <Column dataField="payment" caption="Payment Amount" width={130} />
+
             <Column
               dataField="paymentStatus"
               caption="Payment Status"
@@ -108,6 +108,18 @@ const PendingWorkers = () => {
                 );
               }}
             />
+            <Column 
+                dataField="payment" 
+                caption="Payment Amount (KSH)" 
+                width={150} 
+                cellRender={(data) => {
+                  const paymentInKSH = parseFloat(data.value).toLocaleString('en-KE', {
+                    style: 'currency',
+                    currency: 'KES',
+                  });
+                  return <span>{paymentInKSH}</span>;
+                }} 
+              />
           </DataGrid>
         </div>
       )}

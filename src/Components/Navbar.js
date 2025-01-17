@@ -87,12 +87,16 @@ function Navbar() {
 
   return (
     <div className="bg-green-700 text-white px-3 py-1 flex items-center fixed w-full top-0 left-0 z-10 shadow-md">
-      <div className="text-lg font-bold">
+      <div className="text-lg font-bold flex items-center space-x-2">
         <Link to="/" className="hover:text-gray-200 transition duration-300">
-        NTFL Casuals
+          <img 
+            src="https://ntfl.co.ke/wp-content/uploads/2023/02/Logo-1.png" // Replace with your image URL
+            alt="Logo" // Alt text for accessibility
+            className="w-8 h-8" // Control the image size (adjust as needed)
+          />
         </Link>
+        <span>NTFL Casuals</span>
       </div>
-
       {/* Search Bar - Centered and Reduced Size */}
       <form onSubmit={handleSearch} className="flex-1 mx-4 relative flex justify-center">
         <input

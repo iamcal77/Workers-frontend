@@ -106,7 +106,18 @@ const PaidWorkers = () => {
                     );
                   }}
                 />
-          <Column dataField="payment" caption="Payment Amount" width={150} />
+              <Column 
+                dataField="payment" 
+                caption="Payment Amount (KSH)" 
+                width={150} 
+                cellRender={(data) => {
+                  const paymentInKSH = parseFloat(data.value).toLocaleString('en-KE', {
+                    style: 'currency',
+                    currency: 'KES',
+                  });
+                  return <span>{paymentInKSH}</span>;
+                }} 
+              />
         </DataGrid>
         </div>
         )}

@@ -19,58 +19,32 @@ const fetchTasksByWorkerId = async (workerId) => {
 const createTask = async (newTask, workerId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Authentication token is missing');
-  
+
   if (!newTask.taskName || !workerId || !newTask.department) {
     throw new Error('TaskName, WorkerId, and Department are required');
   }
 
-  // Create the new task first
+  // Prepare the new task data
   const taskData = { 
     ...newTask, 
-    WorkerId: workerId, // Make sure you're sending WorkerId as part of the request
-    Payment: newTask.Payment ? parseFloat(newTask.Payment).toFixed(2) : 0, // Ensure Payment is valid
+    WorkerId: workerId, // Ensure WorkerId is included
   };
 
   try {
+    // Create the new task
     const taskResponse = await axios.post(
       `${API_BASE_URL}/api/workertasks`,
       taskData,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    // Now that the task is created, check if it's the first task
-    const response = await axios.get(`${API_BASE_URL}/api/workertasks/worker/${workerId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    // Check if this is the first task for the worker
-    const isFirstTask = response.data.length === 1; // If the worker has exactly 1 task, it is the first task
-
-    if (!isFirstTask) {
-      // If it's not the first task, double the worker's payment
-      const workerResponse = await axios.get(`${API_BASE_URL}/api/workers/${workerId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const worker = workerResponse.data;
-
-      // Ensure the payment is a valid numeric value and double it
-      const updatedPayment = (worker.Payment * 2).toFixed(2); // Ensure it's a number and format it to 2 decimal places
-
-      // Update the worker's payment
-      await axios.put(
-        `${API_BASE_URL}/api/workers/${workerId}`,
-        { Payment: parseFloat(updatedPayment) }, // Ensure payment is a valid Decimal type
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      toast.info(`Worker's payment has been doubled and set to pending.`);
-    }
     return taskResponse.data;
   } catch (error) {
     console.error(error);
+    throw new Error('Failed to create the task.');
   }
 };
+
 
 
 

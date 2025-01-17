@@ -131,7 +131,18 @@ function Worker({ onLogout }) {
             <Column dataField="startDate" caption="Start Date" width={120} dataType="date" />
             <Column dataField="endDate" caption="End Date" width={120} dataType="date" />
             <Column dataField="status" caption="Approval Status" width={120} />
-            <Column dataField="payment" caption="Payment Amount" width={130} />
+            <Column 
+                dataField="payment" 
+                caption="Payment Amount (KSH)" 
+                width={130} 
+                cellRender={(data) => {
+                  const paymentInKSH = parseFloat(data.value).toLocaleString('en-KE', {
+                    style: 'currency',
+                    currency: 'KES',
+                  });
+                  return <span>{paymentInKSH}</span>;
+                }} 
+              />
             <Column dataField="paymentStatus" caption="Payment Status" width={100} />
           </DataGrid>
         </div>

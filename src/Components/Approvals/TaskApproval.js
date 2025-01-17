@@ -177,6 +177,22 @@ const TaskApproval = () => {
                 );
               }}
             />
+             <Column
+                  dataField="days"
+                  caption="Days Assigned"
+                  calculateCellValue={(rowData) => {
+                    const start = new Date(rowData.startDate);
+                    const end = new Date(rowData.endDate);
+                    const differenceInTime = end.getTime() - start.getTime();
+                    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24)); // Convert milliseconds to days
+                    return differenceInDays >= 0 ? differenceInDays : 0; // Ensure no negative values
+                  }}
+                  cellRender={(data) => (
+                    <span>
+                      {data.value} day{data.value !== 1 ? 's' : ''}
+                    </span>
+                  )}
+                />
           </DataGrid>
         </div>
       )}

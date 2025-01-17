@@ -20,7 +20,7 @@
 .dot {
   width: 10px;  /* Reduced size of the dots */
   height: 10px; /* Reduced size of the dots */
-  background-color: #3498db;
+  background-color: #165c29;
   border-radius: 50%;
   animation: moveRight 1.2s linear infinite;
 }

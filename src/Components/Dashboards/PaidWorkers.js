@@ -106,7 +106,7 @@ const PaidWorkers = () => {
                     );
                   }}
                 />
-
+          <Column dataField="payment" caption="Payment Amount" width={150} />
         </DataGrid>
         </div>
         )}

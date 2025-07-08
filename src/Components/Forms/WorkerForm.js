@@ -41,8 +41,9 @@ function WorkerForm({ onSubmit, onCancel, initialData = {} }) {
     // Format date fields and add default values for missing fields
     const formattedData = {
       ...formData,
-      startDate: new Date(formData.startDate).toISOString().split('T')[0],
-      endDate: formData.endDate ? new Date(formData.endDate).toISOString().split('T')[0] : null,
+      startDate: new Date(formData.startDate).toISOString(),
+      endDate: formData.endDate ? new Date(formData.endDate).toISOString(): null,
+      dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : null,
       status: 'Pending', // Default value for Status
       paymentStatus: 'Pending', // Default value for PaymentStatus
     };

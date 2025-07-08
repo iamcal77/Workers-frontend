@@ -17,7 +17,7 @@ function Worker({ onLogout }) {
   const [selectedRow, setSelectedRow] = useState(null); // Track selected row for background color
   const navigate = useNavigate();
 
-  const { workers, isLoading, error, addWorker, editWorker } = useWorker();
+  const { workers, isLoading, error, addWorker, editWorker,removeWorker } = useWorker();
 
   const handleDetailsClick = (id) => {
     navigate(`/worker-details/${id}`);
@@ -49,11 +49,18 @@ function Worker({ onLogout }) {
   };
 
   const handleDeleteClick = () => {
-    if (!selectedRow) {
-      toast('Please select a worker to delete.');
-      return;
+    if (selectedRow) {
+      removeWorker(selectedRow.id)
+        .then(() => {
+          setEditingWorker(null); // Clear editing task after deletion
+        })
+        .catch((error) => {
+          console.error('Error deleting worker:', error);
+        });
     }
-    toast('Worker cannot be deleted, contact support');
+    else {
+      toast('Please select a worker to delete.');
+    }
   };
 
  

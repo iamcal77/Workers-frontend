@@ -35,13 +35,12 @@ const fetchWorkers = async () => {
 // Create a new worker
 const createWorker = async (newWorker) => {
   const token = localStorage.getItem('token');
-  console.log('Fetched Token for creation:', token);
-
   const response = await axios.post(`${API_BASE_URL}/api/workers`, newWorker, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
   });
+
   return response.data;
 };
 
@@ -54,9 +53,6 @@ const updateWorker = async ({ id, updatedWorker }) => {
   }
 
   const token = localStorage.getItem('token');
-  console.log('Fetched Token for update:', token);
-  console.log('Updating Worker with data:', updatedWorker);
-
   // Ensure updatedWorker contains the required properties
   const { dateOfBirth, ...otherData } = updatedWorker;
   const formattedWorker = {
@@ -71,6 +67,18 @@ const updateWorker = async ({ id, updatedWorker }) => {
   });
   return response.data;
 };
+
+// delete worker
+const deleteWorker = async(id)=>{
+  const token = localStorage.getItem('token');
+  if(!token) throw new Error('Authentication token missing');
+
+  const resposnse = await axios.delete(`${API_BASE_URL}/api/workers/${id}`,{
+    headers: {Authorization:`Bearer ${token}`},
+  });
+  return resposnse.data;
+
+}
 
 const useWorker = () => {
   const { data: workers, isLoading, error, refetch } = useQuery({
@@ -105,13 +113,25 @@ const useWorker = () => {
       toast.error('Error updating Worker');
     },
   });
+  const { mutateAsync: removeWorker } = useMutation({
+      mutationFn: deleteWorker,
+      onSuccess: () => {
+        refetch();
+        toast.success('Worker deleted successfully!');
+      },
+      onError: (error) => {
+        console.error('Error deleting Worker:', error);
+        toast.error('Error deleting Worker');
+      },
+    });
 
   return {
     workers,
     isLoading,
     error,
     addWorker,
-    editWorker, // Expose the editWorker function
+    editWorker,
+    removeWorker
   };
 };
 

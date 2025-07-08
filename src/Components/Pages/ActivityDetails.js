@@ -4,6 +4,7 @@ import Layout from '../Layout';
 import DotLoader from '../Loader/Loader';
 import { useParams } from 'react-router-dom';
 import ActionBar from '../ActionBar';
+import { toast } from 'react-toastify';
 
 // Use the base URL from environment variables
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -12,12 +13,13 @@ function ActivityDetails({ onLogout }) {
   const [activity, setActivity] = useState(null);
   const { id } = useParams(); // Get the activity ID from the URL
   const [loading, setLoading] = useState(true);
+  
+  
+ 
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
       const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-      console.log('Fetched Token:', token); // Log the token for debugging
-
       if (!token) {
         console.error('No token found. Please log in.');
         setLoading(false);

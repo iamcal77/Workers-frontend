@@ -13,6 +13,7 @@ import { Series, Legend } from 'devextreme-react/chart';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import PaymentStatusDashboard from '../Dashboards/PaymentStatusDashboard';
 import EmploymentStatsDashboard from '../Dashboards/EmploymentStatsDashboard';
+import ApprovalStats from '../Dashboards/ApprovalStats';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -195,6 +196,10 @@ function AdminDashboard({ token, onLogout }) {
         <div className="bg-white p-4 rounded-lg shadow-lg">
           <h3 className="text-lg font-semibold text-gray-700 mb-2">Employemts Status </h3>
           <EmploymentStatsDashboard />
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-lg">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">Approval Status </h3>
+          <ApprovalStats />
         </div>
       </div>
       

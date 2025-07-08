@@ -73,8 +73,8 @@ function TaskDetails({ onLogout }) {
                 <span className="text-gray-900">{task.taskName}</span>
               </div>
               <div className="flex items-center">
-                <span className="font-semibold text-gray-700 w-40">Description:</span>
-                <span className="text-gray-900">{task.description}</span>
+                <span className="font-semibold text-gray-700 w-40">Department:</span>
+                <span className="text-gray-900">{task.department}</span>
               </div>
               <div className="flex items-center">
                 <span className="font-semibold text-gray-700 w-40">Start Date:</span>

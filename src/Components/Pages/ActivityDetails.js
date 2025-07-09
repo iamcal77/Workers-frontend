@@ -4,7 +4,6 @@ import Layout from '../Layout';
 import DotLoader from '../Loader/Loader';
 import { useParams } from 'react-router-dom';
 import ActionBar from '../ActionBar';
-import { toast } from 'react-toastify';
 
 // Use the base URL from environment variables
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;

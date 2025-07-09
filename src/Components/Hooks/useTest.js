@@ -1,6 +1,5 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { toast } from "react-toastify"
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 
@@ -10,7 +9,7 @@ const getTets = async()=>{
 };
 
 const useTests =()=>{
-    const {data:tests ,isLoading,error,refetch} = useQuery({
+    const {data:tests ,isLoading,error} = useQuery({
         queryKey:["tests"],
         queryFn:getTets,
         refetchOnWindowFocus:false

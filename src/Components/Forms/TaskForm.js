@@ -77,12 +77,13 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
       return;
     }
 
-    const formattedData = {
-      ...formData,
-      isCompleted: false,
-      startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
-      endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
-    };
+   const formattedData = {
+  ...formData,
+  isCompleted: false,
+  startDate: formData.startDate ? new Date(formData.startDate).toISOString(): null,
+  endDate: formData.endDate ? new Date(formData.endDate).toISOString(): null,
+};
+
 
     onSubmit(formattedData);
   };

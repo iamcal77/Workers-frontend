@@ -5,7 +5,7 @@ import DotLoader from '../Loader/Loader';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation for current path
 import ActionBar from '../ActionBar';
 import { FaInfoCircle, FaTasks } from 'react-icons/fa';
-import { FiActivity } from 'react-icons/fi';
+// import { FiActivity } from 'react-icons/fi';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Get API base URL from env
 
@@ -62,10 +62,10 @@ function WorkerDetails({ onLogout }) {
     navigate(`/workers/${id}/tasks`);
   };
 
-  const handleNavigateToActivities = () => {
-    setSelectedButton('activities');
-    navigate(`/workers/${id}/activities`);
-  };
+  // const handleNavigateToActivities = () => {
+  //   setSelectedButton('activities');
+  //   navigate(`/workers/${id}/activities`);
+  // };
 
   return (
     <Layout onLogout={onLogout}>
@@ -93,13 +93,13 @@ function WorkerDetails({ onLogout }) {
             <FaTasks className="text-lg" />
             <span className="text-xs font-bold mt-1">Tasks</span>
           </button>
-          <button
+          {/* <button
             className={`w-12 h-12 mb-4 bg-red-500 text-white rounded-full flex flex-col justify-center items-center hover:bg-red-600 transition-all duration-200 ${selectedButton === 'activities' ? 'bg-blue-500 text-white' : ''}`}
             onClick={handleNavigateToActivities}
           >
             <FiActivity className="text-lg" />
             <span className="text-xs font-bold mt-1">Activities</span>
-          </button>
+          </button> */}
         </div>
 
         {/* Main Content */}

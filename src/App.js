@@ -32,7 +32,6 @@ import ResetPassword from './Components/Auth/Reset';
 import UserApproval from './Components/Approvals/UserApproval';
 import TermsAndConditions from './Components/TermsAndConditions';
 import PrivacyPolicy from './Components/PrivacyPolicy';
-import Test from './Components/Pages/Test';
 
 
 const queryClient = new QueryClient();
@@ -86,7 +85,6 @@ function App() {
           <Route path="/users-approval" element={<UserApproval token={localStorage.getItem('token')} />} />
           <Route path="/terms" element={<TermsAndConditions token={localStorage.getItem('token')} />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy token={localStorage.getItem('token')} />} />
-          <Route path="/tests" element={<Test token={localStorage.getItem('token')} />} />
         </Routes>
 
       </Router>

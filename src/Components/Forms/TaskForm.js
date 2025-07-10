@@ -69,24 +69,23 @@ function TaskForm({ onSubmit, onCancel, initialData = {}, workerIdFromParent }) 
     });
   };
 
-  const handleAddTask = (e) => {
-    e.preventDefault();
+ const handleAddTask = (e) => {
+  e.preventDefault();
 
-    if (!formData.taskName || !formData.startDate || !formData.endDate || !formData.department) {
-      toast.error('Please fill in all required fields!');
-      return;
-    }
+  if (!formData.taskName || !formData.startDate || !formData.endDate || !formData.department) {
+    toast.error('Please fill in all required fields!');
+    return;
+  }
 
-   const formattedData = {
-  ...formData,
-  isCompleted: false,
-  startDate: formData.startDate ? new Date(formData.startDate).toISOString(): null,
-  endDate: formData.endDate ? new Date(formData.endDate).toISOString(): null,
-};
-
-
-    onSubmit(formattedData);
+  const formattedData = {
+    ...formData,
+    isCompleted: false,
+    startDate: formData.startDate ? new Date(formData.startDate).toISOString() : null,
+    endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
   };
+
+  onSubmit(formattedData);
+};
 
   return (
     <div className="fixed top-16 right-4 bg-white p-6 rounded-lg shadow-lg w-[600px] max-w-full z-50 h-[80vh] overflow-y-auto">
